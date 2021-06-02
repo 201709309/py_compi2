@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/py_compi2/static/css/main.9d5b29c0.chunk.css",
+    "main.js": "/py_compi2/static/js/main.b699e55c.chunk.js",
+    "main.js.map": "/py_compi2/static/js/main.b699e55c.chunk.js.map",
+    "runtime-main.js": "/py_compi2/static/js/runtime-main.6bc7cfd9.js",
+    "runtime-main.js.map": "/py_compi2/static/js/runtime-main.6bc7cfd9.js.map",
+    "static/css/2.4c97ca4f.chunk.css": "/py_compi2/static/css/2.4c97ca4f.chunk.css",
+    "static/js/2.f26f684b.chunk.js": "/py_compi2/static/js/2.f26f684b.chunk.js",
+    "static/js/2.f26f684b.chunk.js.map": "/py_compi2/static/js/2.f26f684b.chunk.js.map",
+    "static/js/3.37bd955a.chunk.js": "/py_compi2/static/js/3.37bd955a.chunk.js",
+    "static/js/3.37bd955a.chunk.js.map": "/py_compi2/static/js/3.37bd955a.chunk.js.map",
+    "index.html": "/py_compi2/index.html",
+    "static/css/2.4c97ca4f.chunk.css.map": "/py_compi2/static/css/2.4c97ca4f.chunk.css.map",
+    "static/css/main.9d5b29c0.chunk.css.map": "/py_compi2/static/css/main.9d5b29c0.chunk.css.map",
+    "static/js/2.f26f684b.chunk.js.LICENSE.txt": "/py_compi2/static/js/2.f26f684b.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.6bc7cfd9.js",
+    "static/css/2.4c97ca4f.chunk.css",
+    "static/js/2.f26f684b.chunk.js",
+    "static/css/main.9d5b29c0.chunk.css",
+    "static/js/main.b699e55c.chunk.js"
+  ]
+}
