@@ -7,7 +7,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 function App() {
   return (
     <div>
-      <Router>
+      <Router basename="/py_compi2">
         <Route path="/" exact component={Main} />
       </Router>
     </div>
