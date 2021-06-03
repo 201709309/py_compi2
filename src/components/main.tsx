@@ -1,49 +1,23 @@
 import React, { Component } from 'react'
 import { FilePicker } from 'react-file-picker';
-import { BsX } from "react-icons/bs";
-import { Nav, Navbar, Form, Button, Modal, Container, Row, Col } from 'react-bootstrap';
-var fileDownload = require('js-file-download');
+import { Nav, Navbar, Form, Button, Row, Col } from 'react-bootstrap';
 const parser = require('../Grammar/Grammar')
 
 export default class Main extends Component {
 
     state = {
-        files: [],
-        actualFile: '',
-        show: false,
-        newFileName: "",
-        consoleResult : ""
-    }
-
-    saveFile = () => {
-        if (this.state.files.length === 0) {
-            return;
-        }
-        let downloadFile = this.state.files.filter((value: any, index, arr) => {
-            return value.fileName === this.state.actualFile
-        })
-        fileDownload(downloadFile[0]['fileContent'], downloadFile[0]['fileName']);
-    }
-
-    saveAll = () => {
-        if (this.state.files.length === 0) {
-            return;
-        }
-        for (const key in this.state.files) {
-            fileDownload(this.state.files[key]['fileContent'], this.state.files[key]['fileName']);
-        }
+        consoleResult: "",
+        xpath: "",
+        xml: ""
     }
 
     parse = () => {
-        if (this.state.files.length === 0) {
+        if (this.state.xpath === "") {
             return;
         }
-        let downloadFile = this.state.files.filter((value: any, index, arr) => {
-            return value.fileName === this.state.actualFile
-        })
-        const ast= parser.parse(downloadFile[0]['fileContent']);
+        const ast = parser.parse(this.state.xpath);
         this.setState({
-            consoleResult : ast
+            consoleResult: ast
         })
     }
 
@@ -51,34 +25,16 @@ export default class Main extends Component {
         const reader = new FileReader();
         reader.readAsText(file);
         reader.onload = (e: any) => {
-            if (this.state.files.some((a: any) => a.fileName === file.name)) {
-                this.setState({
-                    actualFile: file.name,
-                })
-                return;
-            }
+
             try {
-                var fileTemp: any = {
-                    fileName: file.name,
-                    fileContent: e.target.result
-                }
                 this.setState({
-                    files: this.state.files.concat(fileTemp),
-                    actualFile: file.name
+                    xml: e.target.result
                 });
             } catch (e) {
                 console.log(e);
             }
         };
     };
-
-    handleShow = () => {
-        this.setState({
-            show: !this.state.show,
-            newFileName: ""
-        })
-    }
-
 
     render() {
         return (
@@ -91,133 +47,35 @@ export default class Main extends Component {
                             <FilePicker maxSize={2} onChange={this.handleFileChange} onError={errMsg => console.log(errMsg)}>
                                 <Button variant="link">Open File</Button>
                             </FilePicker>
-                            <Button variant="link" onClick={this.saveFile}>Save File</Button>
-                            <Button variant="link" onClick={this.saveAll}>Save All</Button>
                         </Nav>
                     </Navbar.Collapse>
                 </Navbar>
+
                 <div className="mt-2 px-5">
-                    <Nav variant="tabs" defaultActiveKey="/home">
-                        {this.state.files.map((e: any) =>
-                            <Nav.Item key={e.fileName}>
-                                <Nav.Link active={this.state.actualFile === e.fileName} onClick={() => {
-                                    if (this.state.files.some((a: any) => a.fileName === e.fileName)) {
-                                        this.setState({
-                                            actualFile: e.fileName,
-                                        })
-                                        return;
-                                    }
-                                }}>{e.fileName}
-
-
-                                    <BsX className="ml-2"
-                                        onClick={() => {
-                                            this.setState({
-                                                files: this.state.files.filter((value: any, index, arr) => {
-                                                    return value.fileName !== e.fileName
-                                                })
-                                            })
-                                            if (this.state.actualFile === e.fileName) {
-                                                console.log("ASIES")
-                                            }
-                                        }} />
-
-
-                                </Nav.Link>
-                            </Nav.Item>)}
-                        <Nav.Item>
-                            <Nav.Link onClick={() => {
-                                this.setState({
-                                    show: !this.state.show
-                                })
-                            }}>+</Nav.Link>
-                        </Nav.Item>
-                    </Nav>
-                </div>
-                <div className="mt-2 px-5">
-                    {
-                        this.state.actualFile.length > 0 ? (
-                            this.state.files.map((e: any) =>
-                                this.state.actualFile === e.fileName ? (
-                                    <Form.Control key={e.fileName} as="textarea" rows={13} defaultValue={e.fileContent}
-                                        onChange={a => {
-                                            var fileTemp;
-                                            this.setState({
-                                                files: this.state.files.map((i: any) => {
-                                                    if (i.fileName === e.fileName) {
-                                                        fileTemp = {
-                                                            fileName: i.fileName,
-                                                            fileContent: a.target.value
-                                                        }
-                                                        return fileTemp
-                                                    } else {
-                                                        fileTemp = {
-                                                            fileName: i.fileName,
-                                                            fileContent: i.fileContent
-                                                        }
-                                                        return fileTemp
-                                                    }
-                                                })
-                                            })
-                                        }} />
-                                ) : null
-                            )
-                        ) : <Form.Control as="textarea" rows={15} defaultValue="OPEN OR CREATE A FILE" readOnly/>
-                    }
-                    <Button variant="primary" className = "mt-2" onClick={this.parse}>Play</Button>
-                </div>
-                <div className="mt-2 px-5">
-                    <Form.Control as="textarea" rows={6} defaultValue={this.state.consoleResult}/>
-                </div>
-
-                <Modal show={this.state.show} onHide={this.handleShow}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>New File</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-
-                        <Form onSubmit={e => {
-                            e.preventDefault();
-                            if (this.state.files.some((a: any) => a.fileName === this.state.newFileName)) {
-                                this.setState({
-                                    actualFile: this.state.newFileName,
-                                    newFileName: "",
-                                    show: !this.state.show
-                                })
-                                return;
-                            }
-                            var fileTemp: any = {
-                                fileName: this.state.newFileName,
-                                fileContent: ""
-                            }
+                    <Row>
+                        <Col xs={12} md={11}>
+                        <Form.Control
+                        type="text"
+                        placeholder="Insert your commands here"
+                        defaultValue={this.state.xpath}
+                        onChange={(e: any) => {
                             this.setState({
-                                files: this.state.files.concat(fileTemp),
-                                actualFile: this.state.newFileName,
-                                newFileName: "",
-                                show: !this.state.show
-                            });
-                        }}>
+                                xpath: e.target.value
+                            })
+                        }} />
+                        </Col>
+                        <Col xs={6} md={1}>
+                            <Button variant="primary" onClick={this.parse}>RUN</Button>
+                        </Col>
+                    </Row>
+                    <br />
+                    <Form.Control as="textarea" rows={15} defaultValue={this.state.xml} readOnly />
+                </div>
 
-                            <Form.Group controlId="formBasicPassword">
-                                <Form.Control type="text" placeholder="Name File" onChange={e => {
-                                    this.setState({
-                                        newFileName: e.target.value
-                                    })
-                                }
-                                } />
-                            </Form.Group>
 
-                            <Container>
-                                <Row>
-                                    <Col><Button variant="primary" type="submit">Create File</Button></Col>
-                                    <Col></Col>
-                                    <Col><Button variant="danger" onClick={this.handleShow}>Cancel</Button></Col>
-                                </Row>
-                            </Container>
-
-                        </Form>
-                    </Modal.Body>
-                </Modal>
+                <div className="mt-3 px-5">
+                    <Form.Control as="textarea" rows={6} defaultValue={this.state.consoleResult} />
+                </div>
             </>
         )
     }
