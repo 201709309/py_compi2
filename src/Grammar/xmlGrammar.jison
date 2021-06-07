@@ -1,8 +1,8 @@
 /* description: Parses end executes mathematical expressions. */
 
 %{
-    const {Objeto} = require("../xmlAST/Objeto");
-    const {Atributo} = require("../xmlAST/Atributo");
+    const {Entorno} = require("../xmlAST/Entorno");
+    const {Simbolo} = require("../xmlAST/Simbolo");
     var texto = "";
 %}
 
@@ -65,12 +65,12 @@ CHECK
     ;
 
 NODO
-    :    '<' id LISTAATRIBUTOS '>' LISTANODOS '<' '/' id '>'    {texto+="NODO -> < id LISTAATRIBUTOS > LISTANODOS < / id >\n";$$ = new Objeto($2,'',@1.first_line, @1.first_column,$3,$5);}
-    |    '<' id LISTAATRIBUTOS '>' NODOTEXTO '<' '/' id '>'     {texto+="NODO -> < id LISTAATRIBUTOS > NODOTEXTO < / id >\n";$$ = new Objeto($2,$5,@1.first_line, @1.first_column,$3,[]);}
-    |    '<' id LISTAATRIBUTOS '/' '>'                          {texto+="NODO -> < id LISTAATRIBUTOS / >\n";$$ = new Objeto($2,'',@1.first_line, @1.first_column,$3,[]);}
-    |    '<' id  '>' LISTANODOS '<' '/' id '>'                  {texto+="NODO -> < id > LISTANODOS < / id >\n";$$ = new Objeto($2,'',@1.first_line, @1.first_column,[],$4);}
-    |    '<' id  '>' NODOTEXTO '<' '/' id '>'                   {texto+="NODO -> < id > NODOTEXTO < / id >\n";$$ = new Objeto($2,$4,@1.first_line, @1.first_column,[],[]);}
-    |    '<' id  '/' '>'                                        {texto+="NODO -> < id / >\n";$$ = new Objeto($2,'',@1.first_line, @1.first_column,[],[]);}
+    :    '<' id LISTAATRIBUTOS '>' LISTANODOS '<' '/' id '>'    {texto+="NODO -> < id LISTAATRIBUTOS > LISTANODOS < / id >\n";$$ = new Entorno($2,'',@1.first_line, @1.first_column,$3,$5);}
+    |    '<' id LISTAATRIBUTOS '>' NODOTEXTO '<' '/' id '>'     {texto+="NODO -> < id LISTAATRIBUTOS > NODOTEXTO < / id >\n";$$ = new Entorno($2,$5,@1.first_line, @1.first_column,$3,[]);}
+    |    '<' id LISTAATRIBUTOS '/' '>'                          {texto+="NODO -> < id LISTAATRIBUTOS / >\n";$$ = new Entorno($2,'',@1.first_line, @1.first_column,$3,[]);}
+    |    '<' id  '>' LISTANODOS '<' '/' id '>'                  {texto+="NODO -> < id > LISTANODOS < / id >\n";$$ = new Entorno($2,'',@1.first_line, @1.first_column,[],$4);}
+    |    '<' id  '>' NODOTEXTO '<' '/' id '>'                   {texto+="NODO -> < id > NODOTEXTO < / id >\n";$$ = new Entorno($2,$4,@1.first_line, @1.first_column,[],[]);}
+    |    '<' id  '/' '>'                                        {texto+="NODO -> < id / >\n";$$ = new Entorno($2,'',@1.first_line, @1.first_column,[],[]);}
     ;
 
 LISTANODOS
@@ -84,8 +84,8 @@ LISTAATRIBUTOS
     ;
 
 ATRIBUTO
-    : id '=' sstring    {texto+="ATRIBUTO -> id = sstring\n";$$ = new Atributo($1, $3, @1.first_line, @1.first_column); }
-    | id '=' dstring    {texto+="ATRIBUTO -> id = dstring\n";$$ = new Atributo($1, $3, @1.first_line, @1.first_column); }
+    : id '=' sstring    {texto+="ATRIBUTO -> id = sstring\n";$$ = new Simbolo($1, $3, @1.first_line, @1.first_column); }
+    | id '=' dstring    {texto+="ATRIBUTO -> id = dstring\n";$$ = new Simbolo($1, $3, @1.first_line, @1.first_column); }
     ;
 
 NODOTEXTO : NODOTEXTO dstring       {texto+="NODOTEXTO -> NODOTEXTO dstring\n";$$ = $1 +" "+ $2 }
