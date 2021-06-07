@@ -2,8 +2,8 @@ import { Atributo } from "./Atributo";
 
 export class Objeto{
     identificador:string;
-    texto:string;
     listaAtributos:Array<Atributo>;
+    texto:string;
     listaObjetos: Array<Objeto>;
     linea: number;
     columna: number;

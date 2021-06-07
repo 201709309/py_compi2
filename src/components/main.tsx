@@ -1,10 +1,7 @@
 import React, { Component } from 'react'
 import { FilePicker } from 'react-file-picker';
 import { Nav, Navbar, Form, Button, Row, Col } from 'react-bootstrap';
-import { Objeto } from '../xmlAST/Objeto';
-import { Simbolo } from '../xmlAST/Simbolo';
-import { Tipo } from '../xmlAST/Tipo';
-import { Entorno } from '../xmlAST/Entorno';
+//import { Graphviz } from 'graphviz-react';
 const parser = require('../Grammar/xmlGrammar')
 
 export default class Main extends Component {
@@ -16,38 +13,18 @@ export default class Main extends Component {
     }
 
     parse = () => {
-
-        const ast = parser.parse(this.state.xml);
-        const entornoGlobal : Entorno = new Entorno(null)
+        const result = parser.parse(this.state.xml);
+        const ast = result.ast;
+        const textgram = result.reporteGramatica;
         /*this.setState({
             consoleResult: ast
         })*/
         console.log(ast)
+        console.log(textgram)
         //this.crearTablaSimbolos(ast, entornoGlobal)
 
         //console.log(entornoGlobal)
 
-    }
-
-    crearTablaSimbolos = (objeto, entorno : Entorno) => {
-
-
-        const simbolo : Simbolo =  new Simbolo(Tipo.OBJETO,objeto.identificador,objeto.linea,objeto.columna)
-        entorno.agregar(objeto.identificador,simbolo)
-        const entornoObjeto : Entorno = new Entorno(entorno)
-
-        objeto.forEach(element => {
-            if (element.listaObjetos.length>0) {
-                element.listaObjetos.forEach(element => {
-                    const simbolo : Simbolo =  new Simbolo(Tipo.OBJETO,element.identificador,element.linea,element.columna)
-                    entornoObjeto.agregar(element.identificador,simbolo)
-                    this.crearTablaSimbolos(element,entornoObjeto)
-                });
-            }
-            if (element.listaAtributos.length>0) {
-                
-            }
-        });
     }
 
     handleFileChange = file => {
@@ -65,9 +42,17 @@ export default class Main extends Component {
         };
     };
 
+    /*<Graphviz dot={`graph {
+  grandparent -- "parent A";
+  child;
+  "parent B" -- child;
+  grandparent --  "parent B";
+}`} />*/
+
     render() {
         return (
             <>
+                
                 <Navbar bg="light" expand="lg">
                     <Navbar.Brand href="/py_compi2">Home</Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
