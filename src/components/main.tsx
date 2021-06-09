@@ -16,24 +16,32 @@ export default class Main extends Component {
         xml: "",
         repcsttxt: '',
         repgramtxt: '',
-        graphvizContent:''
+        graphvizContent: ''
     }
 
     parse = () => {
 
-        const result = parser.parse(this.state.xml);
-        const ast = result.ast;
-        const listaErrores = result.listaErrores;
+        let ast;
+        let listaErrores;
+
+
+
+        const result = parser.parse(this.state.xml)
+        ast = result.ast;
+        listaErrores = result.listaErrores;
+
         console.log(ast)
         console.log(listaErrores)
 
 
-        
-        const xmlResRep = parserReport.parse(this.state.xml);
-        this.setState({
-            repgramtxt: "digraph G {" + crearTextoGraphvizRepGram(xmlResRep.ReporteGramatical[0], xmlResRep.ReporteGramatical[1], this.state.repcsttxt) + "}",
-            repcsttxt: "digraph G {" + crearTextoGraphvizCST(xmlResRep.ReporteCST, this.state.repcsttxt) + "}"
-        })
+        if (listaErrores.length === 0) {
+            const xmlResRep = parserReport.parse(this.state.xml);
+            this.setState({
+                repgramtxt: "digraph G {" + crearTextoGraphvizRepGram(xmlResRep.ReporteGramatical[0], xmlResRep.ReporteGramatical[1], this.state.repcsttxt) + "}",
+                repcsttxt: "digraph G {" + crearTextoGraphvizCST(xmlResRep.ReporteCST, this.state.repcsttxt) + "}"
+            })
+        }
+
     }
 
     handleFileChange = file => {
@@ -53,17 +61,17 @@ export default class Main extends Component {
 
     onChangeReports = e => {
         console.log(this.state.graphvizContent)
-        if (e.target.value==="Ocultar") {
+        if (e.target.value === "Ocultar") {
             this.setState({
-                graphvizContent : ''
+                graphvizContent: ''
             })
-        }else if (e.target.value==="CST XML") {
+        } else if (e.target.value === "CST XML") {
             this.setState({
-                graphvizContent : this.state.repcsttxt
+                graphvizContent: this.state.repcsttxt
             })
-        }else if (e.target.value==="Reporte gramatical XML") {
+        } else if (e.target.value === "Reporte gramatical XML") {
             this.setState({
-                graphvizContent : this.state.repgramtxt
+                graphvizContent: this.state.repgramtxt
             })
         }
     }
@@ -120,15 +128,15 @@ export default class Main extends Component {
                     </Form.Group>
                 </div>
 
-                
+
                 {
                     this.state.graphvizContent !== '' ? (
                         <div className="m-5  border border-primary">
-                        <Graphviz className="m-1 d-flex justify-content-center" dot={this.state.graphvizContent} options={{ height: 750, width: 1485, zoom: true }}/>
+                            <Graphviz className="m-1 d-flex justify-content-center" dot={this.state.graphvizContent} options={{ height: 750, width: 1485, zoom: true }} />
                         </div>
                     ) : <div></div>
                 }
-               
+
 
                 <div className="mt-3 px-5">
                     <Form.Control as="textarea" rows={6} defaultValue={this.state.consoleResult} />

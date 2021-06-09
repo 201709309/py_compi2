@@ -156,7 +156,7 @@ NODO
     :    'menor' id LISTAATRIBUTOS 'mayor' LISTANODOS 'menor' '/' id 'mayor'    
     {
         txtGramProd.push("NODO := menor id LISTAATRIBUTOS mayor LISTANODOS menor / id mayor");
-        txtGramRegSem.push("NODO.val = new Entorno(id,[],@1.first_line, @1.first_column,LISTAATRIBUTOS.val,LISTANODOS.val)");
+        txtGramRegSem.push("NODO.val = new Entorno(id,[],line, column,LISTAATRIBUTOS.val,LISTANODOS.val)");
 
         contador++;
         nodoaux = new NodoCST("<",contador,[]);
@@ -191,7 +191,7 @@ NODO
     |    'menor' id LISTAATRIBUTOS 'mayor' NODOTEXTO 'menor' '/' id 'mayor'     
     {
         txtGramProd.push("NODO := menor id LISTAATRIBUTOS mayor NODOTEXTO menor / id mayor");
-        txtGramRegSem.push("NODO.val = new Entorno(id,NODOTEXTO.val,@1.first_line,@1.first_column,LISTAATRIBUTOS.val,[])");
+        txtGramRegSem.push("NODO.val = new Entorno(id,NODOTEXTO.val,line,column,LISTAATRIBUTOS.val,[])");
 
         contador++;
         nodoaux = new NodoCST("<",contador,[]);
@@ -226,7 +226,7 @@ NODO
     |    'menor' id LISTAATRIBUTOS '/' 'mayor'                          
     {
         txtGramProd.push("NODO := menor id LISTAATRIBUTOS / mayor");
-        txtGramRegSem.push("NODO.val = new Entorno(id,[],@1.first_line, @1.first_column,LISTAATRIBUTOS.val,[])");
+        txtGramRegSem.push("NODO.val = new Entorno(id,[],line, column,LISTAATRIBUTOS.val,[])");
 
         contador++;
         nodoaux = new NodoCST("<",contador,[]);
@@ -249,7 +249,7 @@ NODO
     |    'menor' id  'mayor' LISTANODOS 'menor' '/' id 'mayor'                  
     {
         txtGramProd.push("NODO := menor id mayor LISTANODOS menor / id mayor");
-        txtGramRegSem.push("NODO.val = new Entorno(id,[],@1.first_line, @1.first_column,[],LISTANODOS.val)");
+        txtGramRegSem.push("NODO.val = new Entorno(id,[],line, column,[],LISTANODOS.val)");
 
         contador++;
         nodoaux = new NodoCST("<",contador,[]);
@@ -281,7 +281,7 @@ NODO
     |    'menor' id  'mayor' NODOTEXTO 'menor' '/' id 'mayor'                   
     {
         txtGramProd.push("NODO := menor id mayor NODOTEXTO menor / id mayor");
-        txtGramRegSem.push("NODO.val := new Entorno(id,NODOTEXTO.val,@1.first_line, @1.first_column,[],[])");
+        txtGramRegSem.push("NODO.val := new Entorno(id,NODOTEXTO.val,line, column,[],[])");
 
         contador++;
         nodoaux = new NodoCST("<",contador,[]);
@@ -313,7 +313,7 @@ NODO
     |    'menor' id  '/' 'mayor'                                        
     {
         txtGramProd.push("NODO := menor id / mayor");
-        txtGramRegSem.push("NODO.val = new Entorno(id,[],@1.first_line, @1.first_column,[],[])");
+        txtGramRegSem.push("NODO.val = new Entorno(id,[],line, column,[],[])");
 
         contador++;
         nodoaux = new NodoCST("<",contador,[]);
@@ -392,7 +392,7 @@ ATRIBUTO
     : id '=' sstring    
     {
         txtGramProd.push("ATRIBUTO := id = sstring");
-        txtGramRegSem.push("ATRIBUTO.val := Simbolo(id,sstring,@1.first_line,@1.first_column)");
+        txtGramRegSem.push("ATRIBUTO.val := Simbolo(id,sstring,line,column)");
 
         contador++;
         nodoaux = new NodoCST("id",contador,[]);
@@ -409,7 +409,7 @@ ATRIBUTO
     | id '=' dstring    
     {
         txtGramProd.push("ATRIBUTO := id = dstring");
-        txtGramRegSem.push("ATRIBUTO.val := new Simbolo(id,dstring,@1.first_line,@1.first_column)");
+        txtGramRegSem.push("ATRIBUTO.val := new Simbolo(id,dstring,line,column)");
 
         contador++;
         nodoaux = new NodoCST("id",contador,[]);

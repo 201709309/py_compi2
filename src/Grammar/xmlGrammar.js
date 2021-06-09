@@ -75,8 +75,8 @@ var xmlGrammar = (function(){
 var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,5],$V1=[1,7],$V2=[1,9],$V3=[1,2,4],$V4=[1,19],$V5=[2,4],$V6=[1,2,4,11],$V7=[1,30],$V8=[1,38],$V9=[1,39],$Va=[1,29],$Vb=[1,28],$Vc=[1,32],$Vd=[1,33],$Ve=[1,34],$Vf=[1,35],$Vg=[1,36],$Vh=[1,31],$Vi=[1,37],$Vj=[5,6,8,14],$Vk=[1,51],$Vl=[1,59],$Vm=[1,60],$Vn=[1,50],$Vo=[1,49],$Vp=[1,52],$Vq=[1,53],$Vr=[1,54],$Vs=[1,55],$Vt=[1,56],$Vu=[1,57],$Vv=[1,58],$Vw=[4,6,14,18,19,20,21,22,23,24,25,26,27];
 var parser = {trace: function trace () { },
 yy: {},
-symbols_: {"error":2,"init":3,"menor":4,"?":5,"id":6,"LISTAATRIBUTOS":7,"mayor":8,"INTRO":9,"NODO":10,"EOF":11,"CHECK":12,"LISTANODOS":13,"/":14,"NODOTEXTO":15,"FINDERROR":16,"ATRIBUTO":17,"=":18,"sstring":19,"dstring":20,"lessthan":21,"greaterthan":22,"ampersand":23,"apostrophe":24,"quotmark":25,"number":26,"random":27,"$accept":0,"$end":1},
-terminals_: {2:"error",4:"menor",5:"?",6:"id",8:"mayor",11:"EOF",14:"/",18:"=",19:"sstring",20:"dstring",21:"lessthan",22:"greaterthan",23:"ampersand",24:"apostrophe",25:"quotmark",26:"number",27:"random"},
+symbols_: {"error":2,"init":3,"<":4,"?":5,"id":6,"LISTAATRIBUTOS":7,">":8,"INTRO":9,"NODO":10,"EOF":11,"CHECK":12,"LISTANODOS":13,"/":14,"NODOTEXTO":15,"FINDERROR":16,"ATRIBUTO":17,"=":18,"sstring":19,"dstring":20,"lessthan":21,"greaterthan":22,"ampersand":23,"apostrophe":24,"quotmark":25,"number":26,"random":27,"$accept":0,"$end":1},
+terminals_: {2:"error",4:"<",5:"?",6:"id",8:">",11:"EOF",14:"/",18:"=",19:"sstring",20:"dstring",21:"lessthan",22:"greaterthan",23:"ampersand",24:"apostrophe",25:"quotmark",26:"number",27:"random"},
 productions_: [0,[3,7],[3,1],[9,3],[9,2],[12,1],[12,0],[10,9],[10,9],[10,5],[10,8],[10,8],[10,4],[10,2],[16,1],[13,2],[13,1],[7,2],[7,1],[17,3],[17,3],[15,2],[15,2],[15,2],[15,2],[15,2],[15,2],[15,2],[15,2],[15,2],[15,2],[15,2],[15,2],[15,1],[15,1],[15,1],[15,1],[15,1],[15,1],[15,1],[15,1],[15,1],[15,1],[15,1],[15,1]],
 performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
 /* this == yyval */
