@@ -26,7 +26,7 @@
 
 (\"([^\"\\])*\")                            return 'dstring';
 (\'([^\'\\])*\')                            return 'sstring';
-[a-zA-Z_][a-zA-Z0-9_ñÑ]*                    return 'id';
+([a-zA-Z_]|"á"|"é"|"í"|"ó"|"ú"|"Á"|"É"|"Í"|"Ó"|"Ú")("-"|[a-zA-Z0-9_ñÑ]|"á"|"é"|"í"|"ó"|"ú"|"Á"|"É"|"Í"|"Ó"|"Ú")*              return 'id';
 (([0-9]+"."[0-9]+)|("."[0-9]+)|([0-9]+))    return 'number';
 
 "&""l""t"";"                                return 'lessthan';
@@ -102,7 +102,7 @@ NODO
                                                                     $$ = new Entorno($2,$4,@1.first_line, @1.first_column,[],[]);
                                                                 }
     |    '<' id  '/' '>'                                        {texto+="NODO -> < id / >\n";$$ = new Entorno($2,'',@1.first_line, @1.first_column,[],[]);}
-    |    error FINDERROR                                        {listaErrores.push(new ClaseError('Sintactico','Token inesperado',@1.first_line, @1.first_column))}
+    |    error FINDERROR                                        {listaErrores.push(new ClaseError('Sintactico','Se esperaba la definicion de una etiqueta',@1.first_line, @1.first_column))}
     ;
 
 FINDERROR
