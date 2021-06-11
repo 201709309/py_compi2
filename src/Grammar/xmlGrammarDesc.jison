@@ -69,7 +69,7 @@ init
                                                     }
     ;
 
-INTRO   :  INTRO NODO EOF           {$1.push($2); $$ = $1; }
+INTRO   :  NODO INTRO               {$1.push($2); $$ = $1; }
         |  NODO CHECK               {$$ = [$1]; }
     ;
 
@@ -110,7 +110,7 @@ LISTANODOS
     ;
 
 LISTAATRIBUTOS
-    : LISTAATRIBUTOS ATRIBUTO   {$1.push($2); $$ = $1;}
+    : ATRIBUTO LISTAATRIBUTOS   {$2.push($1); $$ = $2;}
     | ATRIBUTO                  {$$ = [$1];}
     ;
 
@@ -119,18 +119,18 @@ ATRIBUTO
     | id '=' dstring    {$$ = new Simbolo($1, $3, @1.first_line, @1.first_column); }
     ;
 
-NODOTEXTO : NODOTEXTO dstring       {$$ = $1 +" "+ $2 }
-    | NODOTEXTO sstring             {$$ = $1 +" "+ $2 }
-    | NODOTEXTO id                  {$$ = $1 +" "+ $2 }
-    | NODOTEXTO lessthan            {$$ = $1 +" "+ "<" }
-    | NODOTEXTO greaterthan         {$$ = $1 +" "+ ">" }
-    | NODOTEXTO ampersand           {$$ = $1 +" "+ "&" }
-    | NODOTEXTO apostrophe          {$$ = $1 +" "+ "\'" }
-    | NODOTEXTO quotmark            {$$ = $1 +" "+ "\"" }
-    | NODOTEXTO number              {$$ = $1 +" "+ $2 }
-    | NODOTEXTO random              {$$ = $1 +" "+ $2 }
-    | NODOTEXTO '/'                 {$$ = $1 +" "+ $2 }
-    | NODOTEXTO '='                 {$$ = $1 +" "+ $2 }
+NODOTEXTO : dstring NODOTEXTO       {$$ = $1 +" "+ $2 }
+    | sstring NODOTEXTO             {$$ = $1 +" "+ $2 }
+    | id NODOTEXTO                  {$$ = $1 +" "+ $2 }
+    | lessthan NODOTEXTO            {$$ = $1 +" "+ "<" }
+    | greaterthan NODOTEXTO         {$$ = $1 +" "+ ">" }
+    | ampersand NODOTEXTO           {$$ = $1 +" "+ "&" }
+    | apostrophe NODOTEXTO          {$$ = $1 +" "+ "\'" }
+    | quotmark NODOTEXTO            {$$ = $1 +" "+ "\"" }
+    | number NODOTEXTO              {$$ = $1 +" "+ $2 }
+    | random NODOTEXTO              {$$ = $1 +" "+ $2 }
+    | '/' NODOTEXTO                 {$$ = $1 +" "+ $2 }
+    | '=' NODOTEXTO                 {$$ = $1 +" "+ $2 }
     | dstring                       {$$ = $1 }
     | sstring                       {$$ = $1 }
     | id                            {$$ = $1 }

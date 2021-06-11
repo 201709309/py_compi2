@@ -16,4 +16,31 @@ export class Entorno{
         this.listaSimbolos = listaSimbolos;
         this.listaEntornos = listaE
     }
+
+    public getAtributos(idAtrubito: string) : Simbolo[] {
+
+        var L_atrubitos : Simbolo[] = []; //          
+
+        this.listaSimbolos.forEach(Simbolo => {
+            
+            if (Simbolo.identificador = idAtrubito){
+                L_atrubitos.push(Simbolo)
+            }
+        });
+
+        return L_atrubitos;
+    }
+
+    public getAtributo(idAtrubito: string) : Simbolo | null{
+
+        this.listaSimbolos.forEach(Simbolo => {
+            
+            if (Simbolo.identificador = idAtrubito){
+                return Simbolo;
+            }
+        });
+
+        return null;
+    }
+
 }

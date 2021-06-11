@@ -3,12 +3,14 @@ import { crearTextoGraphvizCST, crearTextoGraphvizRepGram } from "../Reportes/No
 import { FilePicker } from 'react-file-picker';
 import { Nav, Navbar, Form, Button, Row, Col } from 'react-bootstrap';
 import { Graphviz } from 'graphviz-react';
+import {crearTextoReporteErrorXML} from "../xmlAST/ClaseError";
+import {crearTablaSimbolos,crearTextoGraphvizTablaSimbolos, SimboloTabla} from "../Reportes/SimboloTabla";
+import { Entorno } from '../xmlAST/Entorno';
 const parser = require('../Grammar/xmlGrammar')
+const parserXmlDesc = require('../Grammar/xmlGrammarDesc')
 const parserReport = require('../Reportes/xmlReport')
 
 export default class Main extends Component {
-
-
 
     state = {
         consoleResult: "",
@@ -16,6 +18,8 @@ export default class Main extends Component {
         xml: "",
         repcsttxt: '',
         repgramtxt: '',
+        repErrorXML: '',
+        repTablaSimbolos: '',
         graphvizContent: ''
     }
 
@@ -23,12 +27,15 @@ export default class Main extends Component {
 
         let ast;
         let listaErrores;
+        var TablaSimbolos = [];
 
 
 
         const result = parser.parse(this.state.xml)
         ast = result.ast;
         listaErrores = result.listaErrores;
+
+        var entornoGlobal = new Entorno('Global','',0, 0,[],ast);
 
         console.log(ast)
         console.log(listaErrores)
@@ -38,11 +45,25 @@ export default class Main extends Component {
             const xmlResRep = parserReport.parse(this.state.xml);
             this.setState({
                 repgramtxt: "digraph G {" + crearTextoGraphvizRepGram(xmlResRep.ReporteGramatical[0], xmlResRep.ReporteGramatical[1], this.state.repcsttxt) + "}",
-                repcsttxt: "digraph G {" + crearTextoGraphvizCST(xmlResRep.ReporteCST, this.state.repcsttxt) + "}"
+                repcsttxt: "digraph G {" + crearTextoGraphvizCST(xmlResRep.ReporteCST, this.state.repcsttxt) + "}",
+                repTablaSimbolos: "digraph G {"+crearTextoGraphvizTablaSimbolos(crearTablaSimbolos(entornoGlobal,TablaSimbolos,"Global"),this.state.repTablaSimbolos)+"}"
+            })
+        } else {
+            this.setState({
+                repErrorXML: "digraph G {" + crearTextoReporteErrorXML(listaErrores,this.state.repErrorXML) + "}"
             })
         }
 
     }
+
+    parseDesc = () => {
+        const result = parserXmlDesc.parse(this.state.xml)
+        let ast = result.ast;
+
+        console.log(ast)
+    }
+
+    
 
     handleFileChange = file => {
         const reader = new FileReader();
@@ -60,7 +81,7 @@ export default class Main extends Component {
     };
 
     onChangeReports = e => {
-        console.log(this.state.graphvizContent)
+        //console.log(this.state.graphvizContent)
         if (e.target.value === "Ocultar") {
             this.setState({
                 graphvizContent: ''
@@ -72,6 +93,14 @@ export default class Main extends Component {
         } else if (e.target.value === "Reporte gramatical XML") {
             this.setState({
                 graphvizContent: this.state.repgramtxt
+            })
+        }else if (e.target.value === "Reporte de errores XML") {
+            this.setState({
+                graphvizContent: this.state.repErrorXML
+            })
+        } else if (e.target.value === "Tabla de simbolos XML") {
+            this.setState({
+                graphvizContent: this.state.repTablaSimbolos
             })
         }
     }
@@ -93,7 +122,7 @@ export default class Main extends Component {
 
                 <div className="mt-2 px-5">
                     <Row>
-                        <Col xs={12} md={11}>
+                        <Col xs={12} md={8}>
                             <Form.Control
                                 type="text"
                                 placeholder="Insert your commands here"
@@ -104,8 +133,11 @@ export default class Main extends Component {
                                     })
                                 }} />
                         </Col>
-                        <Col xs={6} md={1}>
-                            <Button variant="primary" onClick={this.parse}>RUN</Button>
+                        <Col xs={6} md={2}>
+                            <Button variant="primary" onClick={this.parse}>RUN ASC</Button>
+                        </Col>
+                        <Col xs={6} md={2}>
+                            <Button variant="primary" onClick={this.parseDesc}>RUN DESC</Button>
                         </Col>
                     </Row>
                     <br />

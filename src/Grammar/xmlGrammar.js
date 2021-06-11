@@ -85,24 +85,16 @@ var $0 = $$.length - 1;
 switch (yystate) {
 case 1: case 2:
 
-                                                    var textTemp = texto;
                                                     var listaErroresTemp = listaErrores;
-                                                    texto = "";
                                                     listaErrores = [];
-                                                    return {ast: $$[$0],reporteGramatica: textTemp, listaErrores : listaErroresTemp};
+                                                    return {ast: $$[$0], listaErrores : listaErroresTemp};
                                                     
 break;
 case 3:
-texto+="INTRO -> INTRO NODO EOF\n";$$[$0-2].push($$[$0-1]); this.$ = $$[$0-2]; 
+$$[$0-2].push($$[$0-1]); this.$ = $$[$0-2]; 
 break;
 case 4:
-texto+="INTRO -> NODO CHECK\n";this.$ = [$$[$0-1]]; 
-break;
-case 5:
-texto+="CHECK -> EOF\n";
-break;
-case 6:
-texto+="CHECK -> ε\n";
+this.$ = [$$[$0-1]]; 
 break;
 case 7:
 
@@ -117,7 +109,7 @@ case 8:
                                                                 
 break;
 case 9:
-texto+="NODO -> < id LISTAATRIBUTOS / >\n";this.$ = new Entorno($$[$0-3],'',_$[$0-4].first_line, _$[$0-4].first_column,$$[$0-2],[]);
+this.$ = new Entorno($$[$0-3],'',_$[$0-4].first_line, _$[$0-4].first_column,$$[$0-2],[]);
 break;
 case 10:
 
@@ -132,100 +124,58 @@ case 11:
                                                                 
 break;
 case 12:
-texto+="NODO -> < id / >\n";this.$ = new Entorno($$[$0-2],'',_$[$0-3].first_line, _$[$0-3].first_column,[],[]);
+this.$ = new Entorno($$[$0-2],'',_$[$0-3].first_line, _$[$0-3].first_column,[],[]);
 break;
 case 13:
 listaErrores.push(new ClaseError('Sintactico','Se esperaba la definicion de una etiqueta',_$[$0-1].first_line, _$[$0-1].first_column))
 break;
-case 15:
-texto+="LISTANODOS -> LISTANODOS NODO\n";$$[$0-1].push($$[$0]); this.$ = $$[$0-1];
+case 15: case 17:
+$$[$0-1].push($$[$0]); this.$ = $$[$0-1];
 break;
 case 16:
-texto+="LISTANODOS -> NODO\n";this.$ = [$$[$0]]; 
-break;
-case 17:
-texto+="LISTAATRIBUTOS -> LISTAATRIBUTOS ATRIBUTO\n";$$[$0-1].push($$[$0]); this.$ = $$[$0-1];
+this.$ = [$$[$0]]; 
 break;
 case 18:
-texto+="LISTAATRIBUTOS -> ATRIBUTO\n";this.$ = [$$[$0]]; 
+this.$ = [$$[$0]];
 break;
-case 19:
-texto+="ATRIBUTO -> id = sstring\n";this.$ = new Simbolo($$[$0-2], $$[$0], _$[$0-2].first_line, _$[$0-2].first_column); 
+case 19: case 20:
+this.$ = new Simbolo($$[$0-2], $$[$0], _$[$0-2].first_line, _$[$0-2].first_column); 
 break;
-case 20:
-texto+="ATRIBUTO -> id = dstring\n";this.$ = new Simbolo($$[$0-2], $$[$0], _$[$0-2].first_line, _$[$0-2].first_column); 
-break;
-case 21:
-texto+="NODOTEXTO -> NODOTEXTO dstring\n";this.$ = $$[$0-1] +" "+ $$[$0] 
-break;
-case 22:
-texto+="NODOTEXTO -> NODOTEXTO sstring\n";this.$ = $$[$0-1] +" "+ $$[$0] 
-break;
-case 23:
-texto+="NODOTEXTO -> NODOTEXTO id\n";this.$ = $$[$0-1] +" "+ $$[$0] 
+case 21: case 22: case 23: case 29: case 30: case 31: case 32:
+this.$ = $$[$0-1] +" "+ $$[$0] 
 break;
 case 24:
-texto+="NODOTEXTO -> NODOTEXTO lessthan\n";this.$ = $$[$0-1] +" "+ "<" 
+this.$ = $$[$0-1] +" "+ "<" 
 break;
 case 25:
-texto+="NODOTEXTO -> NODOTEXTO greaterthan\n";this.$ = $$[$0-1] +" "+ ">" 
+this.$ = $$[$0-1] +" "+ ">" 
 break;
 case 26:
-texto+="NODOTEXTO -> NODOTEXTO ampersand\n";this.$ = $$[$0-1] +" "+ "&" 
+this.$ = $$[$0-1] +" "+ "&" 
 break;
 case 27:
-texto+="NODOTEXTO -> NODOTEXTO apostrophe\n";this.$ = $$[$0-1] +" "+ "\'" 
+this.$ = $$[$0-1] +" "+ "\'" 
 break;
 case 28:
-texto+="NODOTEXTO -> NODOTEXTO quotmark\n";this.$ = $$[$0-1] +" "+ "\"" 
+this.$ = $$[$0-1] +" "+ "\"" 
 break;
-case 29:
-texto+="NODOTEXTO -> NODOTEXTO number\n";this.$ = $$[$0-1] +" "+ $$[$0] 
-break;
-case 30:
-texto+="NODOTEXTO -> NODOTEXTO random\n";this.$ = $$[$0-1] +" "+ $$[$0] 
-break;
-case 31:
-texto+="NODOTEXTO -> NODOTEXTO /\n";this.$ = $$[$0-1] +" "+ $$[$0] 
-break;
-case 32:
-texto+="NODOTEXTO -> NODOTEXTO =\n";this.$ = $$[$0-1] +" "+ $$[$0] 
-break;
-case 33:
-texto+="NODOTEXTO -> dstring\n";this.$ = $$[$0] 
-break;
-case 34:
-texto+="NODOTEXTO -> sstring\n";this.$ = $$[$0] 
-break;
-case 35:
-texto+="NODOTEXTO -> id\n";this.$ = $$[$0] 
-break;
-case 36:
-texto+="NODOTEXTO -> number\n";this.$ = $$[$0] 
+case 33: case 34: case 35: case 36: case 42: case 43: case 44:
+this.$ = $$[$0] 
 break;
 case 37:
-texto+="NODOTEXTO -> lessthan\n";this.$ = "<" 
+this.$ = "<" 
 break;
 case 38:
-texto+="NODOTEXTO -> greaterthan\n";this.$ = ">" 
+this.$ = ">" 
 break;
 case 39:
-texto+="NODOTEXTO -> ampersand\n";this.$ = "&" 
+this.$ = "&" 
 break;
 case 40:
-texto+="NODOTEXTO -> apostrophe\n";this.$ = "\'" 
+this.$ = "\'" 
 break;
 case 41:
-texto+="NODOTEXTO -> quotmark\n";this.$ = "\"" 
-break;
-case 42:
-texto+="NODOTEXTO -> random\n";this.$ = $$[$0] 
-break;
-case 43:
-texto+="NODOTEXTO -> /\n";this.$ = $$[$0] 
-break;
-case 44:
-texto+="NODOTEXTO -> =\n";this.$ = $$[$0] 
+this.$ = "\"" 
 break;
 }
 },
@@ -482,7 +432,6 @@ _handle_error:
     const {Entorno} = require("../xmlAST/Entorno");
     const {Simbolo} = require("../xmlAST/Simbolo");
     const {ClaseError} = require("../xmlAST/ClaseError");
-    var texto = "";
     var listaErrores = [];
 /* generated by jison-lex 0.3.4 */
 var lexer = (function(){
@@ -854,7 +803,7 @@ case 18:
 break;
 }
 },
-rules: [/^(?:\s+)/i,/^(?:[<][!][-][-][^-<]*[-][-][>])/i,/^(?:<)/i,/^(?:>)/i,/^(?:\/)/i,/^(?:=)/i,/^(?:\?)/i,/^(?:("([^\"\\])*"))/i,/^(?:('([^\'\\])*'))/i,/^(?:([a-zA-Z_]|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(-|[a-zA-Z0-9_ñÑ]|á|é|í|ó|ú|Á|É|Í|Ó|Ú)*)/i,/^(?:(([0-9]+\.[0-9]+)|(\.[0-9]+)|([0-9]+)))/i,/^(?:&lt;)/i,/^(?:&gt;)/i,/^(?:&amp;)/i,/^(?:&apos;)/i,/^(?:&quot;)/i,/^(?:[^<> ]+)/i,/^(?:$)/i,/^(?:.)/i],
+rules: [/^(?:\s+)/i,/^(?:[<][!][-][-][^-<]*[-][-][>])/i,/^(?:<)/i,/^(?:>)/i,/^(?:\/)/i,/^(?:=)/i,/^(?:\?)/i,/^(?:("([^\"\\])*"))/i,/^(?:('([^\'\\])*'))/i,/^(?:([a-zA-Z_]|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(-|[a-zA-Z0-9_ñÑ]|á|é|í|ó|ú|Á|É|Í|Ó|Ú|')*)/i,/^(?:(([0-9]+\.[0-9]+)|(\.[0-9]+)|([0-9]+)))/i,/^(?:&lt;)/i,/^(?:&gt;)/i,/^(?:&amp;)/i,/^(?:&apos;)/i,/^(?:&quot;)/i,/^(?:[^<> ]+)/i,/^(?:$)/i,/^(?:.)/i],
 conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],"inclusive":true}}
 });
 return lexer;
