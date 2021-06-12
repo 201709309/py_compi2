@@ -71,13 +71,13 @@
     recoverable: (boolean: TRUE when the parser has a error recovery rule available for this particular error)
   }
 */
-var xmlReport = (function(){
-var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,6],$V1=[1,8],$V2=[1,4],$V3=[1,16],$V4=[1,27],$V5=[1,35],$V6=[1,36],$V7=[1,26],$V8=[1,25],$V9=[1,29],$Va=[1,30],$Vb=[1,31],$Vc=[1,32],$Vd=[1,33],$Ve=[1,28],$Vf=[1,34],$Vg=[5,6,8,14],$Vh=[1,48],$Vi=[1,56],$Vj=[1,57],$Vk=[1,47],$Vl=[1,46],$Vm=[1,49],$Vn=[1,50],$Vo=[1,51],$Vp=[1,52],$Vq=[1,53],$Vr=[1,54],$Vs=[1,55],$Vt=[4,6,14,17,18,19,20,21,22,23,24,25,26],$Vu=[1,4,11];
+var xmlReportDesc = (function(){
+var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,6],$V1=[1,10],$V2=[1,16],$V3=[1,25],$V4=[1,33],$V5=[1,34],$V6=[1,24],$V7=[1,23],$V8=[1,26],$V9=[1,27],$Va=[1,28],$Vb=[1,29],$Vc=[1,30],$Vd=[1,31],$Ve=[1,32],$Vf=[5,8,14],$Vg=[1,4,12],$Vh=[5,6,8,14];
 var parser = {trace: function trace () { },
 yy: {},
-symbols_: {"error":2,"INIT":3,"menor":4,"?":5,"id":6,"LISTAATRIBUTOS":7,"mayor":8,"INTRO":9,"NODO":10,"EOF":11,"CHECK":12,"LISTANODOS":13,"/":14,"NODOTEXTO":15,"ATRIBUTO":16,"=":17,"sstring":18,"dstring":19,"lessthan":20,"greaterthan":21,"ampersand":22,"apostrophe":23,"quotmark":24,"number":25,"random":26,"$accept":0,"$end":1},
-terminals_: {2:"error",4:"menor",5:"?",6:"id",8:"mayor",11:"EOF",14:"/",17:"=",18:"sstring",19:"dstring",20:"lessthan",21:"greaterthan",22:"ampersand",23:"apostrophe",24:"quotmark",25:"number",26:"random"},
-productions_: [0,[3,7],[3,1],[9,3],[9,2],[12,1],[12,0],[10,9],[10,9],[10,5],[10,8],[10,8],[10,4],[13,2],[13,1],[7,2],[7,1],[16,3],[16,3],[15,2],[15,2],[15,2],[15,2],[15,2],[15,2],[15,2],[15,2],[15,2],[15,2],[15,2],[15,2],[15,1],[15,1],[15,1],[15,1],[15,1],[15,1],[15,1],[15,1],[15,1],[15,1],[15,1],[15,1]],
+symbols_: {"error":2,"INIT":3,"menor":4,"?":5,"id":6,"LISTAATRIBUTOS":7,"mayor":8,"INTRO":9,"NODO":10,"CHECK":11,"EOF":12,"LISTANODOS":13,"/":14,"NODOTEXTO":15,"ATRIBUTO":16,"=":17,"sstring":18,"dstring":19,"lessthan":20,"greaterthan":21,"ampersand":22,"apostrophe":23,"quotmark":24,"number":25,"random":26,"$accept":0,"$end":1},
+terminals_: {2:"error",4:"menor",5:"?",6:"id",8:"mayor",12:"EOF",14:"/",17:"=",18:"sstring",19:"dstring",20:"lessthan",21:"greaterthan",22:"ampersand",23:"apostrophe",24:"quotmark",25:"number",26:"random"},
+productions_: [0,[3,7],[3,1],[9,2],[9,2],[11,1],[11,0],[10,9],[10,9],[10,5],[10,8],[10,8],[10,4],[13,2],[13,1],[7,2],[7,1],[16,3],[16,3],[15,2],[15,2],[15,2],[15,2],[15,2],[15,2],[15,2],[15,2],[15,2],[15,2],[15,2],[15,2],[15,1],[15,1],[15,1],[15,1],[15,1],[15,1],[15,1],[15,1],[15,1],[15,1],[15,1],[15,1]],
 performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
 /* this == yyval */
 
@@ -115,16 +115,13 @@ case 2:
 break;
 case 3:
 
-        txtGramProd.push("INTRO := INTRO NODO EOF");
-        txtGramRegSem.push("INTRO.push(NODOD.val); INTRO.val = INTRO.val");
-        contador++;
-        nodoaux = new NodoCST("INTRO",contador,$$[$0-2]);
-        lista.push(nodoaux);
+        txtGramProd.push("INTRO := NODO INTRO");
+        txtGramRegSem.push("NODO.push(INTRO.val); INTRO.val = NODO.val");
         contador++;
         nodoaux = new NodoCST("NODO",contador,$$[$0-1]);
         lista.push(nodoaux);
         contador++;
-        nodoaux = new NodoCST("EOF",contador,$$[$0]);
+        nodoaux = new NodoCST("INTRO",contador,$$[$0]);
         lista.push(nodoaux);
         this.$ = lista;
         lista = [];
@@ -147,8 +144,7 @@ break;
 case 5:
 
         txtGramProd.push("CHECK := EOF");
-        txtGramRegSem.push("CHECK := EOF");
-
+        txtGramRegSem.push("CHECK.val := EOF");
         contador++;
         nodoaux = new NodoCST("EOF",contador,[]);
         lista.push(nodoaux);
@@ -159,8 +155,7 @@ break;
 case 6:
 
         txtGramProd.push("CHECK := ε");
-        txtGramRegSem.push("CHECK := ε");
-
+        txtGramRegSem.push("CHECK.val := ε");
         contador++;
         nodoaux = new NodoCST("ε",contador,[]);
         lista.push(nodoaux);
@@ -347,13 +342,13 @@ case 12:
 break;
 case 13:
 
-        txtGramProd.push("LISTANODOS := LISTANODOS NODO");
+        txtGramProd.push("LISTANODOS := NODO LISTANODOS");
         txtGramRegSem.push("LISTANODOS.push(NODO.val); LISTANODOS.val := LISTANODOS.val");
         contador++;
-        nodoaux = new NodoCST("LISTANODOS",contador,$$[$0-1]);
+        nodoaux = new NodoCST("NODO",contador,$$[$0]);
         lista.push(nodoaux);
         contador++;
-        nodoaux = new NodoCST("NODO",contador,$$[$0]);
+        nodoaux = new NodoCST("LISTANODOS",contador,$$[$0-1]);
         lista.push(nodoaux);
         this.$ = lista;
         lista = [];
@@ -372,13 +367,13 @@ case 14:
 break;
 case 15:
 
-        txtGramProd.push("LISTAATRIBUTOS := LISTAATRIBUTOS ATRIBUTO");
-        txtGramRegSem.push("LISTAATRIBUTOS.push(ATRIBUTO.val);LISTAATRIBUTOS.val = LISTAATRIBUTOS.val;");
+        txtGramProd.push("LISTAATRIBUTOS := ATRIBUTO LISTAATRIBUTOS");
+        txtGramRegSem.push("ATRIBUTO.push(LISTAATRIBUTOS.val); LISTAATRIBUTOS.val = ATRIBUTO.val;");
         contador++;
-        nodoaux = new NodoCST("LISTAATRIBUTOS",contador,$$[$0-1]);
+        nodoaux = new NodoCST("ATRIBUTO",contador,$$[$0-1]);
         lista.push(nodoaux);
         contador++;
-        nodoaux = new NodoCST("ATRIBUTO",contador,$$[$0]);
+        nodoaux = new NodoCST("LISTAATRIBUTOS",contador,$$[$0]);
         lista.push(nodoaux);
         this.$ = lista;
         lista = [];
@@ -431,13 +426,13 @@ case 18:
 break;
 case 19:
 
-        txtGramProd.push("NODOTEXTO := NODOTEXTO dstring");
-        txtGramRegSem.push("NODOTEXTO.val := NODOTEXTO.val + dstring");
-        contador++;
-        nodoaux = new NodoCST("NODOTEXTO",contador,$$[$0-1]);
-        lista.push(nodoaux);
+        txtGramProd.push("NODOTEXTO := dstring NODOTEXTO");
+        txtGramRegSem.push("NODOTEXTO.val := dstring + NODOTEXTO.val");
         contador++;
         nodoaux = new NodoCST("dstring",contador,[]);
+        lista.push(nodoaux);
+        contador++;
+        nodoaux = new NodoCST("NODOTEXTO",contador,$$[$0]);
         lista.push(nodoaux);
         this.$ = lista;
         lista = [];
@@ -445,13 +440,13 @@ case 19:
 break;
 case 20:
 
-        txtGramProd.push("NODOTEXTO := NODOTEXTO sstring");
-        txtGramRegSem.push("NODOTEXTO.val := NODOTEXTO.val + sstring");
-        contador++;
-        nodoaux = new NodoCST("NODOTEXTO",contador,$$[$0-1]);
-        lista.push(nodoaux);
+        txtGramProd.push("NODOTEXTO := sstring NODOTEXTO");
+        txtGramRegSem.push("NODOTEXTO.val := sstring + NODOTEXTO.val");
         contador++;
         nodoaux = new NodoCST("sstring",contador,[]);
+        lista.push(nodoaux);
+        contador++;
+        nodoaux = new NodoCST("NODOTEXTO",contador,$$[$0]);
         lista.push(nodoaux);
         this.$ = lista;
         lista = [];
@@ -459,13 +454,13 @@ case 20:
 break;
 case 21:
 
-        txtGramProd.push("NODOTEXTO := NODOTEXTO id");
-        txtGramRegSem.push("NODOTEXTO.val := NODOTEXTO.val + id");
-        contador++;
-        nodoaux = new NodoCST("NODOTEXTO",contador,$$[$0-1]);
-        lista.push(nodoaux);
+        txtGramProd.push("NODOTEXTO := id NODOTEXTO");
+        txtGramRegSem.push("NODOTEXTO.val := id + NODOTEXTO.val");
         contador++;
         nodoaux = new NodoCST("id",contador,[]);
+        lista.push(nodoaux);
+        contador++;
+        nodoaux = new NodoCST("NODOTEXTO",contador,$$[$0]);
         lista.push(nodoaux);
         this.$ = lista;
         lista = [];
@@ -473,13 +468,13 @@ case 21:
 break;
 case 22:
 
-        txtGramProd.push("NODOTEXTO := NODOTEXTO lessthan");
-        txtGramRegSem.push("NODOTEXTO.val := NODOTEXTO.val + lessthan");
-        contador++;
-        nodoaux = new NodoCST("NODOTEXTO",contador,$$[$0-1]);
-        lista.push(nodoaux);
+        txtGramProd.push("NODOTEXTO := lessthan NODOTEXTO");
+        txtGramRegSem.push("NODOTEXTO.val := lessthan + NODOTEXTO.val");
         contador++;
         nodoaux = new NodoCST("lessthan",contador,[]);
+        lista.push(nodoaux);
+        contador++;
+        nodoaux = new NodoCST("NODOTEXTO",contador,$$[$0]);
         lista.push(nodoaux);
         this.$ = lista;
         lista = [];
@@ -487,13 +482,13 @@ case 22:
 break;
 case 23:
 
-        txtGramProd.push("NODOTEXTO := NODOTEXTO greaterthan");
-        txtGramRegSem.push("NODOTEXTO.val := NODOTEXTO.val + greaterthan");
-        contador++;
-        nodoaux = new NodoCST("NODOTEXTO",contador,$$[$0-1]);
-        lista.push(nodoaux);
+        txtGramProd.push("NODOTEXTO := greaterthan NODOTEXTO");
+        txtGramRegSem.push("NODOTEXTO.val := greaterthan + NODOTEXTO.val");
         contador++;
         nodoaux = new NodoCST("greaterthan",contador,[]);
+        lista.push(nodoaux);
+        contador++;
+        nodoaux = new NodoCST("NODOTEXTO",contador,$$[$0]);
         lista.push(nodoaux);
         this.$ = lista;
         lista = [];
@@ -501,13 +496,13 @@ case 23:
 break;
 case 24:
 
-        txtGramProd.push("NODOTEXTO := NODOTEXTO ampersand");
-        txtGramRegSem.push("NODOTEXTO.val := NODOTEXTO.val + ampersand");
-        contador++;
-        nodoaux = new NodoCST("NODOTEXTO",contador,$$[$0-1]);
-        lista.push(nodoaux);
+        txtGramProd.push("NODOTEXTO := ampersand NODOTEXTO");
+        txtGramRegSem.push("NODOTEXTO.val := ampersand + NODOTEXTO.val");
         contador++;
         nodoaux = new NodoCST("ampersand",contador,[]);
+        lista.push(nodoaux);
+        contador++;
+        nodoaux = new NodoCST("NODOTEXTO",contador,$$[$0]);
         lista.push(nodoaux);
         this.$ = lista;
         lista = [];
@@ -515,13 +510,13 @@ case 24:
 break;
 case 25:
 
-        txtGramProd.push("NODOTEXTO := NODOTEXTO apostrophe");
-        txtGramRegSem.push("NODOTEXTO.val := NODOTEXTO.val + apostrophe");
-        contador++;
-        nodoaux = new NodoCST("NODOTEXTO",contador,$$[$0-1]);
-        lista.push(nodoaux);
+        txtGramProd.push("NODOTEXTO := apostrophe NODOTEXTO");
+        txtGramRegSem.push("NODOTEXTO.val := apostrophe + NODOTEXTO.val");
         contador++;
         nodoaux = new NodoCST("apostrophe",contador,[]);
+        lista.push(nodoaux);
+        contador++;
+        nodoaux = new NodoCST("NODOTEXTO",contador,$$[$0]);
         lista.push(nodoaux);
         this.$ = lista;
         lista = [];
@@ -529,13 +524,13 @@ case 25:
 break;
 case 26:
 
-        txtGramProd.push("NODOTEXTO := NODOTEXTO quotmark");
-        txtGramRegSem.push("NODOTEXTO.val := NODOTEXTO.val + quotmark");
-        contador++;
-        nodoaux = new NodoCST("NODOTEXTO",contador,$$[$0-1]);
-        lista.push(nodoaux);
+        txtGramProd.push("NODOTEXTO := quotmark NODOTEXTO");
+        txtGramRegSem.push("NODOTEXTO.val := quotmark + NODOTEXTO.val");
         contador++;
         nodoaux = new NodoCST("quotmark",contador,[]);
+        lista.push(nodoaux);
+        contador++;
+        nodoaux = new NodoCST("NODOTEXTO",contador,$$[$0]);
         lista.push(nodoaux);
         this.$ = lista;
         lista = [];
@@ -543,13 +538,13 @@ case 26:
 break;
 case 27:
 
-        txtGramProd.push("NODOTEXTO := NODOTEXTO number");
-        txtGramRegSem.push("NODOTEXTO.val := NODOTEXTO.val + number");
-        contador++;
-        nodoaux = new NodoCST("NODOTEXTO",contador,$$[$0-1]);
-        lista.push(nodoaux);
+        txtGramProd.push("NODOTEXTO := number NODOTEXTO");
+        txtGramRegSem.push("NODOTEXTO.val := number + NODOTEXTO.val");
         contador++;
         nodoaux = new NodoCST("number",contador,[]);
+        lista.push(nodoaux);
+        contador++;
+        nodoaux = new NodoCST("NODOTEXTO",contador,$$[$0]);
         lista.push(nodoaux);
         this.$ = lista;
         lista = [];
@@ -557,13 +552,13 @@ case 27:
 break;
 case 28:
 
-        txtGramProd.push("NODOTEXTO := NODOTEXTO random");
-        txtGramRegSem.push("NODOTEXTO.val := NODOTEXTO.val + random");
-        contador++;
-        nodoaux = new NodoCST("NODOTEXTO",contador,$$[$0-1]);
-        lista.push(nodoaux);
+        txtGramProd.push("NODOTEXTO := random NODOTEXTO");
+        txtGramRegSem.push("NODOTEXTO.val := random + NODOTEXTO.val");
         contador++;
         nodoaux = new NodoCST("random",contador,[]);
+        lista.push(nodoaux);
+        contador++;
+        nodoaux = new NodoCST("NODOTEXTO",contador,$$[$0]);
         lista.push(nodoaux);
         this.$ = lista;
         lista = [];
@@ -571,13 +566,13 @@ case 28:
 break;
 case 29:
 
-        txtGramProd.push("NODOTEXTO := NODOTEXTO /");
-        txtGramRegSem.push("NODOTEXTO.val := NODOTEXTO.val + /");
+        txtGramProd.push("NODOTEXTO := '/' NODOTEXTO");
+        txtGramRegSem.push("NODOTEXTO.val := '/' + NODOTEXTO.val");
         contador++;
-        nodoaux = new NodoCST("NODOTEXTO",contador,$$[$0-1]);
+        nodoaux = new NodoCST("'/'",contador,[]);
         lista.push(nodoaux);
         contador++;
-        nodoaux = new NodoCST("/",contador,[]);
+        nodoaux = new NodoCST("NODOTEXTO",contador,$$[$0]);
         lista.push(nodoaux);
         this.$ = lista;
         lista = [];
@@ -585,13 +580,13 @@ case 29:
 break;
 case 30:
 
-        txtGramProd.push("NODOTEXTO := NODOTEXTO =");
-        txtGramRegSem.push("NODOTEXTO.val := NODOTEXTO.val + =");
+        txtGramProd.push("NODOTEXTO := '=' NODOTEXTO");
+        txtGramRegSem.push("NODOTEXTO.val := '=' + NODOTEXTO.val");
         contador++;
-        nodoaux = new NodoCST("NODOTEXTO",contador,$$[$0-1]);
+        nodoaux = new NodoCST("'='",contador,[]);
         lista.push(nodoaux);
         contador++;
-        nodoaux = new NodoCST("=",[]);
+        nodoaux = new NodoCST("NODOTEXTO",contador,$$[$0]);
         lista.push(nodoaux);
         this.$ = lista;
         lista = [];
@@ -646,7 +641,7 @@ case 35:
         txtGramProd.push("NODOTEXTO := lessthan");
         txtGramRegSem.push("NODOTEXTO.val := lessthan");
         contador++;
-        nodoaux = new NodoCST("lessthan",contador,[]);
+        nodoaux = new NodoCST("lessthans",contador,[]);
         lista.push(nodoaux);
         this.$ = lista;
         lista = [];
@@ -731,8 +726,8 @@ case 42:
 break;
 }
 },
-table: [{3:1,4:[1,2],9:3,10:4},{1:[3]},{5:[1,5],6:$V0},{1:[2,2],4:$V1,10:7},o($V2,[2,6],{12:9,11:[1,10]}),{6:[1,11]},{6:$V3,7:12,8:[1,13],14:[1,14],16:15},{11:[1,17]},{6:$V0},o($V2,[2,4]),o($V2,[2,5]),{6:$V3,7:18,16:15},{6:$V3,8:[1,19],14:[1,20],16:21},{4:$V1,6:$V4,10:24,13:22,14:$V5,15:23,17:$V6,18:$V7,19:$V8,20:$V9,21:$Va,22:$Vb,23:$Vc,24:$Vd,25:$Ve,26:$Vf},{8:[1,37]},o($Vg,[2,16]),{17:[1,38]},o($V2,[2,3]),{5:[1,39],6:$V3,16:21},{4:$V1,6:$V4,10:24,13:40,14:$V5,15:41,17:$V6,18:$V7,19:$V8,20:$V9,21:$Va,22:$Vb,23:$Vc,24:$Vd,25:$Ve,26:$Vf},{8:[1,42]},o($Vg,[2,15]),{4:[1,43],10:44},{4:[1,45],6:$Vh,14:$Vi,17:$Vj,18:$Vk,19:$Vl,20:$Vm,21:$Vn,22:$Vo,23:$Vp,24:$Vq,25:$Vr,26:$Vs},{4:[2,14]},o($Vt,[2,31]),o($Vt,[2,32]),o($Vt,[2,33]),o($Vt,[2,34]),o($Vt,[2,35]),o($Vt,[2,36]),o($Vt,[2,37]),o($Vt,[2,38]),o($Vt,[2,39]),o($Vt,[2,40]),o($Vt,[2,41]),o($Vt,[2,42]),o($Vu,[2,12]),{18:[1,58],19:[1,59]},{8:[1,60]},{4:[1,61],10:44},{4:[1,62],6:$Vh,14:$Vi,17:$Vj,18:$Vk,19:$Vl,20:$Vm,21:$Vn,22:$Vo,23:$Vp,24:$Vq,25:$Vr,26:$Vs},o($Vu,[2,9]),{6:$V0,14:[1,63]},{4:[2,13]},{14:[1,64]},o($Vt,[2,19]),o($Vt,[2,20]),o($Vt,[2,21]),o($Vt,[2,22]),o($Vt,[2,23]),o($Vt,[2,24]),o($Vt,[2,25]),o($Vt,[2,26]),o($Vt,[2,27]),o($Vt,[2,28]),o($Vt,[2,29]),o($Vt,[2,30]),o($Vg,[2,17]),o($Vg,[2,18]),{4:$V1,9:65,10:4},{6:$V0,14:[1,66]},{14:[1,67]},{6:[1,68]},{6:[1,69]},{1:[2,1],4:$V1,10:7},{6:[1,70]},{6:[1,71]},{8:[1,72]},{8:[1,73]},{8:[1,74]},{8:[1,75]},o($Vu,[2,10]),o($Vu,[2,11]),o($Vu,[2,7]),o($Vu,[2,8])],
-defaultActions: {24:[2,14],44:[2,13]},
+table: [{3:1,4:[1,2],9:3,10:4},{1:[3]},{5:[1,5],6:$V0},{1:[2,2]},{1:[2,6],4:$V1,9:7,10:4,11:8,12:[1,9]},{6:[1,11]},{6:$V2,7:12,8:[1,13],14:[1,14],16:15},{1:[2,3]},{1:[2,4]},{1:[2,5]},{6:$V0},{6:$V2,7:17,16:15},{8:[1,18],14:[1,19]},{4:$V1,6:$V3,10:22,13:20,14:$V4,15:21,17:$V5,18:$V6,19:$V7,20:$V8,21:$V9,22:$Va,23:$Vb,24:$Vc,25:$Vd,26:$Ve},{8:[1,35]},o($Vf,[2,16],{16:15,7:36,6:$V2}),{17:[1,37]},{5:[1,38]},{4:$V1,6:$V3,10:22,13:39,14:$V4,15:40,17:$V5,18:$V6,19:$V7,20:$V8,21:$V9,22:$Va,23:$Vb,24:$Vc,25:$Vd,26:$Ve},{8:[1,41]},{4:[1,42],10:43},{4:[1,44]},{4:[2,14]},{4:[2,31],6:$V3,14:$V4,15:45,17:$V5,18:$V6,19:$V7,20:$V8,21:$V9,22:$Va,23:$Vb,24:$Vc,25:$Vd,26:$Ve},{4:[2,32],6:$V3,14:$V4,15:46,17:$V5,18:$V6,19:$V7,20:$V8,21:$V9,22:$Va,23:$Vb,24:$Vc,25:$Vd,26:$Ve},{4:[2,33],6:$V3,14:$V4,15:47,17:$V5,18:$V6,19:$V7,20:$V8,21:$V9,22:$Va,23:$Vb,24:$Vc,25:$Vd,26:$Ve},{4:[2,35],6:$V3,14:$V4,15:48,17:$V5,18:$V6,19:$V7,20:$V8,21:$V9,22:$Va,23:$Vb,24:$Vc,25:$Vd,26:$Ve},{4:[2,36],6:$V3,14:$V4,15:49,17:$V5,18:$V6,19:$V7,20:$V8,21:$V9,22:$Va,23:$Vb,24:$Vc,25:$Vd,26:$Ve},{4:[2,37],6:$V3,14:$V4,15:50,17:$V5,18:$V6,19:$V7,20:$V8,21:$V9,22:$Va,23:$Vb,24:$Vc,25:$Vd,26:$Ve},{4:[2,38],6:$V3,14:$V4,15:51,17:$V5,18:$V6,19:$V7,20:$V8,21:$V9,22:$Va,23:$Vb,24:$Vc,25:$Vd,26:$Ve},{4:[2,39],6:$V3,14:$V4,15:52,17:$V5,18:$V6,19:$V7,20:$V8,21:$V9,22:$Va,23:$Vb,24:$Vc,25:$Vd,26:$Ve},{4:[2,34],6:$V3,14:$V4,15:53,17:$V5,18:$V6,19:$V7,20:$V8,21:$V9,22:$Va,23:$Vb,24:$Vc,25:$Vd,26:$Ve},{4:[2,40],6:$V3,14:$V4,15:54,17:$V5,18:$V6,19:$V7,20:$V8,21:$V9,22:$Va,23:$Vb,24:$Vc,25:$Vd,26:$Ve},{4:[2,41],6:$V3,14:$V4,15:55,17:$V5,18:$V6,19:$V7,20:$V8,21:$V9,22:$Va,23:$Vb,24:$Vc,25:$Vd,26:$Ve},{4:[2,42],6:$V3,14:$V4,15:56,17:$V5,18:$V6,19:$V7,20:$V8,21:$V9,22:$Va,23:$Vb,24:$Vc,25:$Vd,26:$Ve},o($Vg,[2,12]),o($Vf,[2,15]),{18:[1,57],19:[1,58]},{8:[1,59]},{4:[1,60],10:43},{4:[1,61]},o($Vg,[2,9]),{6:$V0,14:[1,62]},{4:[2,13]},{14:[1,63]},{4:[2,19]},{4:[2,20]},{4:[2,21]},{4:[2,22]},{4:[2,23]},{4:[2,24]},{4:[2,25]},{4:[2,26]},{4:[2,27]},{4:[2,28]},{4:[2,29]},{4:[2,30]},o($Vh,[2,17]),o($Vh,[2,18]),{4:$V1,9:64,10:4},{6:$V0,14:[1,65]},{14:[1,66]},{6:[1,67]},{6:[1,68]},{1:[2,1]},{6:[1,69]},{6:[1,70]},{8:[1,71]},{8:[1,72]},{8:[1,73]},{8:[1,74]},o($Vg,[2,10]),o($Vg,[2,11]),o($Vg,[2,7]),o($Vg,[2,8])],
+defaultActions: {3:[2,2],7:[2,3],8:[2,4],9:[2,5],22:[2,14],43:[2,13],45:[2,19],46:[2,20],47:[2,21],48:[2,22],49:[2,23],50:[2,24],51:[2,25],52:[2,26],53:[2,27],54:[2,28],55:[2,29],56:[2,30],64:[2,1]},
 parseError: function parseError (str, hash) {
     if (hash.recoverable) {
         this.trace(str);
@@ -1250,7 +1245,7 @@ case 15:return 24;
 break;
 case 16:return 26;
 break;
-case 17:return 11;
+case 17:return 12;
 break;
 case 18:
                                         console.log('Este es un error léxico: ' + yy_.yytext + ', en la linea: ' + yy_.yylloc.first_line + ', en la columna: ' + yy_.yylloc.first_column);
@@ -1258,7 +1253,7 @@ case 18:
 break;
 }
 },
-rules: [/^(?:\s+)/i,/^(?:[<][!][-][-][^-<]*[-][-][>])/i,/^(?:<)/i,/^(?:>)/i,/^(?:\/)/i,/^(?:=)/i,/^(?:\?)/i,/^(?:("([^\"\\])*"))/i,/^(?:('([^\'\\])*'))/i,/^(?:([a-zA-Z_]|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(-|[a-zA-Z0-9_ñÑ]|á|é|í|ó|ú|Á|É|Í|Ó|Ú)*)/i,/^(?:(([0-9]+\.[0-9]+)|(\.[0-9]+)|([0-9]+)))/i,/^(?:&lt;)/i,/^(?:&gt;)/i,/^(?:&amp;)/i,/^(?:&apos;)/i,/^(?:&quot;)/i,/^(?:[^<> ]+)/i,/^(?:$)/i,/^(?:.)/i],
+rules: [/^(?:\s+)/i,/^(?:[<][!][-][-][^-<]*[-][-][>])/i,/^(?:<)/i,/^(?:>)/i,/^(?:\/)/i,/^(?:=)/i,/^(?:\?)/i,/^(?:("([^\"\\])*"))/i,/^(?:('([^\'\\])*'))/i,/^(?:([a-zA-Z_]|á|é|í|ó|ú|Á|É|Í|Ó|Ú)(-|[a-zA-Z0-9_ñÑ]|á|é|í|ó|ú|Á|É|Í|Ó|Ú|')*)/i,/^(?:(([0-9]+\.[0-9]+)|(\.[0-9]+)|([0-9]+)))/i,/^(?:&lt;)/i,/^(?:&gt;)/i,/^(?:&amp;)/i,/^(?:&apos;)/i,/^(?:&quot;)/i,/^(?:[^<> ]+)/i,/^(?:$)/i,/^(?:.)/i],
 conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],"inclusive":true}}
 });
 return lexer;
@@ -1273,9 +1268,9 @@ return new Parser;
 
 
 if (typeof require !== 'undefined' && typeof exports !== 'undefined') {
-exports.parser = xmlReport;
-exports.Parser = xmlReport.Parser;
-exports.parse = function () { return xmlReport.parse.apply(xmlReport, arguments); };
+exports.parser = xmlReportDesc;
+exports.Parser = xmlReportDesc.Parser;
+exports.parse = function () { return xmlReportDesc.parse.apply(xmlReportDesc, arguments); };
 exports.main = function commonjsMain (args) {
     if (!args[1]) {
         console.log('Usage: '+args[0]+' FILE');

@@ -9,6 +9,7 @@ import { Entorno } from '../xmlAST/Entorno';
 const parser = require('../Grammar/xmlGrammar')
 const parserXmlDesc = require('../Grammar/xmlGrammarDesc')
 const parserReport = require('../Reportes/xmlReport')
+const parserReportDesc = require('../Reportes/xmlReportDesc')
 
 export default class Main extends Component {
 
@@ -27,7 +28,7 @@ export default class Main extends Component {
 
         let ast;
         let listaErrores;
-        var TablaSimbolos = [];
+        let TablaSimbolos = [];
 
 
 
@@ -35,7 +36,7 @@ export default class Main extends Component {
         ast = result.ast;
         listaErrores = result.listaErrores;
 
-        var entornoGlobal = new Entorno('Global','',0, 0,[],ast);
+        let entornoGlobal = new Entorno('Global','',0, 0,[],ast);
 
         console.log(ast)
         console.log(listaErrores)
@@ -57,10 +58,25 @@ export default class Main extends Component {
     }
 
     parseDesc = () => {
+        let ast;
+        let listaErrores;
+        let TablaSimbolos = [];
         const result = parserXmlDesc.parse(this.state.xml)
-        let ast = result.ast;
-
-        console.log(ast)
+        ast = result.ast;
+        listaErrores = result.listaErrores;
+        let entornoGlobal = new Entorno('Global','',0, 0,[],ast);
+        if (listaErrores.length === 0) {
+            const xmlResRep = parserReportDesc.parse(this.state.xml);
+            this.setState({
+                repgramtxt: "digraph G {" + crearTextoGraphvizRepGram(xmlResRep.ReporteGramatical[0], xmlResRep.ReporteGramatical[1], this.state.repcsttxt) + "}",
+                repcsttxt: "digraph G {" + crearTextoGraphvizCST(xmlResRep.ReporteCST, this.state.repcsttxt) + "}",
+                repTablaSimbolos: "digraph G {"+crearTextoGraphvizTablaSimbolos(crearTablaSimbolos(entornoGlobal,TablaSimbolos,"Global"),this.state.repTablaSimbolos)+"}"
+            })
+        } else {
+            this.setState({
+                repErrorXML: "digraph G {" + crearTextoReporteErrorXML(listaErrores,this.state.repErrorXML) + "}"
+            })
+        }
     }
 
     

@@ -1,4 +1,4 @@
-/* Gramatica Ascendente para los reportes de XML */
+/* Gramatica Descendente de XML. */
 
 %{
     const {NodoCST} = require("./NodoCST");
@@ -26,7 +26,7 @@
 "?"                                         return '?';
 (\"([^\"\\])*\")                            return 'dstring';
 (\'([^\'\\])*\')                            return 'sstring';
-([a-zA-Z_]|"á"|"é"|"í"|"ó"|"ú"|"Á"|"É"|"Í"|"Ó"|"Ú")("-"|[a-zA-Z0-9_ñÑ]|"á"|"é"|"í"|"ó"|"ú"|"Á"|"É"|"Í"|"Ó"|"Ú")*              return 'id';
+([a-zA-Z_]|"á"|"é"|"í"|"ó"|"ú"|"Á"|"É"|"Í"|"Ó"|"Ú")("-"|[a-zA-Z0-9_ñÑ]|"á"|"é"|"í"|"ó"|"ú"|"Á"|"É"|"Í"|"Ó"|"Ú"|"'")*            return 'id';
 (([0-9]+"."[0-9]+)|("."[0-9]+)|([0-9]+))    return 'number';
 "&""l""t"";"                                return 'lessthan';
 "&""g""t"";"                                return 'greaterthan';
@@ -85,18 +85,15 @@ INIT
     ;
 
 INTRO   
-    :  INTRO NODO EOF           
+    :  NODO INTRO               
     {
-        txtGramProd.push("INTRO := INTRO NODO EOF");
-        txtGramRegSem.push("INTRO.push(NODO.val); INTRO.val = INTRO.val");
+        txtGramProd.push("INTRO := NODO INTRO");
+        txtGramRegSem.push("NODO.push(INTRO.val); INTRO.val = NODO.val");
         contador++;
-        nodoaux = new NodoCST("INTRO",contador,$1);
+        nodoaux = new NodoCST("NODO",contador,$1);
         lista.push(nodoaux);
         contador++;
-        nodoaux = new NodoCST("NODO",contador,$2);
-        lista.push(nodoaux);
-        contador++;
-        nodoaux = new NodoCST("EOF",contador,$3);
+        nodoaux = new NodoCST("INTRO",contador,$2);
         lista.push(nodoaux);
         $$ = lista;
         lista = [];
@@ -130,7 +127,7 @@ CHECK
     |                   
     {
         txtGramProd.push("CHECK := ε");
-        txtGramRegSem.push("CHECK := ε");
+        txtGramRegSem.push("CHECK.val := ε");
         contador++;
         nodoaux = new NodoCST("ε",contador,[]);
         lista.push(nodoaux);
@@ -316,13 +313,13 @@ NODO
 LISTANODOS
     : LISTANODOS NODO   
     {
-        txtGramProd.push("LISTANODOS := LISTANODOS NODO");
+        txtGramProd.push("LISTANODOS := NODO LISTANODOS");
         txtGramRegSem.push("LISTANODOS.push(NODO.val); LISTANODOS.val := LISTANODOS.val");
         contador++;
-        nodoaux = new NodoCST("LISTANODOS",contador,$1);
+        nodoaux = new NodoCST("NODO",contador,$2);
         lista.push(nodoaux);
         contador++;
-        nodoaux = new NodoCST("NODO",contador,$2);
+        nodoaux = new NodoCST("LISTANODOS",contador,$1);
         lista.push(nodoaux);
         $$ = lista;
         lista = [];
@@ -340,15 +337,15 @@ LISTANODOS
     ;
 
 LISTAATRIBUTOS
-    : LISTAATRIBUTOS ATRIBUTO   
+    : ATRIBUTO LISTAATRIBUTOS   
     {
-        txtGramProd.push("LISTAATRIBUTOS := LISTAATRIBUTOS ATRIBUTO");
-        txtGramRegSem.push("LISTAATRIBUTOS.push(ATRIBUTO.val);LISTAATRIBUTOS.val = LISTAATRIBUTOS.val;");
+        txtGramProd.push("LISTAATRIBUTOS := ATRIBUTO LISTAATRIBUTOS");
+        txtGramRegSem.push("ATRIBUTO.push(LISTAATRIBUTOS.val); LISTAATRIBUTOS.val = ATRIBUTO.val;");
         contador++;
-        nodoaux = new NodoCST("LISTAATRIBUTOS",contador,$1);
+        nodoaux = new NodoCST("ATRIBUTO",contador,$1);
         lista.push(nodoaux);
         contador++;
-        nodoaux = new NodoCST("ATRIBUTO",contador,$2);
+        nodoaux = new NodoCST("LISTAATRIBUTOS",contador,$2);
         lista.push(nodoaux);
         $$ = lista;
         lista = [];
@@ -401,158 +398,158 @@ ATRIBUTO
     ;
 
 NODOTEXTO 
-    : NODOTEXTO dstring             
+    : dstring NODOTEXTO       
     {
-        txtGramProd.push("NODOTEXTO := NODOTEXTO dstring");
-        txtGramRegSem.push("NODOTEXTO.val := NODOTEXTO.val + dstring");
-        contador++;
-        nodoaux = new NodoCST("NODOTEXTO",contador,$1);
-        lista.push(nodoaux);
+        txtGramProd.push("NODOTEXTO := dstring NODOTEXTO");
+        txtGramRegSem.push("NODOTEXTO.val := dstring + NODOTEXTO.val");
         contador++;
         nodoaux = new NodoCST("dstring",contador,[]);
         lista.push(nodoaux);
+        contador++;
+        nodoaux = new NodoCST("NODOTEXTO",contador,$2);
+        lista.push(nodoaux);
         $$ = lista;
         lista = [];
     }
-    | NODOTEXTO sstring             
+    | sstring NODOTEXTO             
     {
-        txtGramProd.push("NODOTEXTO := NODOTEXTO sstring");
-        txtGramRegSem.push("NODOTEXTO.val := NODOTEXTO.val + sstring");
-        contador++;
-        nodoaux = new NodoCST("NODOTEXTO",contador,$1);
-        lista.push(nodoaux);
+        txtGramProd.push("NODOTEXTO := sstring NODOTEXTO");
+        txtGramRegSem.push("NODOTEXTO.val := sstring + NODOTEXTO.val");
         contador++;
         nodoaux = new NodoCST("sstring",contador,[]);
         lista.push(nodoaux);
+        contador++;
+        nodoaux = new NodoCST("NODOTEXTO",contador,$2);
+        lista.push(nodoaux);
         $$ = lista;
         lista = [];
     }
-    | NODOTEXTO id                  
+    | id NODOTEXTO                  
     {
-        txtGramProd.push("NODOTEXTO := NODOTEXTO id");
-        txtGramRegSem.push("NODOTEXTO.val := NODOTEXTO.val + id");
-        contador++;
-        nodoaux = new NodoCST("NODOTEXTO",contador,$1);
-        lista.push(nodoaux);
+        txtGramProd.push("NODOTEXTO := id NODOTEXTO");
+        txtGramRegSem.push("NODOTEXTO.val := id + NODOTEXTO.val");
         contador++;
         nodoaux = new NodoCST("id",contador,[]);
         lista.push(nodoaux);
+        contador++;
+        nodoaux = new NodoCST("NODOTEXTO",contador,$2);
+        lista.push(nodoaux);
         $$ = lista;
         lista = [];
     }
-    | NODOTEXTO lessthan            
+    | lessthan NODOTEXTO            
     {
-        txtGramProd.push("NODOTEXTO := NODOTEXTO lessthan");
-        txtGramRegSem.push("NODOTEXTO.val := NODOTEXTO.val + lessthan");
-        contador++;
-        nodoaux = new NodoCST("NODOTEXTO",contador,$1);
-        lista.push(nodoaux);
+        txtGramProd.push("NODOTEXTO := lessthan NODOTEXTO");
+        txtGramRegSem.push("NODOTEXTO.val := lessthan + NODOTEXTO.val");
         contador++;
         nodoaux = new NodoCST("lessthan",contador,[]);
         lista.push(nodoaux);
+        contador++;
+        nodoaux = new NodoCST("NODOTEXTO",contador,$2);
+        lista.push(nodoaux);
         $$ = lista;
         lista = [];
     }
-    | NODOTEXTO greaterthan         
+    | greaterthan NODOTEXTO         
     {
-        txtGramProd.push("NODOTEXTO := NODOTEXTO greaterthan");
-        txtGramRegSem.push("NODOTEXTO.val := NODOTEXTO.val + greaterthan");
-        contador++;
-        nodoaux = new NodoCST("NODOTEXTO",contador,$1);
-        lista.push(nodoaux);
+        txtGramProd.push("NODOTEXTO := greaterthan NODOTEXTO");
+        txtGramRegSem.push("NODOTEXTO.val := greaterthan + NODOTEXTO.val");
         contador++;
         nodoaux = new NodoCST("greaterthan",contador,[]);
         lista.push(nodoaux);
+        contador++;
+        nodoaux = new NodoCST("NODOTEXTO",contador,$2);
+        lista.push(nodoaux);
         $$ = lista;
         lista = [];
     }
-    | NODOTEXTO ampersand           
+    | ampersand NODOTEXTO           
     {
-        txtGramProd.push("NODOTEXTO := NODOTEXTO ampersand");
-        txtGramRegSem.push("NODOTEXTO.val := NODOTEXTO.val + ampersand");
-        contador++;
-        nodoaux = new NodoCST("NODOTEXTO",contador,$1);
-        lista.push(nodoaux);
+        txtGramProd.push("NODOTEXTO := ampersand NODOTEXTO");
+        txtGramRegSem.push("NODOTEXTO.val := ampersand + NODOTEXTO.val");
         contador++;
         nodoaux = new NodoCST("ampersand",contador,[]);
         lista.push(nodoaux);
+        contador++;
+        nodoaux = new NodoCST("NODOTEXTO",contador,$2);
+        lista.push(nodoaux);
         $$ = lista;
         lista = [];
     }
-    | NODOTEXTO apostrophe          
+    | apostrophe NODOTEXTO          
     {
-        txtGramProd.push("NODOTEXTO := NODOTEXTO apostrophe");
-        txtGramRegSem.push("NODOTEXTO.val := NODOTEXTO.val + apostrophe");
-        contador++;
-        nodoaux = new NodoCST("NODOTEXTO",contador,$1);
-        lista.push(nodoaux);
+        txtGramProd.push("NODOTEXTO := apostrophe NODOTEXTO");
+        txtGramRegSem.push("NODOTEXTO.val := apostrophe + NODOTEXTO.val");
         contador++;
         nodoaux = new NodoCST("apostrophe",contador,[]);
         lista.push(nodoaux);
+        contador++;
+        nodoaux = new NodoCST("NODOTEXTO",contador,$2);
+        lista.push(nodoaux);
         $$ = lista;
         lista = [];
     }
-    | NODOTEXTO quotmark            
+    | quotmark NODOTEXTO            
     {
-        txtGramProd.push("NODOTEXTO := NODOTEXTO quotmark");
-        txtGramRegSem.push("NODOTEXTO.val := NODOTEXTO.val + quotmark");
-        contador++;
-        nodoaux = new NodoCST("NODOTEXTO",contador,$1);
-        lista.push(nodoaux);
+        txtGramProd.push("NODOTEXTO := quotmark NODOTEXTO");
+        txtGramRegSem.push("NODOTEXTO.val := quotmark + NODOTEXTO.val");
         contador++;
         nodoaux = new NodoCST("quotmark",contador,[]);
         lista.push(nodoaux);
+        contador++;
+        nodoaux = new NodoCST("NODOTEXTO",contador,$2);
+        lista.push(nodoaux);
         $$ = lista;
         lista = [];
     }
-    | NODOTEXTO number              
+    | number NODOTEXTO              
     {
-        txtGramProd.push("NODOTEXTO := NODOTEXTO number");
-        txtGramRegSem.push("NODOTEXTO.val := NODOTEXTO.val + number");
-        contador++;
-        nodoaux = new NodoCST("NODOTEXTO",contador,$1);
-        lista.push(nodoaux);
+        txtGramProd.push("NODOTEXTO := number NODOTEXTO");
+        txtGramRegSem.push("NODOTEXTO.val := number + NODOTEXTO.val");
         contador++;
         nodoaux = new NodoCST("number",contador,[]);
         lista.push(nodoaux);
+        contador++;
+        nodoaux = new NodoCST("NODOTEXTO",contador,$2);
+        lista.push(nodoaux);
         $$ = lista;
         lista = [];
     }
-    | NODOTEXTO random              
+    | random NODOTEXTO              
     {
-        txtGramProd.push("NODOTEXTO := NODOTEXTO random");
-        txtGramRegSem.push("NODOTEXTO.val := NODOTEXTO.val + random");
-        contador++;
-        nodoaux = new NodoCST("NODOTEXTO",contador,$1);
-        lista.push(nodoaux);
+        txtGramProd.push("NODOTEXTO := random NODOTEXTO");
+        txtGramRegSem.push("NODOTEXTO.val := random + NODOTEXTO.val");
         contador++;
         nodoaux = new NodoCST("random",contador,[]);
         lista.push(nodoaux);
-        $$ = lista;
-        lista = [];
-    }
-    | NODOTEXTO '/'                 
-    {
-        txtGramProd.push("NODOTEXTO := NODOTEXTO /");
-        txtGramRegSem.push("NODOTEXTO.val := NODOTEXTO.val + /");
         contador++;
-        nodoaux = new NodoCST("NODOTEXTO",contador,$1);
-        lista.push(nodoaux);
-        contador++;
-        nodoaux = new NodoCST("/",contador,[]);
+        nodoaux = new NodoCST("NODOTEXTO",contador,$2);
         lista.push(nodoaux);
         $$ = lista;
         lista = [];
     }
-    | NODOTEXTO '='                 
+    | '/' NODOTEXTO                 
     {
-        txtGramProd.push("NODOTEXTO := NODOTEXTO =");
-        txtGramRegSem.push("NODOTEXTO.val := NODOTEXTO.val + =");
+        txtGramProd.push("NODOTEXTO := '/' NODOTEXTO");
+        txtGramRegSem.push("NODOTEXTO.val := '/' + NODOTEXTO.val");
         contador++;
-        nodoaux = new NodoCST("NODOTEXTO",contador,$1);
+        nodoaux = new NodoCST("'/'",contador,[]);
         lista.push(nodoaux);
         contador++;
-        nodoaux = new NodoCST("=",[]);
+        nodoaux = new NodoCST("NODOTEXTO",contador,$2);
+        lista.push(nodoaux);
+        $$ = lista;
+        lista = [];
+    }
+    | '=' NODOTEXTO                 
+    {
+        txtGramProd.push("NODOTEXTO := '=' NODOTEXTO");
+        txtGramRegSem.push("NODOTEXTO.val := '=' + NODOTEXTO.val");
+        contador++;
+        nodoaux = new NodoCST("'='",contador,[]);
+        lista.push(nodoaux);
+        contador++;
+        nodoaux = new NodoCST("NODOTEXTO",contador,$2);
         lista.push(nodoaux);
         $$ = lista;
         lista = [];
@@ -602,7 +599,7 @@ NODOTEXTO
         txtGramProd.push("NODOTEXTO := lessthan");
         txtGramRegSem.push("NODOTEXTO.val := lessthan");
         contador++;
-        nodoaux = new NodoCST("lessthan",contador,[]);
+        nodoaux = new NodoCST("lessthans",contador,[]);
         lista.push(nodoaux);
         $$ = lista;
         lista = [];
