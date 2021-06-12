@@ -54,9 +54,9 @@
 %% /* language grammar */
 
 INIT
-    :  'menor' '?' id LISTAATRIBUTOS '?' 'mayor' INTRO    
+    :  'menor' '?' id ATRIBUTO ATRIBUTO '?' 'mayor' INTRO    
     {
-        txtGramProd.push("INIT := menor ? id LISTAATRIBUTOS ? mayor INTRO");
+        txtGramProd.push("INIT := menor ? id ATRIBUTO ATRIBUTO ? mayor INTRO");
         txtGramRegSem.push("INIT.val := INTRO.val");
         contador++;
         raiz.crearNodo("<",contador,[]);
@@ -65,13 +65,15 @@ INIT
         contador++;
         raiz.crearNodo("id",contador,[]);
         contador++;
-        raiz.crearNodo("LISTAATRIBUTOS",contador,$4);
+        raiz.crearNodo("ATRIBUTO",contador,$4);
+        contador++;
+        raiz.crearNodo("ATRIBUTO",contador,$5);
         contador++;
         raiz.crearNodo("?",contador,[]);
         contador++;
         raiz.crearNodo(">",contador,[]);
         contador++;
-        raiz.crearNodo("INTRO",contador,$7);
+        raiz.crearNodo("INTRO",contador,$8);
         return {ReporteGramatical: [txtGramProd,txtGramRegSem],ReporteCST: raiz};
     }
     |  INTRO                                      

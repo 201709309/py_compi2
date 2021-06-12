@@ -50,11 +50,11 @@
 %% /* language grammar */
 
 INIT
-    :  'menor' '?' id LISTAATRIBUTOS '?' 'mayor' INTRO    
+    :  'menor' '?' id ATRIBUTO ATRIBUTO '?' 'mayor' INTRO    
     {
         var listaErroresTemp = listaErrores;
         listaErrores = [];
-        return {ast: $7, listaErrores : listaErroresTemp};
+        return {ast: $8, listaErrores : listaErroresTemp};
     }
     |  INTRO                                      
     {
