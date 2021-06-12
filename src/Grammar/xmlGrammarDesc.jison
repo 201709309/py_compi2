@@ -54,13 +54,13 @@ INIT
     {
         var listaErroresTemp = listaErrores;
         listaErrores = [];
-        return {ast: $8, listaErrores : listaErroresTemp};
+        return {ast: $8, listaErrores : listaErroresTemp, encoding: $5.valor};
     }
     |  INTRO                                      
     {
         var listaErroresTemp = listaErrores;
         listaErrores = [];
-        return {ast: $1, listaErrores : listaErroresTemp};
+        return {ast: $1, listaErrores : listaErroresTemp, encoding: ''};
     }
     ;
 

@@ -83,11 +83,18 @@ performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* actio
 
 var $0 = $$.length - 1;
 switch (yystate) {
-case 1: case 2:
+case 1:
 
         var listaErroresTemp = listaErrores;
         listaErrores = [];
-        return {ast: $$[$0], listaErrores : listaErroresTemp};
+        return {ast: $$[$0], listaErrores : listaErroresTemp, encoding: $$[$0-3].valor};
+    
+break;
+case 2:
+
+        var listaErroresTemp = listaErrores;
+        listaErrores = [];
+        return {ast: $$[$0], listaErrores : listaErroresTemp, encoding: ''};
     
 break;
 case 3:

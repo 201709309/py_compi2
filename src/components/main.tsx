@@ -30,6 +30,10 @@ export default class Main extends Component {
         let listaErrores;
         let TablaSimbolos = [];
 
+        let repcsttxt2 = '';
+        let repgramtxt2 = '';
+        let repErrorXML2 = '';
+        let repTablaSimbolos2 = '';
 
 
         const result = parser.parse(this.state.xml)
@@ -45,13 +49,13 @@ export default class Main extends Component {
         if (listaErrores.length === 0) {
             const xmlResRep = parserReport.parse(this.state.xml);
             this.setState({
-                repgramtxt: "digraph G {" + crearTextoGraphvizRepGram(xmlResRep.ReporteGramatical[0], xmlResRep.ReporteGramatical[1], this.state.repcsttxt) + "}",
-                repcsttxt: "digraph G {" + crearTextoGraphvizCST(xmlResRep.ReporteCST, this.state.repcsttxt) + "}",
-                repTablaSimbolos: "digraph G {"+crearTextoGraphvizTablaSimbolos(crearTablaSimbolos(entornoGlobal,TablaSimbolos,"Global"),this.state.repTablaSimbolos)+"}"
+                repgramtxt: "digraph G {" + crearTextoGraphvizRepGram(xmlResRep.ReporteGramatical[0], xmlResRep.ReporteGramatical[1], repgramtxt2) + "}",
+                repcsttxt: "digraph G {" + crearTextoGraphvizCST(xmlResRep.ReporteCST, repcsttxt2) + "}",
+                repTablaSimbolos: "digraph G {"+crearTextoGraphvizTablaSimbolos(crearTablaSimbolos(entornoGlobal,TablaSimbolos,"Global"),repTablaSimbolos2)+"}"
             })
         } else {
             this.setState({
-                repErrorXML: "digraph G {" + crearTextoReporteErrorXML(listaErrores,this.state.repErrorXML) + "}"
+                repErrorXML: "digraph G {" + crearTextoReporteErrorXML(listaErrores,repErrorXML2) + "}"
             })
         }
 
@@ -61,20 +65,28 @@ export default class Main extends Component {
         let ast;
         let listaErrores;
         let TablaSimbolos = [];
+
+        let repcsttxt2 = '';
+        let repgramtxt2 = '';
+        let repErrorXML2 = '';
+        let repTablaSimbolos2 = '';
+
         const result = parserXmlDesc.parse(this.state.xml)
         ast = result.ast;
         listaErrores = result.listaErrores;
+
+
         let entornoGlobal = new Entorno('Global','',0, 0,[],ast);
         if (listaErrores.length === 0) {
             const xmlResRep = parserReportDesc.parse(this.state.xml);
             this.setState({
-                repgramtxt: "digraph G {" + crearTextoGraphvizRepGram(xmlResRep.ReporteGramatical[0], xmlResRep.ReporteGramatical[1], this.state.repcsttxt) + "}",
-                repcsttxt: "digraph G {" + crearTextoGraphvizCST(xmlResRep.ReporteCST, this.state.repcsttxt) + "}",
-                repTablaSimbolos: "digraph G {"+crearTextoGraphvizTablaSimbolos(crearTablaSimbolos(entornoGlobal,TablaSimbolos,"Global"),this.state.repTablaSimbolos)+"}"
+                repgramtxt: "digraph G {" + crearTextoGraphvizRepGram(xmlResRep.ReporteGramatical[0], xmlResRep.ReporteGramatical[1], repgramtxt2) + "}",
+                repcsttxt: "digraph G {" + crearTextoGraphvizCST(xmlResRep.ReporteCST, repcsttxt2) + "}",
+                repTablaSimbolos: "digraph G {"+crearTextoGraphvizTablaSimbolos(crearTablaSimbolos(entornoGlobal,TablaSimbolos,"Global"),repTablaSimbolos2)+"}"
             })
         } else {
             this.setState({
-                repErrorXML: "digraph G {" + crearTextoReporteErrorXML(listaErrores,this.state.repErrorXML) + "}"
+                repErrorXML: "digraph G {" + crearTextoReporteErrorXML(listaErrores,repErrorXML2) + "}"
             })
         }
     }
@@ -82,10 +94,11 @@ export default class Main extends Component {
     
 
     handleFileChange = file => {
+        
         const reader = new FileReader();
         reader.readAsText(file);
         reader.onload = (e: any) => {
-
+            //console.log(e.target.result)
             try {
                 this.setState({
                     xml: e.target.result
@@ -132,6 +145,7 @@ export default class Main extends Component {
                             <FilePicker maxSize={2} onChange={this.handleFileChange} onError={errMsg => console.log(errMsg)}>
                                 <Button variant="link">Open File</Button>
                             </FilePicker>
+                            <Button variant="link">Clean</Button>
                         </Nav>
                     </Navbar.Collapse>
                 </Navbar>
@@ -142,7 +156,7 @@ export default class Main extends Component {
                             <Form.Control
                                 type="text"
                                 placeholder="Insert your commands here"
-                                defaultValue={this.state.xpath}
+                                value={this.state.xpath}
                                 onChange={(e: any) => {
                                     this.setState({
                                         xpath: e.target.value
@@ -157,7 +171,7 @@ export default class Main extends Component {
                         </Col>
                     </Row>
                     <br />
-                    <Form.Control as="textarea" rows={15} defaultValue={this.state.xml} onChange={(e: any) => {
+                    <Form.Control as="textarea" rows={15} value={this.state.xml} onChange={(e: any) => {
                         this.setState({
                             xml: e.target.value
                         })
@@ -187,7 +201,7 @@ export default class Main extends Component {
 
 
                 <div className="mt-3 px-5">
-                    <Form.Control as="textarea" rows={6} defaultValue={this.state.consoleResult} />
+                    <Form.Control as="textarea" rows={6} value={this.state.consoleResult} />
                 </div>
             </>
         )
