@@ -6,10 +6,11 @@ import { Graphviz } from 'graphviz-react';
 import { crearTextoReporteErrorXML } from "../xmlAST/ClaseError";
 import { crearTablaSimbolos, crearTextoGraphvizTablaSimbolos, SimboloTabla } from "../Reportes/SimboloTabla";
 import { Entorno } from '../xmlAST/Entorno';
-const parser = require('../Grammar/xmlGrammar')
-const parserXmlDesc = require('../Grammar/xmlGrammarDesc')
-const parserReport = require('../Reportes/xmlReport')
-const parserReportDesc = require('../Reportes/xmlReportDesc')
+const parser = require('../Grammar/xmlGrammar');
+const parserXmlDesc = require('../Grammar/xmlGrammarDesc');
+const parserReport = require('../Reportes/xmlReport');
+const parserReportDesc = require('../Reportes/xmlReportDesc');
+const parseXPATH = require('../Grammar/XPATHparser');
 
 export default class Main extends Component {
 
@@ -36,14 +37,59 @@ export default class Main extends Component {
         let repTablaSimbolos2 = '';
 
 
-        const result = parser.parse(this.state.xml)
+        const result = parser.parse(this.state.xml/*`<?xml version="1.0" encoding="UTF-8"?>
+        <biblioteca>
+          <libro>
+            <titulo>La vida está en otra parte</titulo>
+            <autor>Milan Kundera</autor>
+            <fechaPublicacion año="1973"/>
+          </libro>
+          <libro>
+            <titulo>Pantaleón y las visitadoras</titulo>
+            <autor fechaNacimiento="28/03/1936">Mario Vargas Llosa</autor>
+            <fechaPublicacion año="1973"/>
+          </libro>
+          <libro>
+            <titulo>Conversación en la catedral</titulo>
+            <autor fechaNacimiento="28/03/1936">Mario Vargas Llosa</autor>
+            <fechaPublicacion año="1969"/>
+          </libro>
+        </biblioteca>`*/)
         ast = result.ast;
         listaErrores = result.listaErrores;
 
         let entornoGlobal = new Entorno('Global', '', 0, 0, [], ast);
+        try{
+            const querys = parseXPATH.parse(this.state.xpath/*'/biblioteca'*/)
+            var erroresSemanticos:string[] = [];
+            var salida = "";
 
-        console.log(ast)
-        console.log(listaErrores)
+            for (const query of querys) {
+                try {
+                    salida += query.execute(ast[0]).value;
+
+                } catch(error){
+                    erroresSemanticos.push(error)
+                }
+            }
+            console.log(salida);
+            console.log();
+            console.log();
+            console.log();
+            console.log();
+
+            this.setState({
+                consoleResult : salida
+            });
+
+        }catch(error){
+            console.log(error);
+        }
+
+
+        console.log(ast);
+        console.log(listaErrores);
+        
 
 
         if (listaErrores.length === 0) {

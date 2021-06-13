@@ -21,25 +21,24 @@ export class Entorno{
 
         var L_atrubitos : Simbolo[] = []; //          
 
-        this.listaSimbolos.forEach(Simbolo => {
+        for (const Simbolo of this.listaSimbolos) {
             
-            if (Simbolo.identificador = idAtrubito){
+            if (Simbolo.identificador === idAtrubito){
                 L_atrubitos.push(Simbolo)
             }
-        });
+        }
 
         return L_atrubitos;
     }
 
     public getAtributo(idAtrubito: string) : Simbolo | null{
 
-        this.listaSimbolos.forEach(Simbolo => {
-            
-            if (Simbolo.identificador = idAtrubito){
+        for (const Simbolo of this.listaSimbolos) {
+            if (Simbolo.identificador === idAtrubito){
                 return Simbolo;
             }
-        });
-
+        }
+        
         return null;
     }
 
