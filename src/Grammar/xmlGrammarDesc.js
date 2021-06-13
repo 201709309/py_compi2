@@ -98,7 +98,7 @@ case 2:
     
 break;
 case 3:
-$$[$0-1].push($$[$0]); this.$ = $$[$0-1]; 
+$$[$0].push($$[$0-1]); this.$ = $$[$0]; 
 break;
 case 4:
 this.$ = [$$[$0-1]]; 
