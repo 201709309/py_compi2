@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import { crearTextoGraphvizCST, crearTextoGraphvizRepGram } from "../Reportes/NodoCST";
 import { FilePicker } from 'react-file-picker';
-import { Nav, Navbar, Form, Button, Row, Col } from 'react-bootstrap';
+import { Nav, Navbar, Form, Button, Row, Col, NavDropdown } from 'react-bootstrap';
 import { Graphviz } from 'graphviz-react';
-import {crearTextoReporteErrorXML} from "../xmlAST/ClaseError";
-import {crearTablaSimbolos,crearTextoGraphvizTablaSimbolos, SimboloTabla} from "../Reportes/SimboloTabla";
+import { crearTextoReporteErrorXML } from "../xmlAST/ClaseError";
+import { crearTablaSimbolos, crearTextoGraphvizTablaSimbolos, SimboloTabla } from "../Reportes/SimboloTabla";
 import { Entorno } from '../xmlAST/Entorno';
 const parser = require('../Grammar/xmlGrammar')
 const parserXmlDesc = require('../Grammar/xmlGrammarDesc')
@@ -40,7 +40,7 @@ export default class Main extends Component {
         ast = result.ast;
         listaErrores = result.listaErrores;
 
-        let entornoGlobal = new Entorno('Global','',0, 0,[],ast);
+        let entornoGlobal = new Entorno('Global', '', 0, 0, [], ast);
 
         console.log(ast)
         console.log(listaErrores)
@@ -51,11 +51,11 @@ export default class Main extends Component {
             this.setState({
                 repgramtxt: "digraph G {" + crearTextoGraphvizRepGram(xmlResRep.ReporteGramatical[0], xmlResRep.ReporteGramatical[1], repgramtxt2) + "}",
                 repcsttxt: "digraph G {" + crearTextoGraphvizCST(xmlResRep.ReporteCST, repcsttxt2) + "}",
-                repTablaSimbolos: "digraph G {"+crearTextoGraphvizTablaSimbolos(crearTablaSimbolos(entornoGlobal,TablaSimbolos,"Global"),repTablaSimbolos2)+"}"
+                repTablaSimbolos: "digraph G {" + crearTextoGraphvizTablaSimbolos(crearTablaSimbolos(entornoGlobal, TablaSimbolos, "Global"), repTablaSimbolos2) + "}"
             })
         } else {
             this.setState({
-                repErrorXML: "digraph G {" + crearTextoReporteErrorXML(listaErrores,repErrorXML2) + "}"
+                repErrorXML: "digraph G {" + crearTextoReporteErrorXML(listaErrores, repErrorXML2) + "}"
             })
         }
 
@@ -76,25 +76,25 @@ export default class Main extends Component {
         listaErrores = result.listaErrores;
 
 
-        let entornoGlobal = new Entorno('Global','',0, 0,[],ast);
+        let entornoGlobal = new Entorno('Global', '', 0, 0, [], ast);
         if (listaErrores.length === 0) {
             const xmlResRep = parserReportDesc.parse(this.state.xml);
             this.setState({
                 repgramtxt: "digraph G {" + crearTextoGraphvizRepGram(xmlResRep.ReporteGramatical[0], xmlResRep.ReporteGramatical[1], repgramtxt2) + "}",
                 repcsttxt: "digraph G {" + crearTextoGraphvizCST(xmlResRep.ReporteCST, repcsttxt2) + "}",
-                repTablaSimbolos: "digraph G {"+crearTextoGraphvizTablaSimbolos(crearTablaSimbolos(entornoGlobal,TablaSimbolos,"Global"),repTablaSimbolos2)+"}"
+                repTablaSimbolos: "digraph G {" + crearTextoGraphvizTablaSimbolos(crearTablaSimbolos(entornoGlobal, TablaSimbolos, "Global"), repTablaSimbolos2) + "}"
             })
         } else {
             this.setState({
-                repErrorXML: "digraph G {" + crearTextoReporteErrorXML(listaErrores,repErrorXML2) + "}"
+                repErrorXML: "digraph G {" + crearTextoReporteErrorXML(listaErrores, repErrorXML2) + "}"
             })
         }
     }
 
-    
+
 
     handleFileChange = file => {
-        
+
         const reader = new FileReader();
         reader.readAsText(file);
         reader.onload = (e: any) => {
@@ -102,6 +102,22 @@ export default class Main extends Component {
             try {
                 this.setState({
                     xml: e.target.result
+                });
+            } catch (e) {
+                console.log(e);
+            }
+        };
+    };
+
+    handleFileChangeXpath = file => {
+
+        const reader = new FileReader();
+        reader.readAsText(file);
+        reader.onload = (e: any) => {
+            //console.log(e.target.result)
+            try {
+                this.setState({
+                    xpath: e.target.result
                 });
             } catch (e) {
                 console.log(e);
@@ -123,7 +139,7 @@ export default class Main extends Component {
             this.setState({
                 graphvizContent: this.state.repgramtxt
             })
-        }else if (e.target.value === "Reporte de errores XML") {
+        } else if (e.target.value === "Reporte de errores XML") {
             this.setState({
                 graphvizContent: this.state.repErrorXML
             })
@@ -142,10 +158,36 @@ export default class Main extends Component {
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="mr-auto">
-                            <FilePicker maxSize={2} onChange={this.handleFileChange} onError={errMsg => console.log(errMsg)}>
-                                <Button variant="link">Open File</Button>
-                            </FilePicker>
-                            <Button variant="link">Clean</Button>
+                            <NavDropdown title="Open File" id="navbarScrollingDropdown">
+                                <FilePicker maxSize={2} onChange={this.handleFileChangeXpath} onError={errMsg => console.log(errMsg)}>
+                                    <NavDropdown.Item >Xpath File</NavDropdown.Item>
+                                </FilePicker>
+                                <FilePicker maxSize={2} onChange={this.handleFileChange} onError={errMsg => console.log(errMsg)}>
+                                    <NavDropdown.Item >XML File</NavDropdown.Item>
+                                </FilePicker>
+                            </NavDropdown>
+                            <NavDropdown title="Clean" id="navbarScrollingDropdown">
+                                    <NavDropdown.Item onClick={() =>{
+                                        this.setState({
+                                            xpath  : ''
+                                        })
+                                    }} >Xpath</NavDropdown.Item>
+                                    <NavDropdown.Item onClick={() =>{
+                                        this.setState({
+                                            xml : ''
+                                        })
+                                    }} >XML</NavDropdown.Item>
+                            </NavDropdown>
+                            <NavDropdown title="Save" id="navbarScrollingDropdown">
+                                    <NavDropdown.Item onClick={() =>{
+                                        var fileDownload = require('js-file-download');
+                                        fileDownload(this.state.xpath, 'xpath.txt');
+                                    }} >Xpath</NavDropdown.Item>
+                                    <NavDropdown.Item onClick={() =>{
+                                        var fileDownload = require('js-file-download');
+                                        fileDownload(this.state.xml, 'xml.txt');
+                                    }} >XML</NavDropdown.Item>
+                            </NavDropdown>
                         </Nav>
                     </Navbar.Collapse>
                 </Navbar>
@@ -171,7 +213,7 @@ export default class Main extends Component {
                         </Col>
                     </Row>
                     <br />
-                    <Form.Control as="textarea" rows={15} value={this.state.xml} onChange={(e: any) => {
+                    <Form.Control as="textarea" placeholder="XML AREA" rows={15} value={this.state.xml} onChange={(e: any) => {
                         this.setState({
                             xml: e.target.value
                         })
@@ -192,17 +234,17 @@ export default class Main extends Component {
 
 
                 {
-                    this.state.graphvizContent !== '' ? (
-                        <div className="m-5  border border-primary">
-                            <Graphviz className="m-1 d-flex justify-content-center" dot={this.state.graphvizContent} options={{ height: 750, width: 1485, zoom: true }} />
-                        </div>
-                    ) : <div></div>
-                }
-
-
-                <div className="mt-3 px-5">
-                    <Form.Control as="textarea" rows={6} value={this.state.consoleResult} />
+            this.state.graphvizContent !== '' ? (
+                <div className="m-5  border border-primary">
+                    <Graphviz className="m-1 d-flex justify-content-center" dot={this.state.graphvizContent} options={{ height: 750, width: 1485, zoom: true }} />
                 </div>
+            ) : <div></div>
+        }
+
+
+        <div className="mt-3 px-5">
+            <Form.Control as="textarea" rows={6} value={this.state.consoleResult} readOnly />
+        </div>
             </>
         )
     }
