@@ -33,6 +33,7 @@ export class Path implements Expression{
 
         if (this.tipoPath === "sub"){
 
+            this.salida = [];
             this.getQuery(ent, 0, simboloPadre)
             return {value: this.salida, type: tipoPrimitivo.RESP};
 
@@ -72,8 +73,10 @@ export class Path implements Expression{
 
                         if (this.tipoPath === "sub"){
                             this.salida.push({value : simboloPadre.valor.replaceAll("\"",""), type: tipoPrimitivo.STRING}) ;
+                        }else {
+                            this.salida.push(simboloPadre.identificador + " = \"" + simboloPadre.valor.replaceAll("\"","") + "\"\n");
                         }
-                        this.salida.push(simboloPadre.identificador + " = \"" + simboloPadre.valor.replaceAll("\"","") + "\"\n");
+                        
                     }
                 }else{
                     throw new Error("Nose puede acceder a un atributo: " + this.L_Accesos[posActAcceso].id);
@@ -156,8 +159,9 @@ export class Path implements Expression{
                     
                     if (this.tipoPath === "sub"){
                         this.salida.push({value : atri.valor.replaceAll("\"",""), type: tipoPrimitivo.STRING}) ;
+                    }else{
+                        this.salida.push(atri.identificador + " = \"" + atri.valor.replaceAll("\"","") + "\"\n");
                     }
-                    this.salida.push(atri.identificador + " = \"" + atri.valor.replaceAll("\"","") + "\"\n");
                 }
             }
         }else {
@@ -168,8 +172,9 @@ export class Path implements Expression{
                    
                     if (this.tipoPath === "sub"){
                         this.salida.push({value : atri.valor.replaceAll("\"",""), type: tipoPrimitivo.STRING}) ;
+                    }else {
+                        this.salida.push(atri.identificador + " = \"" + atri.valor.replaceAll("\"","") + "\"\n");
                     }
-                    this.salida.push(atri.identificador + " = \"" + atri.valor.replaceAll("\"","") + "\"\n");
                 }
             }
         }
@@ -256,9 +261,16 @@ export class Path implements Expression{
         return true;
     } 
 
+
+    private getAbsoluteQuery (){
+
+        
+
+    }
+
     
-                      //                 P     3
-                    //   /biblio/libro/autor/ksdnf                    //id
+    //                 P     3
+    //   /biblio/libro/autor/ksdnf                    //id
 
     //entender construir nodos  
   
