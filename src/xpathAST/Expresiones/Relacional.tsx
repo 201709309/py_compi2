@@ -68,10 +68,10 @@ export class Relacional implements Expression{
     private validar(valorIzq : Retorno, valorDer: Retorno): boolean{
         
         if (this.tipoOperacion === operacionRelacional.IGUAL) {
-            const result = valorIzq.value == valorDer.value;
+            const result = valorIzq.value === valorDer.value;
             return result
         } else if (this.tipoOperacion === operacionRelacional.DIFERENCIACION) {
-            const result = valorIzq.value != valorDer.value;
+            const result = valorIzq.value !== valorDer.value;
             return result
         }else if (this.tipoOperacion === operacionRelacional.MENOR) { 
             const result = valorIzq.value < valorDer.value;
@@ -95,8 +95,8 @@ export class Relacional implements Expression{
         texto += "nodo" + this.line.toString() + "_" + this.column.toString() + "[label=\"" + this.sym.toString() + "\"];\n";
         texto = this.hijoIzq.GraficarAST(texto);
         texto = this.hijoDer.GraficarAST(texto);
-        texto += "nodo" + this.line.toString() + "_" + this.column.toString() + "->" + "nodo" + this.hijoIzq.line + "_" + this.hijoIzq.column.toString() + ";\n";
-        texto += "nodo" + this.line.toString() + "_" + this.column.toString() + "->" + "nodo" + this.hijoDer.line + "_" + this.hijoDer.column.toString() + ";\n";
+        texto += "nodo" + this.line.toString() + "_" + this.column.toString() + "->nodo" + this.hijoIzq.line + "_" + this.hijoIzq.column.toString() + ";\n";
+        texto += "nodo" + this.line.toString() + "_" + this.column.toString() + "->nodo" + this.hijoDer.line + "_" + this.hijoDer.column.toString() + ";\n";
         return texto;
     }
 }

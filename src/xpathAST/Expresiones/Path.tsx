@@ -262,24 +262,18 @@ export class Path implements Expression{
     } 
 
 
-    
-    
-    //                 P     3
-    //   /biblio/libro/autor/ksdnf                    //id
-
-    //entender construir nodos  
-  
-
 
     public GraficarAST(texto:string):string {
         if (this.tipoPath === "relativa") {
-            texto += "nodo" + this.line.toString() + "_" + this.column.toString() + "[label=\"" + "/" + "\"];\n";
-        } else {
-            texto += "nodo" + this.line.toString() + "_" + this.column.toString() + "[label=\"" + "//" + "\"];\n";
+            texto += "nodo" + this.line.toString() + "_" + this.column.toString() + "[label=\"/\"];\n";
+        } else if (this.tipoPath === "absoluta") {
+            texto += "nodo" + this.line.toString() + "_" + this.column.toString() + "[label=\"//\"];\n";
         }
         for (const key in this.L_Accesos) {
             texto = this.L_Accesos[key].GraficarAST(texto);
-            texto += "nodo" + this.line.toString() + "_" + this.column.toString() + "->" + "nodo" + this.L_Accesos[key].line + "_" + this.L_Accesos[key].column.toString() + ";\n";
+            if (this.line.toString() !== this.L_Accesos[key].line.toString() || this.column.toString() !== this.L_Accesos[key].column.toString()) {
+                texto += "nodo" + this.line.toString() + "_" + this.column.toString() + "->" + "nodo" + this.L_Accesos[key].line.toString() + "_" + this.L_Accesos[key].column.toString() + ";\n";
+            }
         }
         return texto;
     }

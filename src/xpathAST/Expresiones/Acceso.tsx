@@ -21,7 +21,7 @@ export class Acceso {
         texto += "nodo" + this.line.toString() + "_" + this.column.toString() + "[label=\"" + this.id.toString() + "\"];\n";
         for (const key in this.predicados) {
             texto = this.predicados[key].GraficarAST(texto);
-            texto += "nodo" + this.line.toString() + "_" + this.column.toString() + "->" + "nodo" + this.predicados[key].line + "_" + this.predicados[key].column.toString() + ";\n";
+            texto += "nodo" + this.line.toString() + "_" + this.column.toString() + "->" + "nodo" + this.predicados[key].line.toString() + "_" + this.predicados[key].column.toString() + ";\n";
         }
         return texto;
     }
