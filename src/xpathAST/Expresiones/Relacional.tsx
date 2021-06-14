@@ -29,44 +29,47 @@ export class Relacional implements Expression{
         let valorIzq = this.hijoIzq.execute(ent, simboloPadre);
         let valorDer = this.hijoDer.execute(ent, simboloPadre);
 
-        if (valorIzq.type === valorDer.type && (this.tipoOperacion === operacionRelacional.IGUAL||this.tipoOperacion === operacionRelacional.DIFERENCIACION)){
+        if (valorIzq.type === tipoPrimitivo.RESP && valorDer.type === tipoPrimitivo.RESP) {
 
+            for (const valIzq of valorIzq.value ) {
+                for (const valDer of valorDer.value) {
+                    
+                    if (this.validar(valIzq, valDer)){
+                        return {value: true, type: tipoPrimitivo.BOOL}
+                    }
+                }
+            }
+            return {value: false , type : tipoPrimitivo.BOOL}; 
             
-
-            if (this.tipoOperacion === operacionRelacional.IGUAL) {
-                const result = valorIzq.value == valorDer.value;
-                return { value: result, type: tipoPrimitivo.BOOL };
-            } else if (this.tipoOperacion === operacionRelacional.DIFERENCIACION) {
-                const result = valorIzq.value != valorDer.value;
-                return { value: result, type: tipoPrimitivo.BOOL };
-            }else {
-                return { value: null , type: tipoPrimitivo.error };
-            }
-
-
-        }else if (valorIzq.type === tipoPrimitivo.NUMBER && valorDer.type === tipoPrimitivo.NUMBER ){
-
-            if (this.tipoOperacion === operacionRelacional.MENOR) { 
-                const result = valorIzq.value < valorDer.value;
-                return { value: result, type: tipoPrimitivo.BOOL };
-            } else if (this.tipoOperacion === operacionRelacional.MENORIGUAL) {
-                const result = valorIzq.value <= valorDer.value;
-                return { value: result, type: tipoPrimitivo.BOOL };
-            } else if (this.tipoOperacion === operacionRelacional.MAYOR) {
-                const result = valorIzq.value > valorDer.value;
-                return { value: result, type: tipoPrimitivo.BOOL };
-            } else if (this.tipoOperacion === operacionRelacional.MAYORIGUAL) {
-                const result = valorIzq.value >= valorDer.value;
-                return { value: result, type: tipoPrimitivo.BOOL };;
-            }
-            else {
-                throw new Error("Error Semantico: no se reconoce el operador  " + this.sym + ", Linea: "+this.line+"Column: "+this.column);
-            }
-        }
-        else {
-            throw new Error("Error Semantico: incompatibilidad de tipos: varlor 1: "+valorDer+", valor2 "+valorDer+"Linea: "+this.line+"Column: "+this.column);
+        }else {
+            return { value: this.validar(valorIzq, valorDer), type: tipoPrimitivo.BOOL }
         }
 
     }
 
+    private validar(valorIzq : Retorno, valorDer: Retorno ): boolean{
+        
+        if (this.tipoOperacion === operacionRelacional.IGUAL) {
+            const result = valorIzq.value == valorDer.value;
+            return result
+        } else if (this.tipoOperacion === operacionRelacional.DIFERENCIACION) {
+            const result = valorIzq.value != valorDer.value;
+            return result
+        }else if (this.tipoOperacion === operacionRelacional.MENOR) { 
+            const result = valorIzq.value < valorDer.value;
+            return result;
+        } else if (this.tipoOperacion === operacionRelacional.MENORIGUAL) {
+            const result = valorIzq.value <= valorDer.value;
+            return result;
+        } else if (this.tipoOperacion === operacionRelacional.MAYOR) {
+            const result = valorIzq.value > valorDer.value;
+            return result
+        } else if (this.tipoOperacion === operacionRelacional.MAYORIGUAL) {
+            const result = valorIzq.value >= valorDer.value;
+            return result;
+        }
+        else {
+            throw new Error("Error Semantico: no se reconoce el operador  " + this.sym + ", Linea: "+this.line+"Column: "+this.column);
+        }
+    }
 }
