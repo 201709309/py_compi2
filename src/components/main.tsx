@@ -26,9 +26,8 @@ export default class Main extends Component {
     }
 
     parse = () => {
-
         let ast;
-        let listaErrores;
+        let listaErrores = [];
         let TablaSimbolos = [];
 
         let repcsttxt2 = '';
@@ -38,89 +37,76 @@ export default class Main extends Component {
 
         let texto = "";
         let indice = 1;
-        const result = parser.parse(this.state.xml/*`<?xml version="1.0" encoding="UTF-8"?>
-        <biblioteca>
-          <libro>
-            <titulo>La vida está en otra parte</titulo>
-            <autor>Milan Kundera</autor>
-            <fechaPublicacion año="1973"/>
-          </libro>
-          <libro>
-            <titulo>Pantaleón y las visitadoras</titulo>
-            <autor fechaNacimiento="28/03/1936">Mario Vargas Llosa</autor>
-            <fechaPublicacion año="1973"/>
-          </libro>
-          <libro>
-            <titulo>Conversación en la catedral</titulo>
-            <autor fechaNacimiento="28/03/1936">Mario Vargas Llosa</autor>
-            <fechaPublicacion año="1969"/>
-          </libro>
-        </biblioteca>`*/)
-        ast = result.ast;
-        listaErrores = result.listaErrores;
-
         let entornoGlobal = new Entorno('Global', '', 0, 0, [], ast);
-        try{
-            const querys = parseXPATH.parse(this.state.xpath/*'/biblioteca'*/)
+        let encoding = "";
+        try {
+            const result = parser.parse(this.state.xml)
+            ast = result.ast;
+            encoding = result.encoding;
+            listaErrores = result.listaErrores;
+
+
+            if (listaErrores.length === 0) {
+                var xmlResRep = parserReport.parse(this.state.xml);
+                this.setState({
+                    repgramtxt: "digraph G {" + crearTextoGraphvizRepGram(xmlResRep.ReporteGramatical[0], xmlResRep.ReporteGramatical[1], repgramtxt2) + "}",
+                    repcsttxt: "digraph G {" + crearTextoGraphvizCST(xmlResRep.ReporteCST, repcsttxt2) + "}",
+                    repTablaSimbolos: "digraph G {" + crearTextoGraphvizTablaSimbolos(crearTablaSimbolos(entornoGlobal, TablaSimbolos, "Global"), repTablaSimbolos2) + "}"
+                })
+            } else {
+                this.setState({
+                    repErrorXML: "digraph G {" + crearTextoReporteErrorXML(listaErrores, repErrorXML2) + "}"
+                })
+            }
+        } catch (error) {
+            console.log(error)
+            alert("Irrecoverable Xml Syntax Error")
+        }
+
+
+        console.log(ast);
+        console.log(encoding)
+        console.log(listaErrores);
+
+
+        try {
+            const querys = parseXPATH.parse(this.state.xpath)
             for (const key in querys) {
                 texto = querys[key].GraficarAST(texto);
                 if (indice < querys.length) {
-                    texto += "nodo" + key.toString() + "[label=\"" + "|" + "\"];\n"
-                    texto += "nodo" + querys[key].line.toString() + "_" + querys[key].column.toString()  + "->" +  "nodo" + key.toString() + ";\n";
-                    texto += "nodo" + key.toString() + "->" +"nodo" + querys[indice].line.toString() + "_" + querys[indice].column.toString() + ";\n";
+                    texto += "nodo" + key.toString() + "[label=\"|\"];\n"
+                    texto += "nodo" + querys[key].line.toString() + "_" + querys[key].column.toString() + "->nodo" + key.toString() + ";\n";
+                    texto += "nodo" + key.toString() + "->nodo" + querys[indice].line.toString() + "_" + querys[indice].column.toString() + ";\n";
                     indice++;
                 }
             }
-            console.log(texto);
-            var erroresSemanticos:string[] = [];
+            //console.log(texto);
+            var erroresSemanticos: string[] = [];
             var salida = "";
 
             for (const query of querys) {
                 try {
                     salida += query.execute(ast[0]).value;
 
-                } catch(error){
+                } catch (error) {
                     erroresSemanticos.push(error)
                 }
             }
-            console.log(salida);
-            console.log();
-            console.log();
-            console.log();
-            console.log();
+            //console.log(salida);
 
             this.setState({
-                consoleResult : salida
+                consoleResult: salida
             });
 
-        }catch(error){
+        } catch (error) {
             console.log(error);
-        }
-
-
-        console.log(ast);
-        console.log(listaErrores);
-        
-
-
-        if (listaErrores.length === 0) {
-            const xmlResRep = parserReport.parse(this.state.xml);
-            this.setState({
-                repgramtxt: "digraph G {" + crearTextoGraphvizRepGram(xmlResRep.ReporteGramatical[0], xmlResRep.ReporteGramatical[1], repgramtxt2) + "}",
-                repcsttxt: "digraph G {" + crearTextoGraphvizCST(xmlResRep.ReporteCST, repcsttxt2) + "}",
-                repTablaSimbolos: "digraph G {" + crearTextoGraphvizTablaSimbolos(crearTablaSimbolos(entornoGlobal, TablaSimbolos, "Global"), repTablaSimbolos2) + "}"
-            })
-        } else {
-            this.setState({
-                repErrorXML: "digraph G {" + crearTextoReporteErrorXML(listaErrores, repErrorXML2) + "}"
-            })
         }
 
     }
 
     parseDesc = () => {
         let ast;
-        let listaErrores;
+        let listaErrores = [];
         let TablaSimbolos = [];
 
         let repcsttxt2 = '';
@@ -128,27 +114,72 @@ export default class Main extends Component {
         let repErrorXML2 = '';
         let repTablaSimbolos2 = '';
 
-        const result = parserXmlDesc.parse(this.state.xml)
-        ast = result.ast;
-        listaErrores = result.listaErrores;
+        let texto = "";
+        let indice = 1;
+        let entornoGlobal = new Entorno('Global', '', 0, 0, [], ast);
+
+        try {
+            const result = parserXmlDesc.parse(this.state.xml)
+            ast = result.ast;
+            listaErrores = result.listaErrores;
+
+            if (listaErrores.length === 0) {
+                var xmlResRep = parserReportDesc.parse(this.state.xml);
+                this.setState({
+                    repgramtxt: "digraph G {" + crearTextoGraphvizRepGram(xmlResRep.ReporteGramatical[0], xmlResRep.ReporteGramatical[1], repgramtxt2) + "}",
+                    repcsttxt: "digraph G {" + crearTextoGraphvizCST(xmlResRep.ReporteCST, repcsttxt2) + "}",
+                    repTablaSimbolos: "digraph G {" + crearTextoGraphvizTablaSimbolos(crearTablaSimbolos(entornoGlobal, TablaSimbolos, "Global"), repTablaSimbolos2) + "}"
+                })
+            } else {
+                this.setState({
+                    repErrorXML: "digraph G {" + crearTextoReporteErrorXML(listaErrores, repErrorXML2) + "}"
+                })
+            }
+        } catch (error) {
+            console.log(error)
+            alert("Irrecoverable Xml Syntax Error")
+        }
+
 
         console.log(ast)
         console.log(listaErrores)
 
 
-        let entornoGlobal = new Entorno('Global', '', 0, 0, [], ast);
-        if (listaErrores.length === 0) {
-            const xmlResRep = parserReportDesc.parse(this.state.xml);
+
+        try {
+            const querys = parseXPATH.parse(this.state.xpath)
+            for (const key in querys) {
+                texto = querys[key].GraficarAST(texto);
+                if (indice < querys.length) {
+                    texto += "nodo" + key.toString() + "[label=\"|\"];\n"
+                    texto += "nodo" + querys[key].line.toString() + "_" + querys[key].column.toString() + "->nodo" + key.toString() + ";\n";
+                    texto += "nodo" + key.toString() + "->nodo" + querys[indice].line.toString() + "_" + querys[indice].column.toString() + ";\n";
+                    indice++;
+                }
+            }
+            //console.log(texto);
+            var erroresSemanticos: string[] = [];
+            var salida = "";
+
+            for (const query of querys) {
+                try {
+                    salida += query.execute(ast[0]).value;
+
+                } catch (error) {
+                    erroresSemanticos.push(error)
+                }
+            }
+            //console.log(salida);
+
             this.setState({
-                repgramtxt: "digraph G {" + crearTextoGraphvizRepGram(xmlResRep.ReporteGramatical[0], xmlResRep.ReporteGramatical[1], repgramtxt2) + "}",
-                repcsttxt: "digraph G {" + crearTextoGraphvizCST(xmlResRep.ReporteCST, repcsttxt2) + "}",
-                repTablaSimbolos: "digraph G {" + crearTextoGraphvizTablaSimbolos(crearTablaSimbolos(entornoGlobal, TablaSimbolos, "Global"), repTablaSimbolos2) + "}"
-            })
-        } else {
-            this.setState({
-                repErrorXML: "digraph G {" + crearTextoReporteErrorXML(listaErrores, repErrorXML2) + "}"
-            })
+                consoleResult: salida
+            });
+
+        } catch (error) {
+            console.log(error);
         }
+
+        
     }
 
 
@@ -158,7 +189,6 @@ export default class Main extends Component {
         const reader = new FileReader();
         reader.readAsText(file);
         reader.onload = (e: any) => {
-            //console.log(e.target.result)
             try {
                 this.setState({
                     xml: e.target.result
@@ -227,26 +257,26 @@ export default class Main extends Component {
                                 </FilePicker>
                             </NavDropdown>
                             <NavDropdown title="Clean" id="navbarScrollingDropdown">
-                                    <NavDropdown.Item onClick={() =>{
-                                        this.setState({
-                                            xpath  : ''
-                                        })
-                                    }} >Xpath</NavDropdown.Item>
-                                    <NavDropdown.Item onClick={() =>{
-                                        this.setState({
-                                            xml : ''
-                                        })
-                                    }} >XML</NavDropdown.Item>
+                                <NavDropdown.Item onClick={() => {
+                                    this.setState({
+                                        xpath: ''
+                                    })
+                                }} >Xpath</NavDropdown.Item>
+                                <NavDropdown.Item onClick={() => {
+                                    this.setState({
+                                        xml: ''
+                                    })
+                                }} >XML</NavDropdown.Item>
                             </NavDropdown>
                             <NavDropdown title="Save" id="navbarScrollingDropdown">
-                                    <NavDropdown.Item onClick={() =>{
-                                        var fileDownload = require('js-file-download');
-                                        fileDownload(this.state.xpath, 'xpath.txt');
-                                    }} >Xpath</NavDropdown.Item>
-                                    <NavDropdown.Item onClick={() =>{
-                                        var fileDownload = require('js-file-download');
-                                        fileDownload(this.state.xml, 'xml.txt');
-                                    }} >XML</NavDropdown.Item>
+                                <NavDropdown.Item onClick={() => {
+                                    var fileDownload = require('js-file-download');
+                                    fileDownload(this.state.xpath, 'xpath.txt');
+                                }} >Xpath</NavDropdown.Item>
+                                <NavDropdown.Item onClick={() => {
+                                    var fileDownload = require('js-file-download');
+                                    fileDownload(this.state.xml, 'xml.txt');
+                                }} >XML</NavDropdown.Item>
                             </NavDropdown>
                         </Nav>
                     </Navbar.Collapse>
@@ -294,17 +324,17 @@ export default class Main extends Component {
 
 
                 {
-            this.state.graphvizContent !== '' ? (
-                <div className="m-5  border border-primary">
-                    <Graphviz className="m-1 d-flex justify-content-center" dot={this.state.graphvizContent} options={{ height: 750, width: 1485, zoom: true }} />
+                    this.state.graphvizContent !== '' ? (
+                        <div className="m-5  border border-primary">
+                            <Graphviz className="m-1 d-flex justify-content-center" dot={this.state.graphvizContent} options={{ height: 750, width: 1485, zoom: true }} />
+                        </div>
+                    ) : <div></div>
+                }
+
+
+                <div className="mt-3 px-5">
+                    <Form.Control as="textarea" rows={6} value={this.state.consoleResult} readOnly />
                 </div>
-            ) : <div></div>
-        }
-
-
-        <div className="mt-3 px-5">
-            <Form.Control as="textarea" rows={6} value={this.state.consoleResult} readOnly />
-        </div>
             </>
         )
     }

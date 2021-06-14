@@ -62,8 +62,8 @@ export class Logica implements Expression{
         texto += "nodo" + this.line.toString() + "_" + this.column.toString() + "[label=\"" + this.sym.toString() + "\"];\n";
         texto = this.hijoIzq.GraficarAST(texto);
         texto = this.hijoDer.GraficarAST(texto);
-        texto += "nodo" + this.line.toString() + "_" + this.column.toString() + "->" + "nodo" + this.hijoIzq.line + "_" + this.hijoIzq.column.toString() + ";\n";
-        texto += "nodo" + this.line.toString() + "_" + this.column.toString() + "->" + "nodo" + this.hijoDer.line + "_" + this.hijoDer.column.toString() + ";\n";
+        texto += "nodo" + this.line.toString() + "_" + this.column.toString() + "->nodo" + this.hijoIzq.line + "_" + this.hijoIzq.column.toString() + ";\n";
+        texto += "nodo" + this.line.toString() + "_" + this.column.toString() + "->nodo" + this.hijoDer.line + "_" + this.hijoDer.column.toString() + ";\n";
         return texto;
     }
 
