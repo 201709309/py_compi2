@@ -121,6 +121,9 @@ export default class Main extends Component {
         ast = result.ast;
         listaErrores = result.listaErrores;
 
+        console.log(ast)
+        console.log(listaErrores)
+
 
         let entornoGlobal = new Entorno('Global', '', 0, 0, [], ast);
         if (listaErrores.length === 0) {

@@ -65,7 +65,7 @@ INIT
     ;
 
 INTRO   
-    :  NODO INTRO               {$1.push($2); $$ = $1; }
+    :  NODO INTRO               {$2.push($1); $$ = $2; }
     |  NODO CHECK               {$$ = [$1]; }
     ;
 
