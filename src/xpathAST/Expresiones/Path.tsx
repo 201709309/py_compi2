@@ -61,7 +61,7 @@ export class Path implements Expression{
         return {value: this.construirSalida(), type: tipoPrimitivo.STRING};
     }
 
-    public getQuery(entPadre: Entorno, posActAcceso: number, simboloPadre?:Simbolo ) {
+    public getQuery(entPadre: Entorno, posActAcceso: number, simboloPadre?:Simbolo) {
         
         if(this.L_Accesos[posActAcceso].tipoAcceso === "actual"){
            
@@ -262,12 +262,7 @@ export class Path implements Expression{
     } 
 
 
-    private getAbsoluteQuery (){
-
-        
-
-    }
-
+    
     
     //                 P     3
     //   /biblio/libro/autor/ksdnf                    //id
