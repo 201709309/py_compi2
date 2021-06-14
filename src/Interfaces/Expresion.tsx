@@ -13,7 +13,7 @@ export interface  Expression {
     column: Number;
 
     execute(environment: Entorno, simboloPadre?:Simbolo) : Retorno;
-    //graficaAST(salida: string):String;
+    GraficarAST(texto:string):string;
 
 }
 
