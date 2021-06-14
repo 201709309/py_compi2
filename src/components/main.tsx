@@ -22,6 +22,7 @@ export default class Main extends Component {
         repgramtxt: '',
         repErrorXML: '',
         repTablaSimbolos: '',
+        repAstXpath: '',
         graphvizContent: ''
     }
 
@@ -71,6 +72,7 @@ export default class Main extends Component {
 
         try {
             const querys = parseXPATH.parse(this.state.xpath)
+            console.log(querys)
             for (const key in querys) {
                 texto = querys[key].GraficarAST(texto);
                 if (indice < querys.length) {
@@ -80,7 +82,13 @@ export default class Main extends Component {
                     indice++;
                 }
             }
-            //console.log(texto);
+
+
+            console.log(texto);
+
+            this.setState({
+                repAstXpath: "digraph G {" +texto +"}",
+            });
             var erroresSemanticos: string[] = [];
             var salida = "";
 
@@ -92,10 +100,10 @@ export default class Main extends Component {
                     erroresSemanticos.push(error)
                 }
             }
-            //console.log(salida);
+            console.log(salida);
 
             this.setState({
-                consoleResult: salida
+                consoleResult: salida,
             });
 
         } catch (error) {
@@ -157,7 +165,12 @@ export default class Main extends Component {
                     indice++;
                 }
             }
-            //console.log(texto);
+            console.log(texto);
+
+            this.setState({
+                repAstXpath: "digraph G {" +texto +"}",
+            });
+
             var erroresSemanticos: string[] = [];
             var salida = "";
 
@@ -236,6 +249,10 @@ export default class Main extends Component {
         } else if (e.target.value === "Tabla de simbolos XML") {
             this.setState({
                 graphvizContent: this.state.repTablaSimbolos
+            })
+        } else if (e.target.value === "AST Xpath") {
+            this.setState({
+                graphvizContent: this.state.repAstXpath
             })
         }
     }
@@ -318,6 +335,7 @@ export default class Main extends Component {
                             <option>Reporte de errores XML</option>
                             <option>CST XML</option>
                             <option>Reporte gramatical XML</option>
+                            <option>AST Xpath</option>
                         </Form.Control>
                     </Form.Group>
                 </div>
