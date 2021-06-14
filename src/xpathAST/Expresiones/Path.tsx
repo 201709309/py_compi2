@@ -3,7 +3,6 @@ import { Acceso} from './Acceso';
 import { Expression, Retorno } from "../../Interfaces/Expresion";
 import { tipoPrimitivo } from './Primitivo';
 import { Simbolo } from '../../xmlAST/Simbolo';
-import { type } from 'os';
 
 export class Path implements Expression{
 
@@ -63,7 +62,7 @@ export class Path implements Expression{
 
     public getQuery(entPadre: Entorno, posActAcceso: number, simboloPadre?:Simbolo ) {
         
-         if(this.L_Accesos[posActAcceso].tipoAcceso === "actual"){
+        if(this.L_Accesos[posActAcceso].tipoAcceso === "actual"){
            
             if (simboloPadre !== undefined){
 
@@ -83,22 +82,22 @@ export class Path implements Expression{
 
                 if(entPadre.listaEntornos.length > 0){
                         
-                    if(this.L_Accesos.length >  1){ //verificamos si la consutla nos dice que accediendo a descendientes
-                        this.getQuery(entPadre, 1, simboloPadre); 
+                    if(this.L_Accesos.length >  posActAcceso + 1){ //verificamos si la consutla nos dice que accediendo a descendientes
+                        this.getQuery(entPadre, posActAcceso + 1, simboloPadre); 
                     }else{
-                        this.salida.push(this.construirNodos(entPadre, ""))
+                        this.construirNodos(entPadre, "")
                     }
                 }
             }
-
-        }else {
+                
+        }else {                  
            
             if(simboloPadre === undefined){
 
                 if (this.L_Accesos[posActAcceso].tipoAcceso === "todosAtributos"||this.L_Accesos[posActAcceso].tipoAcceso === "atributo"){
                     
                     if (this.L_Accesos.length === posActAcceso + 1){
-                        this.salida.push(this.construirAtributos(entPadre, posActAcceso));
+                        this.construirAtributos(entPadre, posActAcceso);
                     }else {
                         throw new Error("Nose puede acceder a un atributo: " + this.L_Accesos[posActAcceso].id);
                     }
@@ -106,14 +105,14 @@ export class Path implements Expression{
 
                     if(entPadre.listaEntornos.length > 0){
                         
-                        for (const entActual of entPadre.listaEntornos) {
+                        for (const entActual of entPadre.listaEntornos) { 
                             
                             if (this.validarPredicadosNodos(entPadre, entActual, posActAcceso)){
             
-                                if(this.L_Accesos.length >  1){ //verificamos si la consutla nos dice que accediendo a descendientes
-                                    this.getQuery(entActual, 1, simboloPadre); 
+                                if(this.L_Accesos.length > posActAcceso + 1){ //verificamos si la consutla nos dice que accediendo a descendientes
+                                    this.getQuery(entActual, posActAcceso + 1, simboloPadre); 
                                 }else{
-                                    this.salida.push(this.construirNodos(entActual, ""))
+                                    this.construirNodos(entActual, "")
                                 }
                             }
                         }
@@ -129,10 +128,10 @@ export class Path implements Expression{
             
                                 if (this.validarPredicadosNodos(entPadre, entActual, posActAcceso)){
             
-                                    if(this.L_Accesos.length >  1){ //verificamos si la consutla nos dice que accediendo a descendientes
-                                        this.getQuery(entActual, 1, simboloPadre); 
+                                    if(this.L_Accesos.length >  posActAcceso + 1){ //verificamos si la consutla nos dice que accediendo a descendientes
+                                        this.getQuery(entActual, posActAcceso + 1, simboloPadre); 
                                     }else{
-                                        this.salida.push(this.construirNodos(entActual, ""))
+                                        this.construirNodos(entActual, "")
                                     }
                                 }
                             }
@@ -193,25 +192,24 @@ export class Path implements Expression{
             var atributos = "";
 
             for (const atri of entPadre.listaSimbolos) {
-                atributos+= atri.identificador + "= \"" + atri.valor.replaceAll("\"","") + "\"  ";
+                atributos+= atri.identificador + " = \"" + atri.valor.replaceAll("\"","") + "\"  ";
             }
 
-            this.salida.push(tab +"<" + entPadre.identificador + " " + atributos);
-
             if(entPadre.listaEntornos.length === 0 && entPadre.texto === ''){
-                this.salida.push("/>\n")  ;
+                this.salida.push(tab +"<" + entPadre.identificador + " " + atributos + "/>\n");
             }
             else if(entPadre.listaEntornos.length > 0){
 
-                this.salida.push(">\n") ;
+                this.salida.push(tab +"<" + entPadre.identificador + " " + atributos + ">\n");
                 for (const entActual of entPadre.listaEntornos) {
-                    this.construirNodos(entActual, tab + "   ");
+                    this.construirNodos(entActual, tab + "   ");    //         //nombre  /biblio/libro//nombre             
                 }
                 this.salida.push(tab +"</" + entPadre.identificador + ">\n");
             
             } else{
-                this.salida.push(">" + entPadre.texto +"</" + entPadre.identificador + ">\n") ;
+                this.salida.push(tab +"<"+ entPadre.identificador +" "+ atributos+">"+entPadre.texto+"</"+entPadre.identificador+">\n");
             }
+
         }
     }
 
@@ -222,8 +220,8 @@ export class Path implements Expression{
             var result : Retorno = this.L_Accesos[posActAcceso].predicados[i].execute(entActual);
             if (result.type === tipoPrimitivo.NUMBER){
                 
-                if (result.type > entPadre.listaEntornos.length){
-                    if (entPadre.listaEntornos[result.value] !== entActual){
+                if (result.value - 1 > 0 && result.value - 1 < entPadre.listaEntornos.length){
+                    if (entPadre.listaEntornos[result.value - 1] !== entActual){
                         return false; 
                     }
                 }
@@ -241,10 +239,10 @@ export class Path implements Expression{
         for (let i = 0; i < this.L_Accesos[posActAcceso].predicados.length; i++) {
             
             var result : Retorno = this.L_Accesos[posActAcceso].predicados[i].execute(entPadre, simboloPadre);
-            if (result.type === tipoPrimitivo.NUMBER){
+            if (result.value === tipoPrimitivo.NUMBER){
                 
-                if (result.type > entPadre.listaSimbolos.length){
-                    if (entPadre.listaSimbolos[result.value] !== simboloPadre){
+                if (result.value - 1 > 0 && result.value - 1 < entPadre.listaEntornos.length){
+                    if (entPadre.listaSimbolos[result.value - 1] !== simboloPadre){
                         return false; 
                     }
                 }
@@ -257,5 +255,14 @@ export class Path implements Expression{
         }
         return true;
     } 
+
+    
+                      //                 P     3
+                    //   /biblio/libro/autor/ksdnf
+
+    //entender construir nodos  
+
+
+
 
 }

@@ -157,9 +157,9 @@ VALOR
     | scadena                   {$$ = new Primitivo(@1.first_line, @1.first_column, $1, tipoPrimitivo.STRING);}
     | number                    {$$ = new Primitivo(@1.first_line, @1.first_column, $1, tipoPrimitivo.NUMBER);} 
 //sub consultas
-    | LACCESOS                  {$1[0].setipoQuery('sub'); $$ = new Path(@1.first_line, @1.first_column, $1, 'sub');}
+    | LACCESOS                  {$1[0].setipoQuery('relativa'); $$ = new Path(@1.first_line, @1.first_column, $1, 'sub');}
     | '//' LACCESOS             {$2[0].setipoQuery('absoluta'); $$ = new Path(@1.first_line, @1.first_column, $2, 'sub');}
-    | '/' LACCESOS              {$2[0].setipoQuery('relativa'); $$ = new Path(@1.first_line, @1.first_column, $2, 'sub');}
+//  | '/' LACCESOS              {$2[0].setipoQuery('relativa'); $$ = new Path(@1.first_line, @1.first_column, $2, 'sub');}
     ;
 
 
