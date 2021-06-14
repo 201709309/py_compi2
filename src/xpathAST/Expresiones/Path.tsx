@@ -220,7 +220,7 @@ export class Path implements Expression{
             var result : Retorno = this.L_Accesos[posActAcceso].predicados[i].execute(entActual);
             if (result.type === tipoPrimitivo.NUMBER){
                 
-                if (result.value - 1 > 0 && result.value - 1 < entPadre.listaEntornos.length){
+                if (result.value - 1 >= 0 && result.value - 1 < entPadre.listaEntornos.length){
                     if (entPadre.listaEntornos[result.value - 1] !== entActual){
                         return false; 
                     }
@@ -241,7 +241,7 @@ export class Path implements Expression{
             var result : Retorno = this.L_Accesos[posActAcceso].predicados[i].execute(entPadre, simboloPadre);
             if (result.value === tipoPrimitivo.NUMBER){
                 
-                if (result.value - 1 > 0 && result.value - 1 < entPadre.listaEntornos.length){
+                if (result.value - 1 >= 0 && result.value - 1 < entPadre.listaEntornos.length){
                     if (entPadre.listaSimbolos[result.value - 1] !== simboloPadre){
                         return false; 
                     }
@@ -258,10 +258,16 @@ export class Path implements Expression{
 
     
                       //                 P     3
-                    //   /biblio/libro/autor/ksdnf
+                    //   /biblio/libro/autor/ksdnf                    //id
 
     //entender construir nodos  
+  
 
+
+    ///     /biblioteca/libro[usuario/fechaPublicacion/@año = titulo]/autor                     /biblioteca/libro/fechaPublicacion[@año = "1973"]
+
+
+       
 
 
 

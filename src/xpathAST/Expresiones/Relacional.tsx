@@ -41,13 +41,31 @@ export class Relacional implements Expression{
             }
             return {value: false , type : tipoPrimitivo.BOOL}; 
             
+        }else if (valorIzq.type === tipoPrimitivo.RESP){
+
+            for (const valIzq of valorIzq.value) {
+                if (this.validar(valIzq, valorDer)){
+                    return {value: true, type: tipoPrimitivo.BOOL}
+                }
+            }
+            return {value: false , type : tipoPrimitivo.BOOL};
+
+        }else if (valorDer.type === tipoPrimitivo.RESP){
+
+            for (const valDer of valorDer.value) {
+                if (this.validar(valorIzq, valDer)){
+                    return {value: true, type: tipoPrimitivo.BOOL}
+                }
+            }
+            return {value: false , type : tipoPrimitivo.BOOL};
+            
         }else {
             return { value: this.validar(valorIzq, valorDer), type: tipoPrimitivo.BOOL }
         }
 
     }
 
-    private validar(valorIzq : Retorno, valorDer: Retorno ): boolean{
+    private validar(valorIzq : Retorno, valorDer: Retorno): boolean{
         
         if (this.tipoOperacion === operacionRelacional.IGUAL) {
             const result = valorIzq.value == valorDer.value;
