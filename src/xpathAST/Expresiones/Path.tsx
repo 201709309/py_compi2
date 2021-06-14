@@ -268,6 +268,8 @@ export class Path implements Expression{
             texto += "nodo" + this.line.toString() + "_" + this.column.toString() + "[label=\"/\"];\n";
         } else if (this.tipoPath === "absoluta") {
             texto += "nodo" + this.line.toString() + "_" + this.column.toString() + "[label=\"//\"];\n";
+        } else {
+            texto += "nodo" + this.line.toString() + "_" + this.column.toString() + "[label=\"sub\"];\n";
         }
         for (const key in this.L_Accesos) {
             texto = this.L_Accesos[key].GraficarAST(texto);

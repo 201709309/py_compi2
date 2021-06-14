@@ -38,14 +38,14 @@ export default class Main extends Component {
 
         let texto = "";
         let indice = 1;
-        let entornoGlobal = new Entorno('Global', '', 0, 0, [], ast);
+        let entornoGlobal;
         let encoding = "";
         try {
             const result = parser.parse(this.state.xml)
             ast = result.ast;
             encoding = result.encoding;
             listaErrores = result.listaErrores;
-
+            entornoGlobal = new Entorno('Global', '', 0, 0, [], ast);
 
             if (listaErrores.length === 0) {
                 var xmlResRep = parserReport.parse(this.state.xml);

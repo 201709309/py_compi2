@@ -3,12 +3,15 @@
 %{
     const {NodoCST} = require("./NodoCST");
     var raiz = new NodoCST("INIT",0,[]);
+    var raizaux;
     var nodoaux;
     var lista = [];
     var contador = 0;
     var texto = "";
     var txtGramProd = [];
+    var txtGramProdAux = [];
     var txtGramRegSem = [];
+    var txtGramRegSemAux = [];
 %}
 
 /* lexical grammar */
@@ -74,7 +77,16 @@ INIT
         raiz.crearNodo(">",contador,[]);
         contador++;
         raiz.crearNodo("INTRO",contador,$8);
-        return {ReporteGramatical: [txtGramProd,txtGramRegSem],ReporteCST: raiz};
+        
+        contador = 0;
+        raizaux = raiz;
+        raiz = new NodoCST("INIT",0,[]);
+        txtGramProdAux = txtGramProd;
+        txtGramProd = [];
+        txtGramRegSemAux = txtGramRegSem;
+        txtGramRegSem = [];
+
+        return {ReporteGramatical: [txtGramProdAux,txtGramRegSemAux],ReporteCST: raizaux};
     }
     |  INTRO                                      
     {
@@ -82,7 +94,16 @@ INIT
         txtGramRegSem.push("INIT.val := INTRO.val");
         contador++;
         raiz.crearNodo("INTRO",contador,$1)
-        return {ReporteGramatical: texto,ReporteCST: raiz};
+        
+        contador = 0;
+        raizaux = raiz;
+        raiz = new NodoCST("INIT",0,[]);
+        txtGramProdAux = txtGramProd;
+        txtGramProd = [];
+        txtGramRegSemAux = txtGramRegSem;
+        txtGramRegSem = [];
+
+        return {ReporteGramatical: [txtGramProdAux,txtGramRegSemAux],ReporteCST: raizaux};
     }
     ;
 
