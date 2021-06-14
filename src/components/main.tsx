@@ -36,7 +36,8 @@ export default class Main extends Component {
         let repErrorXML2 = '';
         let repTablaSimbolos2 = '';
 
-
+        let texto = "";
+        let indice = 1;
         const result = parser.parse(this.state.xml/*`<?xml version="1.0" encoding="UTF-8"?>
         <biblioteca>
           <libro>
@@ -61,6 +62,16 @@ export default class Main extends Component {
         let entornoGlobal = new Entorno('Global', '', 0, 0, [], ast);
         try{
             const querys = parseXPATH.parse(this.state.xpath/*'/biblioteca'*/)
+            for (const key in querys) {
+                texto = querys[key].GraficarAST(texto);
+                if (indice < querys.length) {
+                    texto += "nodo" + key.toString() + "[label=\"" + "|" + "\"];\n"
+                    texto += "nodo" + querys[key].line.toString() + "_" + querys[key].column.toString()  + "->" +  "nodo" + key.toString() + ";\n";
+                    texto += "nodo" + key.toString() + "->" +"nodo" + querys[indice].line.toString() + "_" + querys[indice].column.toString() + ";\n";
+                    indice++;
+                }
+            }
+            console.log(texto);
             var erroresSemanticos:string[] = [];
             var salida = "";
 

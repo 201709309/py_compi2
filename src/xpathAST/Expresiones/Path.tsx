@@ -263,6 +263,17 @@ export class Path implements Expression{
     //entender construir nodos  
 
 
-
+    public GraficarAST(texto:string):string {
+        if (this.tipoPath === "relativa") {
+            texto += "nodo" + this.line.toString() + "_" + this.column.toString() + "[label=\"" + "/" + "\"];\n";
+        } else {
+            texto += "nodo" + this.line.toString() + "_" + this.column.toString() + "[label=\"" + "//" + "\"];\n";
+        }
+        for (const key in this.L_Accesos) {
+            texto = this.L_Accesos[key].GraficarAST(texto);
+            texto += "nodo" + this.line.toString() + "_" + this.column.toString() + "->" + "nodo" + this.L_Accesos[key].line + "_" + this.L_Accesos[key].column.toString() + ";\n";
+        }
+        return texto;
+    }
 
 }
