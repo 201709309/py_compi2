@@ -47,7 +47,10 @@ export default class Main extends Component {
             encoding = result.encoding;
             listaErrores = result.listaErrores;
             entornoGlobal = new Entorno('Global', '', 0, 0, [], ast);
-            
+            var buf = new Buffer("Hello World");
+            console.log(buf.toString("ascii"));
+            console.log("---------------------");
+            console.log(buf.toString("utf8"));
             if (listaErrores.length === 0) {
                 var xmlResRep = parserReport.parse(this.state.xml);
                 this.setState({
@@ -164,15 +167,12 @@ export default class Main extends Component {
                     indice++;
                 }
             }
-            //console.log(texto);
             const querys2 = parseXPATH.parse(this.state.xpath)
             this.setState({
                 repAstXpath: "digraph G {" +texto +"}",
             });
-
             var erroresSemanticos: string[] = [];
             var salida = "";
-
             for (const query of querys2) {
                 try {
                     salida += query.execute(ast[0]).value;

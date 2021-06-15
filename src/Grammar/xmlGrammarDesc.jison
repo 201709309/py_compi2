@@ -123,11 +123,11 @@ NODOTEXTO
     : dstring NODOTEXTO             {$$ = $1 +" "+ $2}
     | sstring NODOTEXTO             {$$ = $1 +" "+ $2}
     | id NODOTEXTO                  {$$ = $1 +" "+ $2}
-    | lessthan NODOTEXTO            {$$ = $1 +" "+ "<"}
-    | greaterthan NODOTEXTO         {$$ = $1 +" "+ ">"}
-    | ampersand NODOTEXTO           {$$ = $1 +" "+ "&"}
-    | apostrophe NODOTEXTO          {$$ = $1 +" "+ "\'"}
-    | quotmark NODOTEXTO            {$$ = $1 +" "+ "\""}
+    | lessthan NODOTEXTO            {$$ = "<" +" "+ $2}
+    | greaterthan NODOTEXTO         {$$ = ">" +" "+ $2}
+    | ampersand NODOTEXTO           {$$ = "&" +" "+ $2}
+    | apostrophe NODOTEXTO          {$$ = "\'" +" "+ $2}
+    | quotmark NODOTEXTO            {$$ = "\"" +" "+ $2}
     | number NODOTEXTO              {$$ = $1 +" "+ $2}
     | random NODOTEXTO              {$$ = $1 +" "+ $2}
     | '/' NODOTEXTO                 {$$ = $1 +" "+ $2}

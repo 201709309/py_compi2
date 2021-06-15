@@ -152,19 +152,19 @@ case 21: case 22: case 23: case 29: case 30: case 31: case 32:
 this.$ = $$[$0-1] +" "+ $$[$0]
 break;
 case 24:
-this.$ = $$[$0-1] +" "+ "<"
+this.$ = "<" +" "+ $$[$0]
 break;
 case 25:
-this.$ = $$[$0-1] +" "+ ">"
+this.$ = ">" +" "+ $$[$0]
 break;
 case 26:
-this.$ = $$[$0-1] +" "+ "&"
+this.$ = "&" +" "+ $$[$0]
 break;
 case 27:
-this.$ = $$[$0-1] +" "+ "\'"
+this.$ = "\'" +" "+ $$[$0]
 break;
 case 28:
-this.$ = $$[$0-1] +" "+ "\""
+this.$ = "\"" +" "+ $$[$0]
 break;
 case 33: case 34: case 35: case 36: case 42: case 43: case 44:
 this.$ = $$[$0]
