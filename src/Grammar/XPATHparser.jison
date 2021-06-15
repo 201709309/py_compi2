@@ -67,6 +67,13 @@
 "and"                 return 'and'
 "mod"                 return 'mod'
 
+"::"                  return '::'
+"child"               return 'child'
+"attribute"           return 'attribute'
+"descendant"          return 'descendant'
+"last"                return 'last' 
+"position"            return 'position'
+        
 [0-9]+                return 'number'
 [a-zA-Z_][a-zA-Z0-9_ñÑ]*                    return 'id'
 <<EOF>>                                     return 'EOF'
@@ -116,7 +123,7 @@ ACCESO
     | '.'                       {$$ = new Acceso(@1.first_line, @1.first_column, $1, 'actual', []);}
     | id PREDICADOS             {$$ = new Acceso(@1.first_line, @1.first_column, $1, 'nodo', $2);}
     | '*' PREDICADOS            {$$ = new Acceso(@1.first_line, @1.first_column, $1, 'todosNodos', $2);}
-//  | '..'                      {$$ = $1 + $2;}
+    | '..'                      {$$ = new Acceso(@1.first_line, @1.first_column, $1, 'padre', []);}
 //atributos
     | '@' id                    {$$ = new Acceso(@2.first_line, @2.first_column, $2, 'atributo', []);}
     | '@' '*'                   {$$ = new Acceso(@2.first_line, @2.first_column, $2, 'todosAtributos', []);}
@@ -159,7 +166,8 @@ VALOR
 //sub consultas
     | LACCESOS                  {$1[0].setipoQuery('relativa'); $$ = new Path(@1.first_line, @1.first_column, $1, 'sub');}
     | '//' LACCESOS             {$2[0].setipoQuery('absoluta'); $$ = new Path(@1.first_line, @1.first_column, $2, 'sub');}
-//  | '/' LACCESOS              {$2[0].setipoQuery('relativa'); $$ = new Path(@1.first_line, @1.first_column, $2, 'sub');}
+    | 'position' '(' ')'        {}
+    | 'last' '(' ')'            {}
     ;
 
 

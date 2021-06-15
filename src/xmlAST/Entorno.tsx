@@ -7,6 +7,7 @@ export class Entorno{
     listaEntornos: Array<Entorno>;
     linea: number;
     columna: number;
+    pos: number;
 
     constructor(id:string, texto:string, linea:number, columna:number, listaSimbolos:Array<Simbolo>, listaE:Array<Entorno>){
         this.identificador = id;
@@ -15,7 +16,13 @@ export class Entorno{
         this.columna = columna;
         this.listaSimbolos = listaSimbolos;
         this.listaEntornos = listaE
+        this.pos = -1;
     }
+    
+    public setPos(pos: number){
+        this.pos= pos;
+    }
+
 
     public getAtributos(idAtrubito: string) : Simbolo[] {
 

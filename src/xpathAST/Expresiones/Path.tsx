@@ -7,6 +7,7 @@ import { Simbolo } from '../../xmlAST/Simbolo';
 export class Path implements Expression{
 
     salida: any[];
+    nuevaL_Accesos: Acceso[];
 
     constructor (
     public line : Number,
@@ -15,11 +16,74 @@ export class Path implements Expression{
     public tipoPath : string
     ){
         this.salida=[];
+        this.nuevaL_Accesos=[];
     }   
 
     ////fechaPublicacion[@año>./../../libro[3]/fechaPublicacion/@año]
 
-    private construirSalida () : string{
+    
+    private contieneAbsolutePATH(): boolean {
+
+        for (const acceso of this.L_Accesos) {
+            if (acceso.tipoQuery === "absoluta"){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private noExisteAcceso(id: string) : boolean {
+
+        for (const acce of this.nuevaL_Accesos) {
+            if (acce.id === id){
+                return false; 
+            } 
+        }
+        return true; 
+    }
+
+    private validarAbsolutePath(entAct: Entorno, posActAcceso: number, simboloPadre?:Simbolo){
+
+        if(entAct.identificador === this.L_Accesos[posActAcceso].id){//validamos que el id entActual sea igual al id de la poscion Actual de accesos
+            this.nuevaL_Accesos.push(this.L_Accesos[posActAcceso]);
+        }else {
+           
+            if (this.noExisteAcceso(this.L_Accesos[posActAcceso].id)){
+                this.nuevaL_Accesos.push(new Acceso(0, 0, entAct.identificador, 'relativa', []));
+            }
+        }
+
+        if(entAct.listaEntornos.length > 0){
+                          
+            for (const entChiil of entAct.listaEntornos) {//recorremos los hijos del entorno padre que llamaremos entActual
+                
+                if (this.L_Accesos.length > posActAcceso + 1){
+                    this.validarAbsolutePath(entChiil, posActAcceso + 1, simboloPadre);
+                }
+            }
+        }
+    }
+
+    private validarAntecesores(): Acceso []{
+
+        let newL_Acc : Acceso[] = []
+        for (const acceso of this.L_Accesos) {
+            
+            if (acceso.tipoAcceso === 'padre'){
+                
+                if (newL_Acc.length >0){
+                    newL_Acc.pop()
+                }else {
+                    throw new Error("Error Semantico: no se puede Acceder a la raiz del arbol, lina: "+acceso.line+"column: "+acceso.column);
+                }
+            }else {
+                newL_Acc.push(acceso)
+            }
+        }
+        return newL_Acc
+    }
+
+    private unirSalida () : string{
 
         let salida : string = ""
 
@@ -58,128 +122,123 @@ export class Path implements Expression{
             }
             
         }
-        return {value: this.construirSalida(), type: tipoPrimitivo.STRING};
+        return {value: this.unirSalida(), type: tipoPrimitivo.STRING};
     }
 
-    public getQuery(entPadre: Entorno, posActAcceso: number, simboloPadre?:Simbolo) {
+    private getQuery(entPadre: Entorno, posActAcceso: number, simboloPadre?:Simbolo) {
         
-        if(this.L_Accesos[posActAcceso].tipoAcceso === "actual"){
+        if(simboloPadre !== undefined ){ // si la consulta es una sub consulta y el padre es un atributo --> /id[subconsulta]
            
-            if (simboloPadre !== undefined){
+            if (this.L_Accesos[posActAcceso].tipoAcceso === "actual"){
 
-                if(this.L_Accesos.length === posActAcceso + 1){
-                    
-                    if (this.validarPredicadosAtri(entPadre, simboloPadre, posActAcceso)){
-
-                        if (this.tipoPath === "sub"){
-                            this.salida.push({value : simboloPadre.valor.replaceAll("\"",""), type: tipoPrimitivo.STRING}) ;
-                        }else {
-                            this.salida.push(simboloPadre.identificador + " = \"" + simboloPadre.valor.replaceAll("\"","") + "\"\n");
-                        }
-                        
-                    }
+                if(this.L_Accesos.length < posActAcceso + 1){
+                    this.getQuery(entPadre, posActAcceso + 1, simboloPadre);
                 }else{
-                    throw new Error("Nose puede acceder a un atributo: " + this.L_Accesos[posActAcceso].id);
-                } 
-            }else {
 
-                if(entPadre.listaEntornos.length > 0){
-                        
-                    if(this.L_Accesos.length >  posActAcceso + 1){ //verificamos si la consutla nos dice que accediendo a descendientes
-                        this.getQuery(entPadre, posActAcceso + 1, simboloPadre); 
-                    }else{
-                        this.construirNodos(entPadre, "")
-                    }
-                }
-            }
-                
-        }else {                  
-           
-            if(simboloPadre === undefined){
-
-                if (this.L_Accesos[posActAcceso].tipoAcceso === "todosAtributos"||this.L_Accesos[posActAcceso].tipoAcceso === "atributo"){
-                    
-                    if (this.L_Accesos.length === posActAcceso + 1){
-                        this.construirAtributos(entPadre, posActAcceso);
+                    if (this.tipoPath === "sub"){
+                        this.salida.push({value : simboloPadre.valor.replaceAll("\"",""), type: tipoPrimitivo.STRING}) ;
                     }else {
-                        throw new Error("Nose puede acceder a un atributo: " + this.L_Accesos[posActAcceso].id);
+                        this.salida.push(simboloPadre.identificador + " = \"" + simboloPadre.valor.replaceAll("\"","") + "\"\n");
                     }
-                }else if (this.L_Accesos[posActAcceso].tipoAcceso === "todosNodos"){
-
-                    if(entPadre.listaEntornos.length > 0){
-                        
-                        for (const entActual of entPadre.listaEntornos) { 
-                            
-                            if (this.validarPredicadosNodos(entPadre, entActual, posActAcceso)){
-            
-                                if(this.L_Accesos.length > posActAcceso + 1){ //verificamos si la consutla nos dice que accediendo a descendientes
-                                    this.getQuery(entActual, posActAcceso + 1, simboloPadre); 
-                                }else{
-                                    this.construirNodos(entActual, "")
-                                }
-                            }
-                        }
-                    }
-
-                }else{//if (this.L_Accesos[posActAcceso].tipoAcceso == "nodo"){
-                    
-                    if(entPadre.listaEntornos.length > 0){
-                          
-                        for (const entActual of entPadre.listaEntornos) {//recorremos los hijos del entorno padre que llamaremos entActual
-        
-                            if(entActual.identificador === this.L_Accesos[posActAcceso].id){//validamos que el id entActual sea igual al id de la poscion Actual de accesos
-            
-                                if (this.validarPredicadosNodos(entPadre, entActual, posActAcceso)){
-            
-                                    if(this.L_Accesos.length >  posActAcceso + 1){ //verificamos si la consutla nos dice que accediendo a descendientes
-                                        this.getQuery(entActual, posActAcceso + 1, simboloPadre); 
-                                    }else{
-                                        this.construirNodos(entActual, "")
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
+                } 
             }else {
                 throw new Error("Nose puede acceder a un atributo: " + this.L_Accesos[posActAcceso].id);
             }
+                
         }
-    }
+        else { // si la consuta es una sub o una normal y el padre es un nodo  -----> /id/id || /id/@id || /id/. || /id/*               
+           
+            if (this.L_Accesos[posActAcceso].tipoAcceso === "actual"){
 
-    private construirAtributos(entPadre:Entorno, posActAcceso: number) {
-
-        if(this.L_Accesos[posActAcceso].tipoAcceso === "atributo"){
+                if(this.L_Accesos.length >  posActAcceso + 1){ //verificamos si no es el ultimo acceso
+                    this.getQuery(entPadre, posActAcceso + 1, simboloPadre); 
+                }else{
+                    this.construirNodos(entPadre, "")
+                }
+            }else if (this.L_Accesos[posActAcceso].tipoAcceso === "atributo"){
                
-            const atri = entPadre.getAtributo(this.L_Accesos[posActAcceso].id)
-            if(atri != null){
+                const atri = entPadre.getAtributo(this.L_Accesos[posActAcceso].id)
+                if(atri != null){
 
-                if (this.validarPredicadosAtri(entPadre, atri, posActAcceso)){
+                    if (this.validarPredicadosAtri(entPadre, atri, posActAcceso)){
                     
-                    if (this.tipoPath === "sub"){
-                        this.salida.push({value : atri.valor.replaceAll("\"",""), type: tipoPrimitivo.STRING}) ;
-                    }else{
-                        this.salida.push(atri.identificador + " = \"" + atri.valor.replaceAll("\"","") + "\"\n");
+                        if(this.L_Accesos.length > posActAcceso + 1){ //verificamos si no es el ultimo acceso
+                            this.getQuery(entPadre, posActAcceso + 1, atri); 
+                        }else{
+
+                            if (this.tipoPath === "sub"){
+                                this.salida.push({value : atri.valor.replaceAll("\"",""), type: tipoPrimitivo.STRING}) ;
+                            }else{
+                                this.salida.push(atri.identificador + " = \"" + atri.valor.replaceAll("\"","") + "\"\n");
+                            }
+                        }
                     }
                 }
-            }
-        }else {
 
-            for (const atri of entPadre.listaSimbolos){
+            }else if (this.L_Accesos[posActAcceso].tipoAcceso === "todosAtributos"){
 
-                if (this.validarPredicadosAtri(entPadre, atri, posActAcceso)){
-                   
-                    if (this.tipoPath === "sub"){
-                        this.salida.push({value : atri.valor.replaceAll("\"",""), type: tipoPrimitivo.STRING}) ;
-                    }else {
-                        this.salida.push(atri.identificador + " = \"" + atri.valor.replaceAll("\"","") + "\"\n");
+                if (entPadre.listaEntornos.length > 0){
+
+                    for (const atri of entPadre.listaSimbolos){
+
+                        if (this.validarPredicadosAtri(entPadre, atri, posActAcceso)){
+                           
+                            if(this.L_Accesos.length > posActAcceso + 1){ //verificamos si no es el ultimo acceso
+                                this.getQuery(entPadre, posActAcceso + 1, atri); 
+                            }else{
+    
+                                if (this.tipoPath === "sub"){
+                                    this.salida.push({value : atri.valor.replaceAll("\"",""), type: tipoPrimitivo.STRING}) ;
+                                }else{
+                                    this.salida.push(atri.identificador + " = \"" + atri.valor.replaceAll("\"","") + "\"\n");
+                                }
+                            }
+                        }
                     }
                 }
-            }
-        }
 
+            }else if (this.L_Accesos[posActAcceso].tipoAcceso === "todosNodos"){
+
+                if(entPadre.listaEntornos.length > 0){
+                    
+                    for (const entActual of entPadre.listaEntornos) {//recorremos los hijos del entorno padre que llamaremos entActual
+                        
+                        if (this.validarPredicadosNodos(entPadre, entActual, posActAcceso)){
         
+                            if(this.L_Accesos.length > posActAcceso + 1){ //verificamos si no es el ultimo acceso
+                                this.getQuery(entActual, posActAcceso + 1); 
+                            }else{
+                                this.construirNodos(entActual, "")
+                            }
+                        }
+                    }
+                }
+
+            }else if (this.L_Accesos[posActAcceso].tipoAcceso === "nodo"){
+                
+                if(entPadre.listaEntornos.length > 0){
+                      
+                    for (const entActual of entPadre.listaEntornos) {//recorremos los hijos del entorno padre que llamaremos entActual
+    
+                        if(entActual.identificador === this.L_Accesos[posActAcceso].id){//validamos que el id del entorno sea igual al id de la poscion Actual de Accesos
+        
+                            if (this.validarPredicadosNodos(entPadre, entActual, posActAcceso)){
+        
+                                if(this.L_Accesos.length > posActAcceso + 1){ //verificamos si no es el ultimo acceso
+                                    this.getQuery(entActual, posActAcceso + 1); 
+                                }else{
+                                    this.construirNodos(entActual, "");
+                                }
+                            }
+                        }
+                    }
+                }
+
+            }else {
+                throw new Error("ERROR FATAL Semantico: El tipo de acceso: "+this.L_Accesos[posActAcceso].tipoAcceso+" no se reconoce como valido, " + 
+                "linea: "+this.L_Accesos[posActAcceso].line+" comlumna: "+this.L_Accesos[posActAcceso].column);
+            }   
+        }
     }
 
     private construirNodos(entPadre:Entorno, tab : string){
@@ -195,11 +254,11 @@ export class Path implements Expression{
         }else {
 
             var atributos = "";
-
-            for (const atri of entPadre.listaSimbolos) {
+            for (const atri of entPadre.listaSimbolos) { // construyo atributos
                 atributos+= atri.identificador + " = \"" + atri.valor.replaceAll("\"","") + "\"  ";
             }
 
+            //construyo Nodos
             if(entPadre.listaEntornos.length === 0 && entPadre.texto === ''){
                 this.salida.push(tab +"<" + entPadre.identificador + " " + atributos + "/>\n");
             }
@@ -260,8 +319,6 @@ export class Path implements Expression{
         }
         return true;
     } 
-
-
 
     public GraficarAST(texto:string):string {
         if (this.tipoPath === "relativa") {
