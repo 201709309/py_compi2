@@ -112,7 +112,7 @@ case 1:
         txtGramRegSemAux = txtGramRegSem;
         txtGramRegSem = [];
 
-        return {ReporteGramatical: [txtGramProd,txtGramRegSem],ReporteCST: raiz};
+        return {ReporteGramatical: [txtGramProdAux,txtGramRegSemAux],ReporteCST: raizaux};
     
 break;
 case 2:

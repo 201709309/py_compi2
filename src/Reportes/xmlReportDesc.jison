@@ -86,7 +86,7 @@ INIT
         txtGramRegSemAux = txtGramRegSem;
         txtGramRegSem = [];
 
-        return {ReporteGramatical: [txtGramProd,txtGramRegSem],ReporteCST: raiz};
+        return {ReporteGramatical: [txtGramProdAux,txtGramRegSemAux],ReporteCST: raizaux};
     }
     |  INTRO                                      
     {
