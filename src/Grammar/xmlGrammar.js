@@ -98,10 +98,10 @@ case 2:
     
 break;
 case 3:
-$$[$0-2].push($$[$0-1]); this.$ = $$[$0-2];
+$$[$0-1].setPos($$[$0-2].length);$$[$0-2].push($$[$0-1]); this.$ = $$[$0-2];
 break;
 case 4:
-this.$ = [$$[$0-1]];
+$$[$0-1].setPos(0);this.$ = [$$[$0-1]];
 break;
 case 7:
 
@@ -136,11 +136,17 @@ break;
 case 13:
 listaErrores.push(new ClaseError('Sintactico','Se esperaba la definicion de una etiqueta',_$[$0-1].first_line, _$[$0-1].first_column))
 break;
-case 15: case 17:
+case 15:
 $$[$0-1].push($$[$0]); this.$ = $$[$0-1];
 break;
-case 16: case 18:
+case 16:
 this.$ = [$$[$0]];
+break;
+case 17:
+$$[$0].setPos($$[$0-1].length); $$[$0-1].push($$[$0]); this.$ = $$[$0-1];
+break;
+case 18:
+$$[$0].setPos(0);this.$ = [$$[$0]];
 break;
 case 19: case 20:
 this.$ = new Simbolo($$[$0-2], $$[$0], _$[$0-2].first_line, _$[$0-2].first_column);
