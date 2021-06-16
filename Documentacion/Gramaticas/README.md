@@ -258,27 +258,28 @@
 ### \<PREDI\>	
 :	'[' \<EXP\> ']'              
     
-\<EXP\> 	:=	\<EXP\>  '+'  \<EXP\>           
-    		|	\<EXP\>  '-'  \<EXP\>           
-    		| 	\<EXP\>  '*'  \<EXP\>             
-    		| 	\<EXP\> 'div' \<EXP\>         
-    		| 	\<EXP\> 'mod' \<EXP\>         
-    		| 	\<EXP\>  '=' \<EXP\>           
-    		| 	\<EXP\> '!=' \<EXP\>             
-		| 	\<EXP\>  '<' \<EXP\>             
-    		| 	\<EXP\> '<='  \<EXP\>            
-    		| 	\<EXP\>  '>'  \<EXP\>          
-    		| 	\<EXP\> '>='  \<EXP\>           
-    		| 	\<EXP\> 'and' \<EXP\>          
-    		| 	\<EXP\> 'or' \<EXP\>          
-    		| 	\<VALOR\>                   
+### \<EXP\> 	
+:=	\<EXP\>  '+'  \<EXP\>           
+|	\<EXP\>  '-'  \<EXP\>           
+| 	\<EXP\>  '*'  \<EXP\>             
+| 	\<EXP\> 'div' \<EXP\>         
+| 	\<EXP\> 'mod' \<EXP\>         
+| 	\<EXP\>  '=' \<EXP\>           
+| 	\<EXP\> '!=' \<EXP\>           
+| 	\<EXP\>  '<' \<EXP\>             
+| 	\<EXP\> '<='  \<EXP\>            
+| 	\<EXP\>  '>'  \<EXP\>          
+| 	\<EXP\> '>='  \<EXP\>           
+| 	\<EXP\> 'and' \<EXP\>          
+| 	\<EXP\> 'or' \<EXP\>          
+| 	\<VALOR\>                   
  
-\<VALOR\>	:=	'(' \<EXP\> ')'             
-    		|	cadena                   
-    		| 	scadena                 
-    		| 	number                    
-    		| 	'position' '(' ')'        
-    		| 	'last' '(' ')'            
-    		| 	\<LACCESOS\>                 
-    		| 	'//' \<LACCESOS\>    
-
+### \<VALOR\>	
+:=	'(' \<EXP\> ')'             
+|	cadena                   
+| 	scadena                 
+| 	number                    
+| 	'position' '(' ')'        
+| 	'last' '(' ')'            
+| 	\<LACCESOS\>                 
+| 	'//' \<LACCESOS\>    
