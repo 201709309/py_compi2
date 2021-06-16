@@ -46,4 +46,4 @@ uso de graphviz, este metodo es implementado como una interfaz en todas las clas
 lo que sus caracteristicas y su funcionamiento cambian dependiendo del metodo en el que se
 encuentre.
 
-![alt text]()
+![alt text](https://github.com/201709309/py_compi2/blob/main/Documentacion/Manual%20Tecnico/imagenes/GraficarAST.png)
