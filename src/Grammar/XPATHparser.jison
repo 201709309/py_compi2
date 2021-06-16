@@ -71,6 +71,7 @@
 "child"               return 'child'
 "attribute"           return 'attribute'
 "descendant"          return 'descendant'
+"text"                return 'text'
 "last"                return 'last' 
 "position"            return 'position'
         
@@ -108,6 +109,8 @@ MULTIPATH
 PATH
     : '/' LACCESOS              {$2[0].setipoQuery('relativa'); $$ = new Path(@1.first_line, @1.first_column, $2, 'relativa');}
     | '//' LACCESOS             {$2[0].setipoQuery('absoluta'); $$ = new Path(@1.first_line, @1.first_column, $2, 'absoluta');}
+    | '/' 'descendant' '::' id  {$2[0].setipoQuery('absoluta'); $$ = new Path(@1.first_line, @1.first_column, $2, 'relativa');}
+    | '//' 'descendant' '::' id {$2[0].setipoQuery('absoluta'); $$ = new Path(@1.first_line, @1.first_column, $2, 'absoluta');}
     ;
 
 LACCESOS
@@ -121,14 +124,20 @@ ACCESO
     : id                        {$$ = new Acceso(@1.first_line, @1.first_column, $1, 'nodo', []);}
     | '*'                       {$$ = new Acceso(@1.first_line, @1.first_column, $1, 'todosNodos', []);}
     | '.'                       {$$ = new Acceso(@1.first_line, @1.first_column, $1, 'actual', []);}
+    | '..'                      {$$ = new Acceso(@1.first_line, @1.first_column, $1, 'padre', []);}
+    | child '::' id             {$$ = new Acceso(@1.first_line, @1.first_column, $3, 'nodo', []);}
+    | child '::' '*'            {$$ = new Acceso(@1.first_line, @1.first_column, $3, 'todosNodos', []);}
     | id PREDICADOS             {$$ = new Acceso(@1.first_line, @1.first_column, $1, 'nodo', $2);}
     | '*' PREDICADOS            {$$ = new Acceso(@1.first_line, @1.first_column, $1, 'todosNodos', $2);}
-    | '..'                      {$$ = new Acceso(@1.first_line, @1.first_column, $1, 'padre', []);}
+    | child '::' id PREDICADOS  {$$ = new Acceso(@1.first_line, @1.first_column, $3, 'nodo', $4);}
+    | child '::' '*' PREDICADOS {$$ = new Acceso(@1.first_line, @1.first_column, $3, 'todosNodos', $4);}
 //atributos
     | '@' id                    {$$ = new Acceso(@2.first_line, @2.first_column, $2, 'atributo', []);}
     | '@' '*'                   {$$ = new Acceso(@2.first_line, @2.first_column, $2, 'todosAtributos', []);}
     | '@' id PREDICADOS         {$$ = new Acceso(@2.first_line, @2.first_column, $2, 'atributo', $3);}
     | '@' '*' PREDICADOS        {$$ = new Acceso(@2.first_line, @2.first_column, $2, 'todosAtributos', $3);}
+    |  attribute '::' id PREDICADOS         {$$ = new Acceso(@2.first_line, @2.first_column, $3, 'atributo', $4);}
+    |  attribute '::' '*' PREDICADOS        {$$ = new Acceso(@2.first_line, @2.first_column, $3, 'todosAtributos', $4);}
     ;
 
 PREDICADOS
