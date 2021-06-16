@@ -123,7 +123,7 @@
     		|	\<LACCESOS\> '//' \<ACCESO\>                        
     		|	\<LACCESOS\> '/' 'descendant' '::' id             
     		|	\<LACCESOS\> '//' 'descendant' '::' id          
-    		| 	\<LACCESOS\> '/' 'descendant' '::' id \<PREDICADOS\>
+    		| 	\<LACCESOS\> '/' 'descendant' '::' id \<PREDICADOS\><br>
     		| 	\<LACCESOS\> '//' 'descendant' '::' id \<PREDICADOS\>
     		|	\<ACCESO\>                                     
 
