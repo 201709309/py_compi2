@@ -10,7 +10,7 @@
 
 \<NODO\>	:=	'menor' id \<LISTAATRIBUTOS\> 'mayor' \<LISTANODOS\> 'menor' '/' id 'mayor'<br>
     		|	'menor' id \<LISTAATRIBUTOS\> 'mayor' \<NODOTEXTO\> 'menor' '/' id 'mayor' <br>
-    		|	'menor' id \<LISTAATRIBUTOS\> '/' 'mayor'            <br>              
+    		|	'menor' id \<LISTAATRIBUTOS\> '/' 'mayor'<br>              
     		|	'menor' id  'mayor' \<LISTANODOS\> 'menor' '/' id 'mayor' <br>
     		|	'menor' id  'mayor' \<NODOTEXTO\> 'menor' '/' id 'mayor'<br>
     		|	'menor' id  '/' 'mayor'            <br>                           
