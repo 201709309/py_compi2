@@ -38,7 +38,7 @@ para asignar el entorno a un simbolo.
 
 ![alt text](https://github.com/201709309/py_compi2/blob/main/Documentacion/Manual%20Tecnico/imagenes/crearTablaSimbolos.png)
 
-##Clase SimboloTabla
+## Clase SimboloTabla
 Esta clase es utilizada para la creación de un simbolo para luego agregarlo a
 la tabla de simbolos, cada objeto SimboloTabla tendra una linea de formato number, una columna
 de tipo number, un nombre en string, un tipo en string, un ambito y valor en string. el nombre
@@ -47,7 +47,7 @@ pertenece y el valor representa su valor si es que tiene alguno.
 
 ![alt text](https://github.com/201709309/py_compi2/blob/main/Documentacion/Manual%20Tecnico/imagenes/SimboloTabla.png)
 
-##GraficarAST
+## GraficarAST
 Este metodo se encarga de crear el AST para XPATH de forma grafica por medio del
 uso de graphviz, este metodo es implementado como una interfaz en todas las clases de XPATH por
 lo que sus caracteristicas y su funcionamiento cambian dependiendo del metodo en el que se
