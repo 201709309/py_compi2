@@ -4,7 +4,9 @@
     const {Logica, operacionLogica} = require("../xpathAST/Expresiones/Logica");
     const {Path} = require("../xpathAST/Expresiones/Path");
     const {Primitivo, tipoPrimitivo} = require("../xpathAST/Expresiones/Primitivo");
-    const {Relacional, operacionRelacional} = require("../xpathAST/Expresiones/Relacional")   
+    const {Relacional, operacionRelacional} = require("../xpathAST/Expresiones/Relacional")
+    const {ClaseError} = require("../xmlAST/ClaseError");
+    var listaErrores = [];
     var tmp="";
 %}
 
@@ -96,9 +98,21 @@
 %% 
 
 INIT
-    : '/' 'EOF'                                     {return $1;}
-    | MULTIPATH 'EOF'                               {return $1;}
-    | 'EOF'                                         {return [];}
+    : '/' 'EOF'                                     {
+                                                    var listaErroresTemp = listaErrores;
+                                                    listaErrores = [];
+                                                    return {xpath: $1,listaErrores:listaErroresTemp}
+                                                    }
+    | MULTIPATH 'EOF'                               {
+                                                    var listaErroresTemp = listaErrores;
+                                                    listaErrores = [];
+                                                    return {xpath: $1,listaErrores:listaErroresTemp}
+                                                    }
+    | 'EOF'                                         {
+                                                    var listaErroresTemp = listaErrores;
+                                                    listaErrores = [];
+                                                    return {xpath: [],listaErrores:listaErroresTemp}
+                                                    }
     ;
 
 MULTIPATH
@@ -140,6 +154,11 @@ ACCESO
     | '@' '*' PREDICADOS                            {$$ = new Acceso(@2.first_line, @2.first_column, $2, 'todosAtributos', $3);}
     |  attribute '::' id PREDICADOS                 {$$ = new Acceso(@2.first_line, @2.first_column, $3, 'atributo', $4);}
     |  attribute '::' '*' PREDICADOS                {$$ = new Acceso(@2.first_line, @2.first_column, $3, 'todosAtributos', $4);}
+    |  error FINDERROR                              {listaErrores.push(new ClaseError('Sintactico','Se esperaba la definicion de una etiqueta',@1.first_line, @1.first_column))}
+    ;
+
+FINDERROR
+    : '/' {}
     ;
 
 PREDICADOS

@@ -79,7 +79,7 @@ export default class Main extends Component {
             var erroresSemanticos: string[] = [];
             var salida = "";
 
-            for (const query of querys) {
+            for (const query of querys.xpath) {
                 try {
                     salida += query.execute(ast[0]).value;
 
@@ -92,6 +92,7 @@ export default class Main extends Component {
             this.setState({
                 consoleResult: salida,
             });
+            console.log(querys.listaErrores)
 
         } catch (error) {
             console.log(error);
@@ -153,7 +154,7 @@ export default class Main extends Component {
             const querys2 = parseXPATH.parse(this.state.xpath)
             var erroresSemanticos: string[] = [];
             var salida = "";
-            for (const query of querys2) {
+            for (const query of querys2.xpath) {
                 try {
                     salida += query.execute(ast[0]).value;
                 } catch (error) {
