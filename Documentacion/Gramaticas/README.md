@@ -1,5 +1,5 @@
 # XML ASCENDENTE:
-##\<INIT\>	:=	'menor' '?' id \<ATRIBUTO\>\<ATRIBUTO\> '?' 'mayor' \<INTRO\>    
+##\<INIT\>#	:=	'menor' '?' id \<ATRIBUTO\>\<ATRIBUTO\> '?' 'mayor' \<INTRO\>    
     		|	\<INTRO\>     
 
 <INTRO>	:=	<INTRO> <NODO> "EOF"           
