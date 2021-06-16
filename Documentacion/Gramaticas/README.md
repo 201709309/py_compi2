@@ -8,7 +8,7 @@
 \<CHECK\>	:=	"EOF"               
     		|	Ε                  
 
-\<NODO\>	:=	'menor' id \<LISTAATRIBUTOS\> 'mayor' \<LISTANODOS\> 'menor' '/' id 'mayor'
+\<NODO\>	:=	'menor' id \<LISTAATRIBUTOS\> 'mayor' \<LISTANODOS\> 'menor' '/' id 'mayor'<br>
     		|	'menor' id \<LISTAATRIBUTOS\> 'mayor' \<NODOTEXTO\> 'menor' '/' id 'mayor' 
     		|	'menor' id \<LISTAATRIBUTOS\> '/' 'mayor'                          
     		|	'menor' id  'mayor' \<LISTANODOS\> 'menor' '/' id 'mayor' 
