@@ -1,5 +1,5 @@
 # XML ASCENDENTE:
-### \<INIT\>	
+#### \<INIT\>	
 :=	'menor' '?' id \<ATRIBUTO\>\<ATRIBUTO\> '?' 'mayor' \<INTRO\>    
 |	\<INTRO\>     
 
