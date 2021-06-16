@@ -1,6 +1,6 @@
-Métodos y clases para los manuales:
+# Métodos y clases para los reportes:
 
-crearTextoGraphvizRepGram: Este método es el encargado de crear el texto para la gráfica
+## crearTextoGraphvizRepGram: Este método es el encargado de crear el texto para la gráfica
 del Reporte gramatical dentro de graphviz. Recibe como parametros una lista de producciones
 en formato string, una lista de reglas semanticas en formato string y un texto el cuál sera el resultado
 de la gráfica.
