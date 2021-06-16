@@ -125,7 +125,7 @@ export class Path implements Expression{
 
     private getQuery(entPadre: Entorno, posActAcceso: number, simboloPadre?:Simbolo) {
         
-        if (this.L_Accesos[posActAcceso].tipoQuery !== 'relativa'){
+        if (this.L_Accesos[posActAcceso].tipoQuery === 'relativa'){
 
             if(simboloPadre !== undefined ){ // si la consulta es una sub consulta y el padre es un atributo --> /id[subconsulta]
            
