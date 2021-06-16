@@ -1,6 +1,6 @@
 # XML ASCENDENTE:
 ### \<INIT\>	
-* :=	'menor' '?' id \<ATRIBUTO\>\<ATRIBUTO\> '?' 'mayor' \<INTRO\>    
+:=	'menor' '?' id \<ATRIBUTO\>\<ATRIBUTO\> '?' 'mayor' \<INTRO\>    
 |	\<INTRO\>     
 
 ### \<INTRO\>	
@@ -21,41 +21,46 @@
 |	error \<FINDERROR\>                                               
 
 
-\<FINDERROR\>	:=	'mayor' 
+### \<FINDERROR\>
+:=	'mayor' 
 
-\<LISTANODOS\>	:=	\<LISTANODOS\> \<NODO\>   
-    		|	\<NODO\>              
+### \<LISTANODOS\>	
+:=	\<LISTANODOS\> \<NODO\>   
+|	\<NODO\>              
 
-\<LISTAATRIBUTOS\>	:=	\<LISTAATRIBUTOS><ATRIBUTO\>   
-    			|	\<ATRIBUTO\>                  
+### \<LISTAATRIBUTOS\>	
+:=	\<LISTAATRIBUTOS><ATRIBUTO\>   
+|	\<ATRIBUTO\>                  
 
-\<ATRIBUTO\>	:=	id '=' sstring    
-    		|	id '=' dstring    
+### \<ATRIBUTO\>	
+:=	id '=' sstring    
+|	id '=' dstring    
 
-\<NODOTEXTO\>	:= 	\<NODOTEXTO\> dstring          
-    		|	\<NODOTEXTO\> sstring          
-    		|	\<NODOTEXTO\> id                  
-    		|	\<NODOTEXTO\> lessthan            
-    		|	\<NODOTEXTO\> greaterthan        
-    		| 	\<NODOTEXTO\> ampersand           
-    		| 	\<NODOTEXTO\> apostrophe          
-	    	|	\<NODOTEXTO\> quotmark           
-    		| 	\<NODOTEXTO\> number           
-    		|	\<NODOTEXTO\> random              
-    		| 	\<NODOTEXTO\> '/'                
-    		| 	\<NODOTEXTO\> '='                 
-    		| 	dstring                       
-    		| 	sstring                       
-    		| 	id                           
-    		| 	number                       
-    		| 	lessthan                     
-    		| 	greaterthan                  
-    		| 	ampersand                    
-    		| 	apostrophe                    
-    		| 	quotmark                      
-    		| 	random                       
-    		| 	'/'                           
-    		| 	'='  
+### \<NODOTEXTO\>	
+:= 	\<NODOTEXTO\> dstring          
+|	\<NODOTEXTO\> sstring          
+|	\<NODOTEXTO\> id                  
+|	\<NODOTEXTO\> lessthan            
+|	\<NODOTEXTO\> greaterthan        
+| 	\<NODOTEXTO\> ampersand           
+| 	\<NODOTEXTO\> apostrophe          
+|	\<NODOTEXTO\> quotmark           
+| 	\<NODOTEXTO\> number           
+|	\<NODOTEXTO\> random              
+| 	\<NODOTEXTO\> '/'                
+| 	\<NODOTEXTO\> '='                 
+| 	dstring                       
+| 	sstring                       
+| 	id                           
+| 	number                       
+| 	lessthan                     
+| 	greaterthan                  
+| 	ampersand                    
+| 	apostrophe                    
+| 	quotmark                      
+| 	random                       
+| 	'/'                           
+| 	'='  
 
 # XML DESCENDENTE:
 \<INIT\>	:=	'menor' '?' id \<ATRIBUTO\>\<ATRIBUTO\> '?' 'mayor' \<INTRO\>    
