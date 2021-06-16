@@ -109,13 +109,13 @@ MULTIPATH
 PATH
     : '/' LACCESOS              {$2[0].setipoQuery('relativa'); $$ = new Path(@1.first_line, @1.first_column, $2, 'relativa');}
     | '//' LACCESOS             {$2[0].setipoQuery('absoluta'); $$ = new Path(@1.first_line, @1.first_column, $2, 'absoluta');}
-    | '/' 'descendant' '::' id  {$2[0].setipoQuery('absoluta'); $$ = new Path(@1.first_line, @1.first_column, $2, 'relativa');}
-    | '//' 'descendant' '::' id {$2[0].setipoQuery('absoluta'); $$ = new Path(@1.first_line, @1.first_column, $2, 'absoluta');}
     ;
 
 LACCESOS
     : LACCESOS '/' ACCESO       {$3.setipoQuery('relativa'); $1.push($3); $$ = $1;}//abosoluta
     | LACCESOS '//' ACCESO      {$3.setipoQuery('absoluta'); $1.push($3); $$ = $1;}//relativa
+    | '/' 'descendant' '::' id  {$2[0].setipoQuery('absoluta'); $$ = new Path(@1.first_line, @1.first_column, $2, 'relativa');}
+    | '//' 'descendant' '::' id {$2[0].setipoQuery('absoluta'); $$ = new Path(@1.first_line, @1.first_column, $2, 'absoluta');}
     | ACCESO                    {$$ = [$1];}
     ;
 
