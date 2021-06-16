@@ -1,4 +1,4 @@
-# Métodos y clases para los reportes:
+# Métodos y clases para los reportes
 
 ## crearTextoGraphvizRepGram
 Este método es el encargado de crear el texto para la gráfica
