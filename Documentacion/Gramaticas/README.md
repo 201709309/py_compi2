@@ -3,19 +3,22 @@
 :=	'menor' '?' id \<ATRIBUTO\>\<ATRIBUTO\> '?' 'mayor' \<INTRO\>    
 |	\<INTRO\>     
 
-\<INTRO\>	:=	\<INTRO\> \<NODO\> "EOF"           
-    		|	\<NODO\> \<CHECK\>               
+### \<INTRO\>	
+:=	\<INTRO\> \<NODO\> "EOF"           
+|	\<NODO\> \<CHECK\>               
     
-\<CHECK\>	:=	"EOF"               
-    		|	Ε                  
+### \<CHECK\>	
+:=	"EOF"               
+|	Ε                  
 
-\<NODO\>	:=	'menor' id \<LISTAATRIBUTOS\> 'mayor' \<LISTANODOS\> 'menor' '/' id 'mayor'<br>
-    		|	'menor' id \<LISTAATRIBUTOS\> 'mayor' \<NODOTEXTO\> 'menor' '/' id 'mayor'<br>
-    		|	'menor' id \<LISTAATRIBUTOS\> '/' 'mayor'           
-    		|	'menor' id  'mayor' \<LISTANODOS\> 'menor' '/' id 'mayor' <br>
-    		|	'menor' id  'mayor' \<NODOTEXTO\> 'menor' '/' id 'mayor'<br>
-    		|	'menor' id  '/' 'mayor'                                   
-    		|	error \<FINDERROR\>                                               
+### \<NODO\>	
+:=	'menor' id \<LISTAATRIBUTOS\> 'mayor' \<LISTANODOS\> 'menor' '/' id 'mayor'<br>
+|	'menor' id \<LISTAATRIBUTOS\> 'mayor' \<NODOTEXTO\> 'menor' '/' id 'mayor'<br>
+|	'menor' id \<LISTAATRIBUTOS\> '/' 'mayor'           
+|	'menor' id  'mayor' \<LISTANODOS\> 'menor' '/' id 'mayor' <br>
+|	'menor' id  'mayor' \<NODOTEXTO\> 'menor' '/' id 'mayor'<br>
+|	'menor' id  '/' 'mayor'                                   
+|	error \<FINDERROR\>                                               
 
 
 \<FINDERROR\>	:=	'mayor' 
