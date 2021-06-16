@@ -154,96 +154,109 @@
 |	'*'                                        
 |	'.'                                         
 | 	'..'                                         
-    		| 	id \<PREDICADOS\>                         
-    		| 	'*' \<PREDICADOS\>                             
-    		|	child '::' id                                
-    		| 	child '::' '*'                             
-    		| 	child '::' id \<PREDICADOS\>                     
-    		| 	child '::' '*' \<PREDICADOS\>                  
-    		| 	'@' id                                        
-    		| 	'@' '*'                                    
-    		| 	'@' id \<PREDICADOS\>                            
-    		| 	'@' '*' \<PREDICADOS\>                            
-    		|  	attribute '::' id \<PREDICADOS\>                
-    		| 	attribute '::' '*' \<PREDICADOS\>             
-    		|  	error \<FINDERROR\>                          
+| 	id \<PREDICADOS\>                         
+| 	'*' \<PREDICADOS\>                             
+|	child '::' id                                
+| 	child '::' '*'                             
+| 	child '::' id \<PREDICADOS\>                     
+| 	child '::' '*' \<PREDICADOS\>                  
+| 	'@' id                                        
+| 	'@' '*'                                    
+| 	'@' id \<PREDICADOS\>                            
+| 	'@' '*' \<PREDICADOS\>                            
+|  	attribute '::' id \<PREDICADOS\>                
+| 	attribute '::' '*' \<PREDICADOS\>             
+|  	error \<FINDERROR\>                          
 
-\<FINDERROR\>	:=	'/' 
+### \<FINDERROR\>	
+:=	'/' 
 
 
-\<PREDICADOS\>	:=	 \<PREDICADOS\> \<PREDI\>         
-    		|	 \<PREDI\>                  
+### \<PREDICADOS\>	
+:=	 \<PREDICADOS\> \<PREDI\>         
+|	 \<PREDI\>                  
 
-\<PREDI\>	:	'[' \<EXP\> ']'              
+### \<PREDI\>	
+:	'[' \<EXP\> ']'              
     
-\<EXP\> 	:=	\<EXP\>  '+'  \<EXP\>           
-    		|	\<EXP\>  '-'  \<EXP\>           
-    		| 	\<EXP\>  '*'  \<EXP\>             
-    		| 	\<EXP\> 'div' \<EXP\>         
-    		| 	\<EXP\> 'mod' \<EXP\>         
-    		| 	\<EXP\>  '=' \<EXP\>           
-    		| 	\<EXP\> '!=' \<EXP\>             
-		| 	\<EXP\>  '<' \<EXP\>             
-    		| 	\<EXP\> '<='  \<EXP\>            
-    		| 	\<EXP\>  '>'  \<EXP\>          
-    		| 	\<EXP\> '>='  \<EXP\>           
-    		| 	\<EXP\> 'and' \<EXP\>          
-    		| 	\<EXP\> 'or' \<EXP\>          
-    		| 	\<VALOR\>                   
+### \<EXP\> 	
+:=	\<EXP\>  '+'  \<EXP\>           
+|	\<EXP\>  '-'  \<EXP\>           
+| 	\<EXP\>  '*'  \<EXP\>             
+| 	\<EXP\> 'div' \<EXP\>         
+| 	\<EXP\> 'mod' \<EXP\>         
+| 	\<EXP\>  '=' \<EXP\>           
+| 	\<EXP\> '!=' \<EXP\>            
+| 	\<EXP\>  '<' \<EXP\>             
+| 	\<EXP\> '<='  \<EXP\>            
+| 	\<EXP\>  '>'  \<EXP\>          
+| 	\<EXP\> '>='  \<EXP\>           
+| 	\<EXP\> 'and' \<EXP\>          
+| 	\<EXP\> 'or' \<EXP\>          
+| 	\<VALOR\>                   
  
-\<VALOR\>	:=	'(' \<EXP\> ')'             
-    		|	cadena                   
-    		| 	scadena                 
-    		| 	number                    
-    		| 	'position' '(' ')'        
-    		| 	'last' '(' ')'            
-    		| 	\<LACCESOS\>                 
-    		| 	'//' \<LACCESOS\>            
+### \<VALOR\>	
+:=	'(' \<EXP\> ')'             
+|	cadena                   
+| 	scadena                 
+| 	number                    
+| 	'position' '(' ')'        
+| 	'last' '(' ')'            
+| 	\<LACCESOS\>                 
+| 	'//' \<LACCESOS\>            
 
 # XPATH DESCENDENTE:
-\<INIT\>	:=	'/' 'EOF'                                     
-    		|	\<MULTIPATH\> 'EOF'               
-    		|	'EOF'         
+### \<INIT\>	
+:=	'/' 'EOF'                                     
+|	\<MULTIPATH\> 'EOF'               
+|	'EOF'         
 
-\<MULTIPATH\>	:=	\<PATH\> '|' \<MULTIPATH\>                      
-   		|	\<PATH\>    
+### \<MULTIPATH\>	
+:=	\<PATH\> '|' \<MULTIPATH\>                      
+|	\<PATH\>    
 
-\<PATH\>	:=	'/' \<LACCESOS\>                                 
-    		|	'//' \<LACCESOS\>                           
+### \<PATH\>	
+:=	'/' \<LACCESOS\>                                 
+|	'//' \<LACCESOS\>                           
 
-\<LACCESOS\>	:=	\<ACCESO\> '/' \<LACCESOS\>                          
-    		|	\<ACCESO\> '//' \<LACCESOS\>                       
-    		|	\<LACCESOS\> '/' 'descendant' '::' id             
-    		|	\<LACCESOS\> '//' 'descendant' '::' id          
-    		| 	\<LACCESOS\> '/' 'descendant' '::' id \<PREDICADOS\><br>
-    		| 	\<LACCESOS\> '//' 'descendant' '::' id \<PREDICADOS\><br>
-    		|	\<ACCESO\>                                     
+### \<LACCESOS\>	
+:=	\<ACCESO\> '/' \<LACCESOS\>                          
+|	\<ACCESO\> '//' \<LACCESOS\>                       
+|	\<LACCESOS\> '/' 'descendant' '::' id             
+|	\<LACCESOS\> '//' 'descendant' '::' id          
+| 	\<LACCESOS\> '/' 'descendant' '::' id \<PREDICADOS\><br>
+| 	\<LACCESOS\> '//' 'descendant' '::' id \<PREDICADOS\><br>
+|	\<ACCESO\>                                     
 
-\<ACCESO\>	:=	id                                        
-    		|	'*'                                        
-    		| 	'.'                                         
-    		| 	'..'                                         
-    		| 	id \<PREDICADOS\>                         
-    		| 	'*' \<PREDICADOS\>                             
-    		|	child '::' id                                
-    		| 	child '::' '*'                             
-    		| 	child '::' id \<PREDICADOS\>                     
-    		| 	child '::' '*' \<PREDICADOS\>                  
-    		| 	'@' id                                        
-    		| 	'@' '*'                                    
-    		| 	'@' id \<PREDICADOS\>                            
-    		| 	'@' '*' \<PREDICADOS\>                            
-    		|  	attribute '::' id \<PREDICADOS\>                
-    		| 	attribute '::' '*' \<PREDICADOS\>             
-    		|  	error \<FINDERROR\>                          
+### \<ACCESO\>	
+:=	id                                        
+|	'*'                                        
+| 	'.'                                         
+| 	'..'                                         
+| 	id \<PREDICADOS\>                         
+| 	'*' \<PREDICADOS\>                             
+|	child '::' id                                
+| 	child '::' '*'                             
+| 	child '::' id \<PREDICADOS\>                     
+| 	child '::' '*' \<PREDICADOS\>                  
+| 	'@' id                                        
+| 	'@' '*'                                    
+| 	'@' id \<PREDICADOS\>                            
+| 	'@' '*' \<PREDICADOS\>                            
+|  	attribute '::' id \<PREDICADOS\>                
+| 	attribute '::' '*' \<PREDICADOS\>             
+|  	error \<FINDERROR\>                          
 
-\<FINDERROR\>	:=	'/' 
+### \<FINDERROR\>	
+:=	'/' 
 
 
-\<PREDICADOS\>	:=	 \<PREDI\> \<PREDICADOS\>         
-    		|	 \<PREDI\>                  
+### \<PREDICADOS\>	
+:=	 \<PREDI\> \<PREDICADOS\>         
+|	 \<PREDI\>                  
 
-\<PREDI\>	:	'[' \<EXP\> ']'              
+### \<PREDI\>	
+:	'[' \<EXP\> ']'              
     
 \<EXP\> 	:=	\<EXP\>  '+'  \<EXP\>           
     		|	\<EXP\>  '-'  \<EXP\>           
