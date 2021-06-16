@@ -78,12 +78,14 @@ export default class Main extends Component {
             const querys = parseXPATH.parse(this.state.xpath)
 
             console.log(querys)
-            for (const key in querys) {
-                texto = querys[key].GraficarAST(texto);
-                if (indice < querys.length) {
+            var querysXpath = querys.xpath;
+
+            for (const key in querys.xpath) {
+                texto = querysXpath[key].GraficarAST(texto);
+                if (indice < querysXpath.length) {
                     texto += "nodo" + key.toString() + "[label=\"|\"];\n"
-                    texto += "nodo" + querys[key].line.toString() + "_" + querys[key].column.toString() + "->nodo" + key.toString() + ";\n";
-                    texto += "nodo" + key.toString() + "->nodo" + querys[indice].line.toString() + "_" + querys[indice].column.toString() + ";\n";
+                    texto += "nodo" + querysXpath[key].line.toString() + "_" + querysXpath[key].column.toString() + "->nodo" + key.toString() + ";\n";
+                    texto += "nodo" + key.toString() + "->nodo" + querysXpath[indice].line.toString() + "_" + querysXpath[indice].column.toString() + ";\n";
                     indice++;
                 }
             }
