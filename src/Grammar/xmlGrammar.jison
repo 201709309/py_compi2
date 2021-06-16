@@ -65,7 +65,9 @@ INIT
     ;
 
 INTRO    
-    :  INTRO NODO EOF           {$2.setPos($1.length);$1.push($2); $$ = $1;}
+    :  INTRO NODO EOF          {$2.setPos($1.length);
+                                $1.push($2); $$ = $1;
+                                                        }
     |  NODO CHECK               {$1.setPos(0);$$ = [$1];}
     ;
 
