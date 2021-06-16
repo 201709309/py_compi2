@@ -8,7 +8,7 @@ de la gráfica.
 
 ![alt text](https://github.com/201709309/py_compi2/blob/main/Documentacion/Manual%20Tecnico/imagenes/crearTextoGraphvizRepGram.png)
 
-##crearTextoGraphvizCST
+## crearTextoGraphvizCST
 Este método es el encargado de crear el texto para la gráfica
 del Reporte del arbol CST dentro de graphviz. Recibe como parametros un nodo padre de tipo
 NodoCST y un texto el cuál sera el resultado de la gráfica de graphviz.
