@@ -8,9 +8,9 @@ export class Entorno{
     linea: number;
     columna: number;
     pos: number;
-    //last : boolean;
+    last : boolean;
 
-    constructor(id:string, texto:string, linea:number, columna:number, listaSimbolos:Array<Simbolo>, listaE:Array<Entorno>, public last?:boolean){
+    constructor(id:string, texto:string, linea:number, columna:number, listaSimbolos:Array<Simbolo>, listaE:Array<Entorno>, last:boolean){
         this.identificador = id;
         this.texto = texto;
         this.linea = linea;
@@ -18,13 +18,16 @@ export class Entorno{
         this.listaSimbolos = listaSimbolos;
         this.listaEntornos = listaE
         this.pos = -1;
-        //this.last = true; 
+        this.last = last; 
     }
     
     public setPos(pos: number){
         this.pos= pos;
     }
 
+    public setLast(last: boolean){
+        this.last= last;
+    }
 
     public getAtributos(idAtrubito: string) : Simbolo[] {
 
@@ -50,5 +53,6 @@ export class Entorno{
         
         return null;
     }
+
 
 }
