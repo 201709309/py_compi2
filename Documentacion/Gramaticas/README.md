@@ -1,6 +1,6 @@
 # XML ASCENDENTE:
 ### \<INIT\>	
-:=	'menor' '?' id \<ATRIBUTO\>\<ATRIBUTO\> '?' 'mayor' \<INTRO\>    
+* :=	'menor' '?' id \<ATRIBUTO\>\<ATRIBUTO\> '?' 'mayor' \<INTRO\>    
 |	\<INTRO\>     
 
 ### \<INTRO\>	
