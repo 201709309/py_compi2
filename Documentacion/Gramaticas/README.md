@@ -1,4 +1,4 @@
-XML ASCENDENTE:
+# XML ASCENDENTE:
 <INIT>	:=	'menor' '?' id <ATRIBUTO><ATRIBUTO> '?' 'mayor' INTRO    
     	|	<INTRO>     
 
@@ -53,7 +53,7 @@ XML ASCENDENTE:
     		| 	'/'                           
     		| 	'='  
 
-XML DESCENDENTE:
+# XML DESCENDENTE:
 <INIT>	:=	'menor' '?' id <ATRIBUTO><ATRIBUTO> '?' 'mayor' INTRO    
     	|	<INTRO>     
 
@@ -108,7 +108,7 @@ XML DESCENDENTE:
     		| 	'/'                           
     		| 	'='
 
-XPATH ASCENDENTE:
+# XPATH ASCENDENTE:
 <INIT>	:=	'/' 'EOF'                                     
     	|	<MULTIPATH> 'EOF'               
     	|	'EOF'         
@@ -177,7 +177,7 @@ XPATH ASCENDENTE:
     	| 	<LACCESOS>                 
     	| 	'//' <LACCESOS>            
 
-XPATH DESCENDENTE:
+# XPATH DESCENDENTE:
 <INIT>	:=	'/' 'EOF'                                     
     	|	<MULTIPATH> 'EOF'               
     	|	'EOF'         
