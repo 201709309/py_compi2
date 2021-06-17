@@ -318,9 +318,7 @@ export class Path implements Expression{
             }else if (result.value.length > 0 && result.type === tipoPrimitivo.RESP){
                 
                 if (result.value.type === tipoPrimitivo.NODO){
-                    if (result.value === entPadre.identificador){
-                        return true;
-                    }
+                    return false;
                 } 
             }else if (result.value === false) {
                 return false ;
@@ -345,7 +343,7 @@ export class Path implements Expression{
             }else if (result.value.length > 0 && result.type === tipoPrimitivo.RESP){
                 
                 if (result.value.type === tipoPrimitivo.NODO){
-                    if (result.value === entPadre.identificador){
+                    if (result.value === entActual.identificador){
                         return true;
                     }
                 } 
