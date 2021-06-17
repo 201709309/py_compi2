@@ -326,15 +326,7 @@ export default class Main extends Component {
                         </Col>
                     </Row>
                     <br />
-                    <Button variant="primary" onClick={() => {
-                        var cadena = "Hola como% estasñ434";
-                        var result = utf8.encode(cadena)
-                        console.log(cadena)
-                        console.log(result);
-
-                        
-                        
-                    }}>encoding</Button>
+                    
                     <br />
                     <Form.Control as="textarea" placeholder="XML AREA" rows={15} value={this.state.xml} onChange={(e: any) => {
                         this.setState({
@@ -374,3 +366,20 @@ export default class Main extends Component {
         )
     }
 }
+
+
+
+/*
+
+<Button variant="primary" onClick={() => {
+                        var cadena = "Hola como% estasñ434";
+                        var result = utf8.encode(cadena)
+                        console.log(cadena)
+                        console.log(result);
+
+                        
+                        
+                    }}>encoding</Button>
+
+
+*/
