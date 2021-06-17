@@ -13,6 +13,8 @@ const parserReportDesc = require('../Reportes/xmlReportDesc');
 const parseXPATH = require('../Grammar/XPATHparser');
 const parseXPATHDesc = require('../Grammar/XPATHparserDesc');
 
+const utf8 = require('utf8');
+
 export default class Main extends Component {
 
     state = {
@@ -47,7 +49,11 @@ export default class Main extends Component {
             ast = result.ast;
             encoding = result.encoding;
             listaErrores = result.listaErrores;
-            entornoGlobal = new Entorno('Global', '', 0, 0, [], ast,true);
+            entornoGlobal = new Entorno('Global', '', 0, 0, [], ast, true);
+            var buf = new Buffer("Hello World");
+            console.log(buf.toString("ascii"));
+            console.log("---------------------");
+            console.log(buf.toString("utf8"));
             if (listaErrores.length === 0) {
                 var xmlResRep = parserReport.parse(this.state.xml);
                 this.setState({
@@ -89,7 +95,14 @@ export default class Main extends Component {
                     repErrorXPATH: "digraph G {" + crearTextoReporteErrorXML(erroresXpath, RepErrorXPATHASC) + "}"
                 })
             }
-            //********************************************************************************************
+
+
+            console.log(texto);
+
+            this.setState({
+                repAstXpath: "digraph G {" + texto + "}",
+            });
+
             var erroresSemanticos: string[] = [];
             var salida = "";
             for (const query of querysXpath) {
@@ -124,7 +137,8 @@ export default class Main extends Component {
             ast = result.ast;
             encoding = result.encoding;
             listaErrores = result.listaErrores;
-            entornoGlobal = new Entorno('Global', '', 0, 0, [], ast,true);
+            entornoGlobal = new Entorno('Global', '', 0, 0, [], ast, true);
+
             if (listaErrores.length === 0) {
                 var xmlResRep = parserReportDesc.parse(this.state.xml);
                 this.setState({
@@ -165,7 +179,9 @@ export default class Main extends Component {
                     repErrorXPATH: "digraph G {" + crearTextoReporteErrorXML(erroresXpath2, RepErrorXPATHDESC) + "}"
                 })
             }
-            //****************************************************************************
+            this.setState({
+                repAstXpath: "digraph G {" + texto + "}",
+            });
             var erroresSemanticos: string[] = [];
             var salida = "";
             for (const query of querysXpath2) {
@@ -181,7 +197,11 @@ export default class Main extends Component {
         } catch (error) {
             console.log(error);
         }
+
+
     }
+
+
     handleFileChange = file => {
 
         const reader = new FileReader();
@@ -305,6 +325,16 @@ export default class Main extends Component {
                             <Button variant="primary" onClick={this.parseDesc}>RUN DESC</Button>
                         </Col>
                     </Row>
+                    <br />
+                    <Button variant="primary" onClick={() => {
+                        var cadena = "Hola como% estasñ434";
+                        var result = utf8.encode(cadena)
+                        console.log(cadena)
+                        console.log(result);
+
+                        
+                        
+                    }}>encoding</Button>
                     <br />
                     <Form.Control as="textarea" placeholder="XML AREA" rows={15} value={this.state.xml} onChange={(e: any) => {
                         this.setState({
