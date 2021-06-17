@@ -112,9 +112,16 @@ export default class Main extends Component {
                     erroresSemanticos.push(error)
                 }
             }
-            this.setState({
-                consoleResult: salida,
-            });
+            if(encoding==="UTF-8"){
+                this.setState({
+                    consoleResult: utf8.encode(salida),
+                });
+            }else{
+                this.setState({
+                    consoleResult: salida,
+                });
+            }
+            
         } catch (error) {
             console.log(error);
         }
@@ -191,9 +198,15 @@ export default class Main extends Component {
                     erroresSemanticos.push(error)
                 }
             }
-            this.setState({
-                consoleResult: salida
-            });
+            if(encoding==="UTF-8"){
+                this.setState({
+                    consoleResult: utf8.encode(salida),
+                });
+            }else{
+                this.setState({
+                    consoleResult: salida,
+                });
+            }
         } catch (error) {
             console.log(error);
         }
