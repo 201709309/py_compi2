@@ -49,7 +49,7 @@ export default class Main extends Component {
             ast = result.ast;
             encoding = result.encoding;
             listaErrores = result.listaErrores;
-            entornoGlobal = new Entorno('Global', '', 0, 0, [], ast, true);
+            entornoGlobal = new Entorno('Global', '', 0, 0, [], ast);
             var buf = new Buffer("Hello World");
             console.log(buf.toString("ascii"));
             console.log("---------------------");
@@ -144,8 +144,8 @@ export default class Main extends Component {
             ast = result.ast;
             encoding = result.encoding;
             listaErrores = result.listaErrores;
-            entornoGlobal = new Entorno('Global', '', 0, 0, [], ast, true);
-
+            entornoGlobal = new Entorno('Global', '', 0, 0, [], ast);
+            
             if (listaErrores.length === 0) {
                 var xmlResRep = parserReportDesc.parse(this.state.xml);
                 this.setState({
