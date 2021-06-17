@@ -30,7 +30,7 @@ El software nos ofrece la opcion de descargar nuestros archivos xml y/o xpath
 
 ![alt text](https://github.com/201709309/py_compi2/blob/main/Documentacion/Manual%20Usuario/imagenes/in6.png)
 
-## Opcion de descarga de archivos
+## Limpiar area de archivos
 En este apartado podemos limpiar nuestras areas de xml y xpath para deplegar nuevos archivos.
 
 ![alt text](https://github.com/201709309/py_compi2/blob/main/Documentacion/Manual%20Usuario/imagenes/in7.png)
