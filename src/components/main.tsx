@@ -168,7 +168,7 @@ export default class Main extends Component {
             var erroresXpath2 = querys2.listaErrores;
             //XPATH AST Y ERROR**********************************************************
             if (erroresXpath2.length === 0) {
-                const querysDesc = parseXPATHDesc.parse(this.state.xpath)
+                const querysDesc = parseXPATHDesc.parse(this.state.xpath).xpath;
                 for (const key in querysDesc) {
                     texto = querysDesc[key].GraficarAST(texto);
                     if (indice < querysDesc.length) {
