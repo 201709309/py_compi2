@@ -12,6 +12,7 @@ const parserReport = require('../Reportes/xmlReport');
 const parserReportDesc = require('../Reportes/xmlReportDesc');
 const parseXPATH = require('../Grammar/XPATHparser');
 const parseXPATHDesc = require('../Grammar/XPATHparserDesc');
+const parseQuery = require('../Grammar/xQueryGrammar');
 
 const utf8 = require('utf8');
 
@@ -336,6 +337,13 @@ export default class Main extends Component {
                         </Col>
                         <Col xs={6} md={2}>
                             <Button variant="primary" onClick={this.parseDesc}>RUN DESC</Button>
+                        </Col>
+
+                        <Col xs={6} md={2}>
+                            <Button variant="primary" onClick={()=>{
+                                const result = parseQuery.parse(this.state.xml)
+                                console.log(result)
+                            }}>xquery</Button>
                         </Col>
                     </Row>
                     <br />
