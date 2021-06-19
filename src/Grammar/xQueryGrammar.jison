@@ -20,12 +20,14 @@
 "}"                                         return 'corchetec';
 "@"                                         return 'arroba';
 
-"="                                         return 'igual';
+"<"
+
 "!""="                                      return 'diferente';
-"<"                                         return 'menor';
+"="                                         return 'igual';
 "<""="                                      return 'meigual';
-">"                                         return 'mayor';
+"<"                                         return 'menor';
 ">""="                                      return 'maigual';
+">"                                         return 'mayor';
 
 "f""o""r"                                   return 'for';
 "i""n"                                      return 'in';
@@ -40,6 +42,9 @@
 "t""h""e""n"                                return 'then';
 "e""l""s""e"                                return 'else';
 "d""a""t""a"                                return 'data';
+
+"a""n""d"                                   return 'and';
+"o""r"                                      return 'or';
 
 (\"([^\"\\])*\")                            return 'dstring';
 (\'([^\'\\])*\')                            return 'sstring';
@@ -68,7 +73,7 @@
 
 INIT
     :   FOR LET WHERE ORDERBY RETURN EOF    {}
-    |                                       {}
+    |   EOF                                 {}
     ;
 
 FOR 
@@ -88,9 +93,20 @@ LET
     ;
 
 WHERE 
-    :   where dolar id barra id COMPARISON number         {}
-    |   where dolar id barra id COMPARISON id             {}
-    |   {}
+    :   where WHERE2         {}
+    ;
+
+WHERE2
+    :   WHERE2 and WHERE3               {}
+    |   WHERE2 or WHERE3                {}
+    |   WHERE3                          {}
+    ;
+
+WHERE3
+    :   dolar id barra id COMPARISON id         {}
+    |   dolar id barra id COMPARISON number     {}
+    |   dolar id barra id COMPARISON sstring    {}
+    |   dolar id barra id COMPARISON dstring    {}
     ;
 
 COMPARISON
@@ -103,20 +119,53 @@ COMPARISON
     ;
 
 ORDERBY 
-    : order by RETVAR          {}
-    |
+    : order by ORDERBY2             {}
+    |                               {}
+    ;
+
+ORDERBY2
+    :   ORDERBY2 coma ORDERBY3        {}
+    |   ORDERBY3                      {}
+    ;
+
+ORDERBY3
+    :   dolar id barra id   {}
+    |   dolar id            {}
     ;
 
 RETURN 
-    : return PARAMRETURN           {}
+    : return RETURN2        {}
+    |                       {}
     ;
 
-PARAMRETURN
-    :   RETVAR   {}
-    |   menor id mayor corchetea RETVAR corchetec menor barra id mayor {}
-    |   menor id mayor corchetea data parea RETVAR parec corchetec menor barra id mayor {}
-    |   IFTHENELSE  {}
+RETURN2: RETURN3            {}
+    |    IFTHENELSE         {}
+    |    HTML               {}
+;
+
+RETURN3: RETURN3 coma RETURN4   {}
+    |    RETURN4                {}
     ;
+
+RETURN4: dolar id barra id  {}
+    | dolar id           {}
+    ;
+
+HTML: menor id mayor CONTENIDOHTML  menor id mayor  {}
+    | menor id LISTAATRIBUTOSHTML mayor CONTENIDOHTML  menor id mayor  {}  
+;
+
+LISTAATRIBUTOSHTML: LISTAATRIBUTOSHTML ATRIBUTOHTML     {}
+                | ATRIBUTOHTML                          {}
+;
+
+ATRIBUTOHTML
+    : id '=' sstring                {}
+    | id '=' dstring                {}
+    ;
+
+CONTENIDOHTML:  {}
+;
 
 IFTHENELSE
     :   IF THEN ELSE    {}
