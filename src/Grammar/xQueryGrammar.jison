@@ -16,6 +16,9 @@
 "$"                                         return 'dolar';
 ","                                         return 'coma';
 "/"                                         return 'barra';
+"{"                                         return 'corchetea';
+"}"                                         return 'corchetec';
+"@"                                         return 'arroba';
 
 "="                                         return 'igual';
 "!""="                                      return 'diferente';
@@ -36,6 +39,7 @@
 "i""f"                                      return 'if';
 "t""h""e""n"                                return 'then';
 "e""l""s""e"                                return 'else';
+"d""a""t""a"                                return 'data';
 
 (\"([^\"\\])*\")                            return 'dstring';
 (\'([^\'\\])*\')                            return 'sstring';
@@ -63,27 +67,77 @@
 %% /* language grammar */
 
 INIT
-    :   FOR LET WHERE ORDERBY RETURN EOF{}
+    :   FOR LET WHERE ORDERBY RETURN EOF    {}
+    |                                       {}
+    ;
+
+FOR 
+    :   for dolar id in doc parea dstring parec PATH             {} 
+    ;
+
+PATH 
+    :   PATH barra              {$$ = $1+$2}
+    |   PATH id                 {$$ = $1+$2}
+    |   barra                   {$$ = $1}
+    |   id                      {$$ = $1}
+    ;
+
+LET 
+    :   let           {}
+    |
+    ;
+
+WHERE 
+    :   where dolar id barra id COMPARISON number         {}
+    |   where dolar id barra id COMPARISON id             {}
     |   {}
     ;
 
-FOR : 'for' 'dolar' 'id' 'in' 'doc' 'parea' dstring 'parec' PATH             {console.log($9)} 
+COMPARISON
+    :   igual       {$$=$1}
+    |   diferente   {$$=$1}
+    |   menor       {$$=$1}
+    |   meigual     {$$=$1}
+    |   mayor       {$$=$1}
+    |   maigual     {$$=$1}
     ;
 
-PATH :  PATH 'barra'        {$$ = $1+$2}
-    |   PATH 'id'           {$$ = $1+$2}
-    |  'barra'              {$$ = $1}
-    |  'id'                 {$$ = $1}
-;
-
-LET : let           {}
+ORDERBY 
+    : order by RETVAR          {}
+    |
     ;
 
-WHERE : where           {}
+RETURN 
+    : return PARAMRETURN           {}
     ;
 
-ORDERBY : order by           {}
+PARAMRETURN
+    :   RETVAR   {}
+    |   menor id mayor corchetea RETVAR corchetec menor barra id mayor {}
+    |   menor id mayor corchetea data parea RETVAR parec corchetec menor barra id mayor {}
+    |   IFTHENELSE  {}
     ;
 
-RETURN : return           {}
+IFTHENELSE
+    :   IF THEN ELSE    {}
+    ;
+
+IF
+    :   if  parea dolar id barra arroba id COMPARISON dstring parec  {}
+    |   if  parea dolar id barra arroba id COMPARISON sstring parec  {}
+    ;
+
+THEN
+    :   then menor id mayor corchetea RETVAR corchetec menor barra id mayor {}
+    |   then menor id mayor corchetea data parea RETVAR parec corchetec menor barra id mayor {}
+    ;
+
+ELSE
+    :   else menor id mayor corchetea RETVAR corchetec menor barra id mayor {}
+    |   else menor id mayor corchetea data parea RETVAR parec corchetec menor barra id mayor {}
+    ;
+
+RETVAR
+    :   dolar id barra id   {}
+    |   dolar id    {}
     ;
