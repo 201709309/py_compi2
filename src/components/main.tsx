@@ -12,7 +12,7 @@ const parserReport = require('../Reportes/xmlReport');
 const parserReportDesc = require('../Reportes/xmlReportDesc');
 const parseXPATH = require('../Grammar/XPATHparser');
 const parseXPATHDesc = require('../Grammar/XPATHparserDesc');
-const parseQuery = require('../xquery/grammar/xQueryGrammar');
+const parseQuery = require('../Grammar/xQueryGrammar');
 
 const utf8 = require('utf8');
 
