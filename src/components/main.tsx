@@ -6,6 +6,7 @@ import { Graphviz } from 'graphviz-react';
 import { crearTextoReporteErrorXML } from "../xmlAST/ClaseError";
 import { crearTablaSimbolos, crearTextoGraphvizTablaSimbolos, SimboloTabla } from "../Reportes/SimboloTabla";
 import { Entorno } from '../xmlAST/Entorno';
+import { OptimizadorMirilla } from '../Optimizador/OptimizadorMirilla';
 const parser = require('../Grammar/xmlGrammar');
 const parserXmlDesc = require('../Grammar/xmlGrammarDesc');
 const parserReport = require('../Reportes/xmlReport');
@@ -13,7 +14,7 @@ const parserReportDesc = require('../Reportes/xmlReportDesc');
 const parseXPATH = require('../Grammar/XPATHparser');
 const parseXPATHDesc = require('../Grammar/XPATHparserDesc');
 const parseQuery = require('../Grammar/xQueryGrammar');
-
+const parseC3D = require('../Grammar/C3DGrammar');
 const utf8 = require('utf8');
 
 export default class Main extends Component {
@@ -28,6 +29,7 @@ export default class Main extends Component {
         repErrorXPATH: '',
         repTablaSimbolos: '',
         repAstXpath: '',
+        repOptimizacion: '',
         graphvizContent: ''
     }
 
@@ -127,6 +129,7 @@ export default class Main extends Component {
             console.log(error);
         }
     }
+
     parseDesc = () => {
         let ast;
         let listaErrores = [];
@@ -215,6 +218,18 @@ export default class Main extends Component {
 
     }
 
+    analizarC3D = () => {
+        const result = parseC3D.parse(this.state.xml);
+        let optimizador = new OptimizadorMirilla();
+        optimizador.Optimizar(result);
+        console.log(optimizador.textC3D);
+        this.setState({
+            repOptimizacion: "digraph G {" + optimizador.textGraphviz + "}",
+        });
+        this.setState({
+            consoleResult: optimizador.textC3D,
+        });
+    }
 
     handleFileChange = file => {
 
@@ -229,9 +244,9 @@ export default class Main extends Component {
                 console.log(e);
             }
         };
-    };
-    handleFileChangeXpath = file => {
+    }
 
+    handleFileChangeXpath = file => {
         const reader = new FileReader();
         reader.readAsText(file);
         reader.onload = (e: any) => {
@@ -244,39 +259,58 @@ export default class Main extends Component {
                 console.log(e);
             }
         };
-    };
+    }
+
     onChangeReports = e => {
-        //console.log(this.state.graphvizContent)
+
         if (e.target.value === "Ocultar") {
             this.setState({
                 graphvizContent: ''
             })
-        } else if (e.target.value === "CST XML") {
+        } else if (e.target.value === "XML: CST") {
             this.setState({
                 graphvizContent: this.state.repcsttxt
             })
-        } else if (e.target.value === "Reporte gramatical XML") {
+        } else if (e.target.value === "XML: Reporte Gramatical") {
             this.setState({
                 graphvizContent: this.state.repgramtxt
             })
-        } else if (e.target.value === "Reporte de errores XML") {
+        } else if (e.target.value === "XML: Reporte De Errores") {
             this.setState({
                 graphvizContent: this.state.repErrorXML
             })
-        } else if (e.target.value === "Tabla de simbolos XML") {
+        } else if (e.target.value === "XML: Tabla De Simbolos") {
             this.setState({
                 graphvizContent: this.state.repTablaSimbolos
             })
-        } else if (e.target.value === "AST XPath") {
+        } else if (e.target.value === "XPath: AST") {
             this.setState({
                 graphvizContent: this.state.repAstXpath
             })
-        } else if (e.target.value === "Reporte de errores XPath") {
+        } else if (e.target.value === "XPath: Reporte De Errores") {
             this.setState({
                 graphvizContent: this.state.repErrorXPATH
             })
+        } else if (e.target.value === "XQuery: AST") {
+            this.setState({
+                graphvizContent: ''
+            })
+        } else if (e.target.value === "XQuery: DAG") {
+            this.setState({
+                graphvizContent: ''
+            })
+        } else if (e.target.value === "XQuery: Reporte De Errores") {
+            this.setState({
+                graphvizContent: ''
+            })
+        } else if (e.target.value === "Reporte De Optimizacion") {
+            this.setState({
+                graphvizContent: this.state.repOptimizacion
+            })
         }
+
     }
+
     render() {
         return (
             <>
@@ -344,6 +378,8 @@ export default class Main extends Component {
                                 const result = parseQuery.parse(this.state.xml)
                                 console.log(result)
                             }}>xquery</Button>
+                            <Button variant="primary" onClick={this.analizarC3D}>Analizar C3D</Button>
+                            
                         </Col>
                     </Row>
                     <br />
@@ -360,16 +396,19 @@ export default class Main extends Component {
                     <Form.Group>
                         <Form.Control as="select" name="tier" size="lg" onChange={this.onChangeReports}>
                             <option>Ocultar</option>
-                            <option>Tabla de simbolos XML</option>
-                            <option>Reporte de errores XML</option>
-                            <option>CST XML</option>
-                            <option>Reporte gramatical XML</option>
-                            <option>AST XPath</option>
-                            <option>Reporte de errores XPath</option>
+                            <option>XML: CST</option>
+                            <option>XML: Reporte Gramatical</option>
+                            <option>XML: Reporte De Errores</option>
+                            <option>XML: Tabla De Simbolos</option>
+                            <option>XPath: AST</option>
+                            <option>XPath: Reporte De Errores</option>
+                            <option>XQuery: AST</option>
+                            <option>XQuery: DAG</option>
+                            <option>XQuery: Reporte De Errores</option>
+                            <option>Reporte De Optimizacion</option>
                         </Form.Control>
                     </Form.Group>
                 </div>
-
 
                 {
                     this.state.graphvizContent !== '' ? (
@@ -379,28 +418,11 @@ export default class Main extends Component {
                     ) : <div></div>
                 }
 
-
                 <div className="mt-3 px-5">
                     <Form.Control as="textarea" rows={6} value={this.state.consoleResult} readOnly />
                 </div>
             </>
         )
     }
+
 }
-
-
-
-/*
-
-<Button variant="primary" onClick={() => {
-                        var cadena = "Hola como% estasñ434";
-                        var result = utf8.encode(cadena)
-                        console.log(cadena)
-                        console.log(result);
-
-                        
-                        
-                    }}>encoding</Button>
-
-
-*/
