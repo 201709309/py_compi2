@@ -5,8 +5,13 @@ import { Nav, Navbar, Form, Button, Row, Col, NavDropdown } from 'react-bootstra
 import { Graphviz } from 'graphviz-react';
 import { crearTextoReporteErrorXML } from "../xmlAST/ClaseError";
 import { crearTablaSimbolos, crearTextoGraphvizTablaSimbolos, SimboloTabla } from "../Reportes/SimboloTabla";
+import { traducirXml } from "../xmlAST/xml3d";
 import { Entorno } from '../xmlAST/Entorno';
+<<<<<<< Updated upstream
 import { OptimizadorMirilla } from '../Optimizador/OptimizadorMirilla';
+=======
+import { traduccion } from '../traduccion/traduccion';
+>>>>>>> Stashed changes
 const parser = require('../Grammar/xmlGrammar');
 const parserXmlDesc = require('../Grammar/xmlGrammarDesc');
 const parserReport = require('../Reportes/xmlReport');
@@ -14,7 +19,13 @@ const parserReportDesc = require('../Reportes/xmlReportDesc');
 const parseXPATH = require('../Grammar/XPATHparser');
 const parseXPATHDesc = require('../Grammar/XPATHparserDesc');
 const parseQuery = require('../Grammar/xQueryGrammar');
+<<<<<<< Updated upstream
 const parseC3D = require('../Grammar/C3DGrammar');
+=======
+
+
+
+>>>>>>> Stashed changes
 const utf8 = require('utf8');
 
 export default class Main extends Component {
@@ -90,7 +101,7 @@ export default class Main extends Component {
                     }
                 }
                 this.setState({
-                    repAstXpath: "digraph G {" +texto +"}",
+                    repAstXpath: "digraph G {" + texto + "}",
                 });
             } else {
                 console.log(erroresXpath.length)
@@ -115,10 +126,11 @@ export default class Main extends Component {
                     erroresSemanticos.push(error)
                 }
             }
-            if(encoding==="UTF-8"){
+            if (encoding === "UTF-8") {
                 this.setState({
                     consoleResult: utf8.encode(salida),
                 });
+<<<<<<< Updated upstream
             }else{
                 this.setState({
                     consoleResult: salida,
@@ -157,65 +169,34 @@ export default class Main extends Component {
                     repcsttxt: "digraph G {" + crearTextoGraphvizCST(xmlResRep.ReporteCST, repcsttxt2) + "}",
                     repTablaSimbolos: "digraph G {" + crearTextoGraphvizTablaSimbolos(crearTablaSimbolos(entornoGlobal, TablaSimbolos, "Global"), repTablaSimbolos2) + "}"
                 })
+=======
+>>>>>>> Stashed changes
             } else {
-                this.setState({
-                    repErrorXML: "digraph G {" + crearTextoReporteErrorXML(listaErrores, repErrorXML2) + "}"
-                })
-            }
-        } catch (error) {
-            console.log(error)
-            alert("Irrecoverable Xml Syntax Error")
-        }
-        try {
-            const querys2 = parseXPATH.parse(this.state.xpath);
-            var querysXpath2 = querys2.xpath;
-            var erroresXpath2 = querys2.listaErrores;
-            //XPATH AST Y ERROR**********************************************************
-            if (erroresXpath2.length === 0) {
-                const querysDesc = parseXPATHDesc.parse(this.state.xpath).xpath;
-                for (const key in querysDesc) {
-                    texto = querysDesc[key].GraficarAST(texto);
-                    if (indice < querysDesc.length) {
-                        texto += "nodo" + key.toString() + "[label=\"|\"];\n"
-                        texto += "nodo" + querysDesc[key].line.toString() + "_" + querysDesc[key].column.toString() + "->nodo" + key.toString() + ";\n";
-                        texto += "nodo" + key.toString() + "->nodo" + querysDesc[indice].line.toString() + "_" + querysDesc[indice].column.toString() + ";\n";
-                        indice++;
-                    }
-                }
-                this.setState({
-                    repAstXpath: "digraph G {" +texto +"}",
-                });
-            } else {
-                this.setState({
-                    repErrorXPATH: "digraph G {" + crearTextoReporteErrorXML(erroresXpath2, RepErrorXPATHDESC) + "}"
-                })
-            }
-            this.setState({
-                repAstXpath: "digraph G {" + texto + "}",
-            });
-            var erroresSemanticos: string[] = [];
-            var salida = "";
-            for (const query of querysXpath2) {
-                try {
-                    salida += query.execute(ast[0]).value;
-                } catch (error) {
-                    erroresSemanticos.push(error)
-                }
-            }
-            if(encoding==="UTF-8"){
-                this.setState({
-                    consoleResult: utf8.encode(salida),
-                });
-            }else{
                 this.setState({
                     consoleResult: salida,
                 });
             }
+
         } catch (error) {
             console.log(error);
         }
+    }
 
-
+    traducir = () => {
+        //var temp =  trans.getTranslate();
+        //let temp: traduccion = new traduccion();
+        /*traduccion.getNumber();
+        traduccion.getNumber();
+        traduccion.getNumber();*/
+        if (this.state.xml==="") {
+            return;
+        }
+        const result = parser.parse(this.state.xml)
+        var ast = result.ast;
+        console.log(ast);
+        var entornoGlobal = new Entorno('G', '', 0, 0, [], ast);
+        traducirXml(entornoGlobal);
+        console.log(traduccion.getTranslate());
     }
 
     analizarC3D = () => {
@@ -367,9 +348,10 @@ export default class Main extends Component {
                                 }} />
                         </Col>
                         <Col xs={6} md={2}>
-                            <Button variant="primary" onClick={this.parse}>RUN ASC</Button>
+                            <Button variant="primary" onClick={this.traducir}>Traducir</Button>
                         </Col>
                         <Col xs={6} md={2}>
+<<<<<<< Updated upstream
                             <Button variant="primary" onClick={this.parseDesc}>RUN DESC</Button>
                         </Col>
 
@@ -380,10 +362,13 @@ export default class Main extends Component {
                             }}>xquery</Button>
                             <Button variant="primary" onClick={this.analizarC3D}>Analizar C3D</Button>
                             
+=======
+                            <Button variant="primary" onClick={this.parse}>RUN ASC</Button>
+>>>>>>> Stashed changes
                         </Col>
                     </Row>
                     <br />
-                    
+
                     <br />
                     <Form.Control as="textarea" placeholder="XML AREA" rows={15} value={this.state.xml} onChange={(e: any) => {
                         this.setState({
@@ -424,5 +409,24 @@ export default class Main extends Component {
             </>
         )
     }
+<<<<<<< Updated upstream
+=======
+}
+
+
+
+/*
+
+<Button variant="primary" onClick={() => {
+                        var cadena = "Hola como% estasñ434";
+                        var result = utf8.encode(cadena)
+                        console.log(cadena)
+                        console.log(result);
+
+
+
+                    }}>encoding</Button>
+
+>>>>>>> Stashed changes
 
 }
