@@ -1,5 +1,5 @@
 import { Entorno } from "../xmlAST/Entorno";
-import { traduccion } from '../traduccion/traduccion';
+import { traduccion } from '../Traduccion/traduccion';
 
 export class SimboloTablaXml {
     linea: number;
