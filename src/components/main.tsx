@@ -7,25 +7,16 @@ import { crearTextoReporteErrorXML } from "../xmlAST/ClaseError";
 import { crearTablaSimbolos, crearTextoGraphvizTablaSimbolos, SimboloTabla } from "../Reportes/SimboloTabla";
 import { traducirXml } from "../xmlAST/xml3d";
 import { Entorno } from '../xmlAST/Entorno';
-<<<<<<< Updated upstream
 import { OptimizadorMirilla } from '../Optimizador/OptimizadorMirilla';
-=======
 import { traduccion } from '../traduccion/traduccion';
->>>>>>> Stashed changes
 const parser = require('../Grammar/xmlGrammar');
-const parserXmlDesc = require('../Grammar/xmlGrammarDesc');
 const parserReport = require('../Reportes/xmlReport');
-const parserReportDesc = require('../Reportes/xmlReportDesc');
 const parseXPATH = require('../Grammar/XPATHparser');
-const parseXPATHDesc = require('../Grammar/XPATHparserDesc');
 const parseQuery = require('../Grammar/xQueryGrammar');
-<<<<<<< Updated upstream
 const parseC3D = require('../Grammar/C3DGrammar');
-=======
 
 
 
->>>>>>> Stashed changes
 const utf8 = require('utf8');
 
 export default class Main extends Component {
@@ -130,47 +121,6 @@ export default class Main extends Component {
                 this.setState({
                     consoleResult: utf8.encode(salida),
                 });
-<<<<<<< Updated upstream
-            }else{
-                this.setState({
-                    consoleResult: salida,
-                });
-            }
-            
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-    parseDesc = () => {
-        let ast;
-        let listaErrores = [];
-        let TablaSimbolos = [];
-        let RepErrorXPATHDESC = '';
-        let repcsttxt2 = '';
-        let repgramtxt2 = '';
-        let repErrorXML2 = '';
-        let repTablaSimbolos2 = '';
-        let encoding = "";
-        let texto = "";
-        let indice = 1;
-        let entornoGlobal;
-        try {
-            const result = parserXmlDesc.parse(this.state.xml)
-            ast = result.ast;
-            encoding = result.encoding;
-            listaErrores = result.listaErrores;
-            entornoGlobal = new Entorno('Global', '', 0, 0, [], ast);
-            
-            if (listaErrores.length === 0) {
-                var xmlResRep = parserReportDesc.parse(this.state.xml);
-                this.setState({
-                    repgramtxt: "digraph G {" + crearTextoGraphvizRepGram(xmlResRep.ReporteGramatical[0], xmlResRep.ReporteGramatical[1], repgramtxt2) + "}",
-                    repcsttxt: "digraph G {" + crearTextoGraphvizCST(xmlResRep.ReporteCST, repcsttxt2) + "}",
-                    repTablaSimbolos: "digraph G {" + crearTextoGraphvizTablaSimbolos(crearTablaSimbolos(entornoGlobal, TablaSimbolos, "Global"), repTablaSimbolos2) + "}"
-                })
-=======
->>>>>>> Stashed changes
             } else {
                 this.setState({
                     consoleResult: salida,
@@ -351,20 +301,7 @@ export default class Main extends Component {
                             <Button variant="primary" onClick={this.traducir}>Traducir</Button>
                         </Col>
                         <Col xs={6} md={2}>
-<<<<<<< Updated upstream
-                            <Button variant="primary" onClick={this.parseDesc}>RUN DESC</Button>
-                        </Col>
-
-                        <Col xs={6} md={2}>
-                            <Button variant="primary" onClick={()=>{
-                                const result = parseQuery.parse(this.state.xml)
-                                console.log(result)
-                            }}>xquery</Button>
-                            <Button variant="primary" onClick={this.analizarC3D}>Analizar C3D</Button>
-                            
-=======
                             <Button variant="primary" onClick={this.parse}>RUN ASC</Button>
->>>>>>> Stashed changes
                         </Col>
                     </Row>
                     <br />
@@ -409,24 +346,4 @@ export default class Main extends Component {
             </>
         )
     }
-<<<<<<< Updated upstream
-=======
-}
-
-
-
-/*
-
-<Button variant="primary" onClick={() => {
-                        var cadena = "Hola como% estasñ434";
-                        var result = utf8.encode(cadena)
-                        console.log(cadena)
-                        console.log(result);
-
-
-
-                    }}>encoding</Button>
-
->>>>>>> Stashed changes
-
 }
