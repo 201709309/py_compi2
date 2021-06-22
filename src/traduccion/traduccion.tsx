@@ -23,6 +23,7 @@ export class traduccion {
             }
             content += ";\n\n";
         }
+        
         content += "/*--------MAIN---------*/\n";
         content += "void main(){\n";
         content += "S = 0; H = 0;\n\n";
