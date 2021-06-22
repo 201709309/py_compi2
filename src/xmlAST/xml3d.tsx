@@ -3,7 +3,6 @@ import { traduccion } from '../Traduccion/traduccion';
 
 export function traducirXml(ast) {
     traducirXmlRecursive(ast[0]);
-    //createPrintText();
     printText(ast[0]);
 }
 
@@ -25,8 +24,10 @@ export function traducirXmlRecursive(raiz: Entorno) {
         traduccion.stackCounter++;
         raiz.SP_VAL = traduccion.stackCounter;
         traduccion.setTranslate("\n");
-        traduccion.setTranslate("//Texto de nodo: " + raiz.identificador.toString() + "\t--------------");
+        traduccion.setTranslate("//Posicion en stack\t--------------");
         traduccion.setTranslate("stack[" + traduccion.stackCounter.toString() + "] = " + "H;");
+        traduccion.setTranslate("");
+        traduccion.setTranslate("//Texto de nodo: " + raiz.identificador.toString() + "\t--------------");
         for (let i = 0; i < raiz.texto.length; i++) {
             traduccion.setTranslate("heap[(int)H] = " + raiz.texto.charCodeAt(i) + ";" + "\t\t//Caracter " + raiz.texto[i].toString());
             traduccion.setTranslate("H = H + 1;");
@@ -56,9 +57,11 @@ export function traducirXmlRecursive(raiz: Entorno) {
         simbolo.valor=simbolo.valor.replaceAll("'","");
         traduccion.stackCounter++;
         simbolo.SP_VAL = traduccion.stackCounter;
+        traduccion.setTranslate("//Posicion en stack\t--------------");
         traduccion.setTranslate("stack[" + traduccion.stackCounter.toString() + "] = " + "H;");
+        traduccion.setTranslate("");
+        traduccion.setTranslate("//Valor de " + simbolo.identificador + "\t--------------");
         for (let i = 0; i < simbolo.valor.length; i++) {
-            
             traduccion.setTranslate("heap[(int)H] = " + simbolo.valor.charCodeAt(i) + ";" + "\t\t//Caracter " + simbolo.valor[i].toString());
             traduccion.setTranslate("H = H + 1;");
             if (i + 1 === simbolo.valor.length) {
@@ -113,12 +116,3 @@ export function printText(raiz: Entorno) {
         printText(r);
     }
 }
-
-/*t1 = stack[(int)0]; //t1=0
-    t5 = P+1;           //t5=1          
-    t5 = t5+1;          //t5=2
-    stack[(int)t5] = t1;//stack[2]=0
-    P = P + 1;          //P = 1
-    printString();
-    t6 = stack[(int)P];
-    P = P - 1;*/
