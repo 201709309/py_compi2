@@ -7,20 +7,13 @@ import { crearTextoReporteErrorXML } from "../xmlAST/ClaseError";
 import { crearTablaSimbolos, crearTextoGraphvizTablaSimbolos, SimboloTabla } from "../Reportes/SimboloTabla";
 import { traducirXml } from "../xmlAST/xml3d";
 import { Entorno } from '../xmlAST/Entorno';
-<<<<<<< Updated upstream
-import { OptimizadorMirilla } from '../Optimizador/OptimizadorMirilla';
-import { traduccion } from '../traduccion/traduccion';
-=======
+//import { OptimizadorMirilla } from '../Optimizador/OptimizadorMirilla';
 import { traduccion } from '../Traduccion/traduccion';
->>>>>>> Stashed changes
 const parser = require('../Grammar/xmlGrammar');
 const parserReport = require('../Reportes/xmlReport');
 const parseXPATH = require('../Grammar/XPATHparser');
 const parseQuery = require('../Grammar/xQueryGrammar');
-<<<<<<< Updated upstream
 const parseC3D = require('../Grammar/C3DGrammar');
-=======
->>>>>>> Stashed changes
 
 
 
@@ -145,9 +138,10 @@ export default class Main extends Component {
         const result = parser.parse(this.state.xml)
         var ast = result.ast;
         console.log(ast);
-        var entornoGlobal = new Entorno('G', '', 0, 0, [], ast);
-        traducirXml(entornoGlobal);
+        
+        traducirXml(ast);
         console.log(traduccion.getTranslate());
+        console.log(ast);
     }
 
 
@@ -314,25 +308,4 @@ export default class Main extends Component {
             </>
         )
     }
-<<<<<<< Updated upstream
 }
-=======
-}
-
-
-
-/*
-
-<Button variant="primary" onClick={() => {
-                        var cadena = "Hola como% estasñ434";
-                        var result = utf8.encode(cadena)
-                        console.log(cadena)
-                        console.log(result);
-
-
-
-                    }}>encoding</Button>
-
-
-*/
->>>>>>> Stashed changes

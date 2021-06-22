@@ -12,7 +12,7 @@ export class traduccion {
         content += "double heap[30101999];\n";
         content += "double stack[30101999];\n\n";
 
-        content += "double P;\n";
+        content += "double S;\n";
         content += "double H;\n\n";
 
         content += "double ";
@@ -26,7 +26,7 @@ export class traduccion {
 
         content += "/*--------MAIN---------*/\n";
         content += "void main(){\n";
-        content += "P = 0; H = 0;\n\n";
+        content += "S = 0; H = 0;\n\n";
 
         content += this.tranlate;
 
