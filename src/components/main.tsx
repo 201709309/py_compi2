@@ -8,19 +8,18 @@ import { crearTablaSimbolos, crearTextoGraphvizTablaSimbolos, SimboloTabla } fro
 import { traducirXml } from "../xmlAST/xml3d";
 import { Entorno } from '../xmlAST/Entorno';
 //import { OptimizadorMirilla } from '../Optimizador/OptimizadorMirilla';
-import { traduccion } from '../Traduccion/traduccion';
+import { traduccion } from '../traduccion/traduccion';
 const parser = require('../Grammar/xmlGrammar');
 const parserReport = require('../Reportes/xmlReport');
 const parseXPATH = require('../Grammar/XPATHparser');
 const parseQuery = require('../Grammar/xQueryGrammar');
-const parseC3D = require('../Grammar/C3DGrammar');
+//const parseC3D = require('../Grammar/C3DGrammar');
 
 
 
 const utf8 = require('utf8');
 
 export default class Main extends Component {
-
     state = {
         consoleResult: "",
         xpath: "",
@@ -33,7 +32,6 @@ export default class Main extends Component {
         repAstXpath: '',
         graphvizContent: ''
     }
-
     parse = () => {
         let ast;
         let listaErrores = [];
@@ -130,7 +128,6 @@ export default class Main extends Component {
             console.log(error);
         }
     }
-
     traducir = () => {
         if (this.state.xml==="") {
             return;
@@ -143,8 +140,6 @@ export default class Main extends Component {
         console.log(traduccion.getTranslate());
         console.log(ast);
     }
-
-
     handleFileChange = file => {
 
         const reader = new FileReader();
@@ -160,7 +155,6 @@ export default class Main extends Component {
         };
     };
     handleFileChangeXpath = file => {
-
         const reader = new FileReader();
         reader.readAsText(file);
         reader.onload = (e: any) => {
