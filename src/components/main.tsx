@@ -8,7 +8,7 @@ import { crearTablaSimbolos, crearTextoGraphvizTablaSimbolos, SimboloTabla } fro
 import { traducirXml } from "../xmlAST/xml3d";
 import { Entorno } from '../xmlAST/Entorno';
 //import { OptimizadorMirilla } from '../Optimizador/OptimizadorMirilla';
-import { traduccion } from '../traduccion/traduccion';
+import { traduccion } from '../Traduccion/traduccion';
 const parser = require('../Grammar/xmlGrammar');
 const parserReport = require('../Reportes/xmlReport');
 const parseXPATH = require('../Grammar/XPATHparser');
