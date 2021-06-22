@@ -76,6 +76,7 @@ export default class Main extends Component {
         try {
             const querys = parseXPATH.parse(this.state.xpath)
             var querysXpath = querys.xpath;
+            console.log(querysXpath);
             var erroresXpath = querys.listaErrores;
             //REPORTE AST y ERRORES PARA XPATH************************************************************
             if (erroresXpath.length === 0) {
