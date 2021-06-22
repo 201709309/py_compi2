@@ -19,7 +19,6 @@ export function traducirXmlRecursive(raiz: Entorno) {
             traduccion.setTranslate("H = H + 1;");
         }
     }
-
     if (raiz.texto.length!==0) {
         traduccion.setTranslate("\n");
         traduccion.setTranslate("//Texto de nodo: " + raiz.identificador.toString() + "\t--------------");
@@ -32,7 +31,6 @@ export function traducirXmlRecursive(raiz: Entorno) {
             }
         }
     }
-
     for (const simbolo of raiz.listaSimbolos) {
         traduccion.setTranslate("");
         traduccion.stackCounter++;
@@ -61,9 +59,7 @@ export function traducirXmlRecursive(raiz: Entorno) {
             }
         }
     }
-
     traduccion.setTranslate("\n");
-    
     for (const key in raiz.listaEntornos) {
         traduccion.stackCounter++;
         traducirXmlRecursive(raiz.listaEntornos[key]);

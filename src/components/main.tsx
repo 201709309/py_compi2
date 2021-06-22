@@ -134,8 +134,6 @@ export default class Main extends Component {
         }
         const result = parser.parse(this.state.xml)
         var ast = result.ast;
-        console.log(ast);
-        
         traducirXml(ast);
         console.log(traduccion.getTranslate());
         console.log(ast);

@@ -9,10 +9,8 @@ export class traduccion {
         var content: string = "";
         content += "/*----------HEADER----------*/\n";
         content += "#include <stdio.h>\n\n";
-
         content += "double heap[30101999];\n";
         content += "double stack[30101999];\n\n";
-
         content += "double S;\n";
         content += "double H;\n\n";
         if (this.t > 0) {
@@ -25,7 +23,6 @@ export class traduccion {
             }
             content += ";\n\n";
         }
-
         content += "/*--------MAIN---------*/\n";
         content += "void main(){\n";
         content += "S = 0; H = 0;\n\n";
