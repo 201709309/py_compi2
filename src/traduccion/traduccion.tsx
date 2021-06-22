@@ -1,7 +1,9 @@
 export class traduccion {
     static t: number = 0;
     static stackCounter: number = 0;
+    static etiquetaCounter: number = 0;
     static tranlate: string = "";
+    static printString: boolean = false;
 
 
 
