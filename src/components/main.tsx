@@ -52,10 +52,7 @@ export default class Main extends Component {
             encoding = result.encoding;
             listaErrores = result.listaErrores;
             entornoGlobal = new Entorno('Global', '', 0, 0, [], ast);
-            var buf = new Buffer("Hello World");
-            console.log(buf.toString("ascii"));
-            console.log("---------------------");
-            console.log(buf.toString("utf8"));
+            
             if (listaErrores.length === 0) {
                 var xmlResRep = parserReport.parse(this.state.xml);
                 this.setState({
