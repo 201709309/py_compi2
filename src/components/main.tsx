@@ -304,7 +304,7 @@ export default class Main extends Component {
 
 
                 <div className="mt-3 px-5">
-                    <Form.Control as="textarea" rows={6} value={this.state.consoleResult} readOnly />
+                    <Form.Control as="textarea" rows={30} value={this.state.consoleResult} readOnly />
                 </div>
             </>
         )
