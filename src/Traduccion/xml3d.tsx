@@ -1,5 +1,5 @@
 import { Entorno } from "../xmlAST/Entorno";
-import { traduccion } from '../Traduccion/traduccion';
+import { traduccion } from './traduccion';
 
 export function traducirXml(ast) {
     traducirXmlRecursive(ast[0]);

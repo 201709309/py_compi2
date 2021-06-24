@@ -5,7 +5,7 @@ import { Nav, Navbar, Form, Button, Row, Col, NavDropdown } from 'react-bootstra
 import { Graphviz } from 'graphviz-react';
 import { crearTextoReporteErrorXML } from "../xmlAST/ClaseError";
 import { crearTablaSimbolos, crearTextoGraphvizTablaSimbolos, SimboloTabla } from "../Reportes/SimboloTabla";
-import { traducirXml, TraducirXPATH } from "../xmlAST/xml3d";
+import { traducirXml, TraducirXPATH } from "../Traduccion/xml3d";
 import { Entorno } from '../xmlAST/Entorno';
 //import { OptimizadorMirilla } from '../Optimizador/OptimizadorMirilla';
 import { traduccion } from '../Traduccion/traduccion';
@@ -138,7 +138,7 @@ export default class Main extends Component {
         for (const query of querysXpath) {
             try {
                 query.execute(ast[0])
-                TraducirXPATH(query);
+                //TraducirXPATH(query);
             } catch (error) {
                 console.log(error);
             }
