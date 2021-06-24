@@ -34,18 +34,14 @@ export class Relacional implements Expression{
             for (const valIzq of valorIzq.value ) {
                 for (const valDer of valorDer.value) {
                     
-                    if (valIzq.type !== tipoPrimitivo.NODO && valDer.type !== tipoPrimitivo.NODO){
+                    if (valIzq.type === tipoPrimitivo.NODO && valDer.type === tipoPrimitivo.NODO){
 
-                        if (this.validar(valIzq, valDer)){
+                        if (this.validar(valIzq.identificador, valDer.identificador)){
                             return {value: true, type: tipoPrimitivo.BOOL}
                         }
-                    }
-                    else if (valIzq.type === tipoPrimitivo.NODO && valDer.type === tipoPrimitivo.NODO){
-
-                        if (this.validar(valIzq, valDer)){
-                            return {value: true, type: tipoPrimitivo.BOOL}
-                        }
-                    }else {
+                    }else if (valIzq.type === tipoPrimitivo.NODO || valDer.type === tipoPrimitivo.NODO){
+                        return {value: false, type: tipoPrimitivo.BOOL}
+                    } else {
 
                         if (this.validar(valIzq, valDer)){
                             return {value: true, type: tipoPrimitivo.BOOL}

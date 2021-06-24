@@ -8,7 +8,6 @@ export enum tipoPrimitivo {
     STRING,
     BOOL,
     NODO,
-    ATRI,
     RESP,
     error
 }

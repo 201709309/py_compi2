@@ -102,7 +102,7 @@ export default class Main extends Component {
             this.setState({
                 repAstXpath: "digraph G {" + texto + "}",
             });
-
+///----------------------------------------------------------------------------------------------------------------------------------------------
             var erroresSemanticos: string[] = [];
             var salida = "";
             for (const query of querysXpath) {
@@ -126,7 +126,7 @@ export default class Main extends Component {
             console.log(error);
         }
     }
-    traducir = () => {
+        traducir = () => {
         if (this.state.xml==="") {
             return;
         }
