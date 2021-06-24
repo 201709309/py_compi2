@@ -5,7 +5,7 @@ import { Nav, Navbar, Form, Button, Row, Col, NavDropdown } from 'react-bootstra
 import { Graphviz } from 'graphviz-react';
 import { crearTextoReporteErrorXML } from "../xmlAST/ClaseError";
 import { crearTablaSimbolos, crearTextoGraphvizTablaSimbolos, SimboloTabla } from "../Reportes/SimboloTabla";
-import { traducirXml } from "../xmlAST/xml3d";
+import { traducirXml, TraducirXPATH } from "../xmlAST/xml3d";
 import { Entorno } from '../xmlAST/Entorno';
 //import { OptimizadorMirilla } from '../Optimizador/OptimizadorMirilla';
 import { traduccion } from '../Traduccion/traduccion';
@@ -130,11 +130,22 @@ export default class Main extends Component {
         if (this.state.xml==="") {
             return;
         }
-        const result = parser.parse(this.state.xml)
+        const result = parser.parse(this.state.xml);
+        const querys = parseXPATH.parse(this.state.xpath);
+        var querysXpath = querys.xpath; 
         var ast = result.ast;
         traducirXml(ast);
-        console.log(traduccion.getTranslate());
-        console.log(ast);
+        for (const query of querysXpath) {
+            try {
+                query.execute(ast[0])
+                TraducirXPATH(query);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        this.setState({
+            consoleResult: traduccion.getTranslate(),
+        });
     }
     handleFileChange = file => {
 

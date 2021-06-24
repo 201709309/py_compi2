@@ -3,9 +3,9 @@ import { traduccion } from '../Traduccion/traduccion';
 
 export function traducirXml(ast) {
     traducirXmlRecursive(ast[0]);
-    printText(ast[0]);
+    //printText(ast[0]);
 }
-
+//TRADUCCION DE XML********************************************
 export function traducirXmlRecursive(raiz: Entorno) {
     traduccion.setTranslate("//Posicion en stack\t--------------");
     raiz.SP_ID = traduccion.stackCounter;
@@ -76,29 +76,33 @@ export function traducirXmlRecursive(raiz: Entorno) {
         traducirXmlRecursive(raiz.listaEntornos[key]);
     }
 }
-
+//CREACION DEL METODO printString******************************
 export function createPrintText() {
-    traduccion.setTranslate("void printString() {");
-    traduccion.setTranslate("t"+traduccion.t+" = S+1; ");
+    traduccion.setPrintString("//Metodo printString\t--------------");
+    traduccion.setPrintString("void printString() {");
+    traduccion.setPrintString("t"+traduccion.t+" = S+1; ");
     traduccion.t++;
-    traduccion.setTranslate("t"+traduccion.t+" = stack[(int)t"+(traduccion.t-1).toString()+"];");
+    traduccion.setPrintString("t"+traduccion.t+" = stack[(int)t"+(traduccion.t-1).toString()+"];");
     traduccion.t++;
-    traduccion.setTranslate("L"+traduccion.etiquetaCounter+":"); //L0
+    traduccion.setPrintString("L"+traduccion.etiquetaCounter+":"); //L0
     traduccion.etiquetaCounter++;
-    traduccion.setTranslate("t"+traduccion.t+" = heap[(int)t"+(traduccion.t-1)+"];");
-    traduccion.setTranslate("if(t"+traduccion.t+" == -1) goto L"+traduccion.etiquetaCounter+";"); //L1
-    traduccion.setTranslate("printf(\"%c\", (char)t"+traduccion.t+");");
-    traduccion.setTranslate("t"+(traduccion.t-1)+" = t"+(traduccion.t-1)+"+1;");
-    traduccion.setTranslate("goto L"+(traduccion.etiquetaCounter-1)+";");
-    traduccion.setTranslate("L"+traduccion.etiquetaCounter+":");
-    traduccion.setTranslate("return;");
-    traduccion.setTranslate("}");
+    traduccion.setPrintString("t"+traduccion.t+" = heap[(int)t"+(traduccion.t-1)+"];");
+    traduccion.setPrintString("if(t"+traduccion.t+" == -1) goto L"+traduccion.etiquetaCounter+";"); //L1
+    traduccion.setPrintString("printf(\"%c\", (char)t"+traduccion.t+");");
+    traduccion.setPrintString("t"+(traduccion.t-1)+" = t"+(traduccion.t-1)+"+1;");
+    traduccion.setPrintString("goto L"+(traduccion.etiquetaCounter-1)+";");
+    traduccion.setPrintString("L"+traduccion.etiquetaCounter+":");
+    traduccion.setPrintString("return;");
+    traduccion.setPrintString("}");
+    traduccion.setPrintString("");
+    traduccion.t++;
     traduccion.printString = true;
 }
-
+//LLAMADA AL METODO printString********************************
 export function printText(raiz: Entorno) {
     if (traduccion.printString===false) {createPrintText();}
     if (raiz.texto!=="") {
+        traduccion.setTranslate("//Imrpimir texto de: " + raiz.identificador + "\t--------------")
         traduccion.setTranslate("t"+traduccion.t+" = stack[(int)"+raiz.SP_VAL+"];");
         traduccion.t++;
         traduccion.setTranslate("t"+traduccion.t+" = S + "+traduccion.stackCounter+";");
@@ -111,8 +115,22 @@ export function printText(raiz: Entorno) {
         traduccion.t++;
         traduccion.setTranslate("S = S - "+traduccion.stackCounter+";");
         traduccion.setTranslate("printf(\"%c\", (char)10);");
+        traduccion.setTranslate("");
     }
-    for (const r of raiz.listaEntornos) {
+    /*for (const r of raiz.listaEntornos) {
         printText(r);
-    }
+    }*/
+}
+//TRADUCCION DE CONSULTA XPATH*********************************
+export function TraducirXPATH(query) {
+    createConsultaXPATH();
+    
+}
+//CREACION DEL METODO ConsultaXPATH****************************
+export function createConsultaXPATH() {
+    traduccion.setConsultaXPATH("//Metodo ConsultaXPATH\t--------------");
+    traduccion.setConsultaXPATH("void ConsultaXPATH() {");
+
+    traduccion.setConsultaXPATH("}");
+    traduccion.setConsultaXPATH("");
 }

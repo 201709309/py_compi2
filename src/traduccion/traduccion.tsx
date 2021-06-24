@@ -4,12 +4,12 @@ export class traduccion {
     static etiquetaCounter: number = 0;
     static tranlate: string = "";
     static printString: boolean = false;
-
-
+    static metodostring:string = "";
+    static metodoConsultaXPATH:string = "";
 
     public static getTranslate(): string {
         var content: string = "";
-        content += "/*----------HEADER----------*/\n";
+        content += "//Header\t--------------\n";
         content += "#include <stdio.h>\n\n";
         content += "double heap[30101999];\n";
         content += "double stack[30101999];\n\n";
@@ -25,8 +25,9 @@ export class traduccion {
             }
             content += ";\n\n";
         }
-        
-        content += "/*--------MAIN---------*/\n";
+        content += this.metodostring;
+        content += this.metodoConsultaXPATH;
+        content += "//Metodo Main\t--------------\n";
         content += "void main(){\n";
         content += "S = 0; H = 0;\n\n";
         content += this.tranlate;
@@ -37,5 +38,13 @@ export class traduccion {
 
     public static setTranslate(content: string) {
         this.tranlate += content + "\n";
+    }
+
+    public static setPrintString(content:string) {
+        this.metodostring += content + "\n";
+    }
+
+    public static setConsultaXPATH(content:string) {
+        this.metodoConsultaXPATH += content + "\n";
     }
 }
