@@ -60,6 +60,16 @@ export class Path implements Expression {
 
                 if (ent.identificador === this.L_Accesos[0].id && this.L_Accesos[0].tipoAcceso === "nodo") {//validamos que el id entActual sea igual al id de la poscion Actual de accesos
                     //ent.SP_ID = this.L_Accesos[0].SP_id
+                    traduccion.setTranslate("t"+traduccion.t + "= stack[(int)"+ent.SP_ID+"])");
+                    traduccion.t++;
+                    traduccion.setTranslate("t"+traduccion.t + "= stack[(int)"+this.L_Accesos[0].SP_id+"])");
+                    traduccion.t++;
+                    traduccion.setTranslate("t"+traduccion.t + "= S +" +traduccion.stackCounter);
+                    traduccion.t++;
+                    traduccion.setTranslate("stack[(int)"+(traduccion.t-1).toString+"] = "+(traduccion.t-3).toString+";");
+                    traduccion.t++;
+                    traduccion.setTranslate("t"+traduccion.t + "= stack[(int)"+this.L_Accesos[0].SP_id+"])");
+
                     if (this.validarPredicadosRaiz(ent, 0)) {
 
                         if (this.L_Accesos.length > 1) { //verificamos si la consutla nos dice que accediendo a descendientes
