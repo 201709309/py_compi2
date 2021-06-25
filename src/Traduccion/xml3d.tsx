@@ -74,7 +74,7 @@ export function traducirXmlRecursive(raiz: Entorno) {
     }
     traduccion.setTranslate("\n");
     for (const key in raiz.listaEntornos) {
-        traduccion.stackCounter++;
+        //traduccion.stackCounter++;
         traducirXmlRecursive(raiz.listaEntornos[key]);
     }
 }

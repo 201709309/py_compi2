@@ -354,16 +354,18 @@ export class Path implements Expression {
                 if (traduccion.etiquetaTexto === "") {
                     traduccion.crearEtiquetaTexto();
                 }
+                traduccion.setTranslate("\n\n//Imprimiendo nodo Texto	--------------\n\n");
                 traduccion.t++;
                 traduccion.setTranslate("t"+traduccion.t+" = stack[(int)"+entPadre.SP_ID+"];");
                 traduccion.t++;
                 traduccion.setTranslate("t"+traduccion.t+" = stack[(int)"+entPadre.SP_VAL+"];");
                 traduccion.t++;
+                traduccion.t++;
                 traduccion.setTranslate("t"+traduccion.t+" = S + "+traduccion.stackCounter+";");
                 traduccion.setTranslate("t"+traduccion.t+" = t"+traduccion.t+" + 1;");
-                traduccion.setTranslate("stack[(int)t"+traduccion.t+"] = t" +(traduccion.t-2)+";");
-                traduccion.setTranslate("t"+traduccion.t+" = t"+traduccion.t+" + 1;");
                 traduccion.setTranslate("stack[(int)t"+traduccion.t+"] = t" +(traduccion.t-3)+";");
+                traduccion.setTranslate("t"+traduccion.t+" = t"+traduccion.t+" + 1;");
+                traduccion.setTranslate("stack[(int)t"+traduccion.t+"] = t" +(traduccion.t-2)+";");
                 traduccion.setTranslate("S = S + "+traduccion.stackCounter+";");
                 traduccion.setTranslate("crearEtiquetaTexto();");
                 traduccion.setTranslate("S = S - "+traduccion.stackCounter+";");

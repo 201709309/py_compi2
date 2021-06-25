@@ -145,7 +145,7 @@ export default class Main extends Component {
             }
         }
         this.setState({
-            consoleResult: "//CONSULTA-----------------\n\n//"+ respuesta + "\n\n//TRADUCCION-----------------\n\n"+traduccion.getTranslate(),
+            consoleResult: "//CONSULTA-----------------\n\n/*\n"+ respuesta + "*/\n\n//TRADUCCION-----------------\n\n"+traduccion.getTranslate(),
         });
     }
     handleFileChange = file => {

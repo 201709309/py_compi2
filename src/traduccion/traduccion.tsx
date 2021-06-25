@@ -17,11 +17,11 @@ export class traduccion {
         content += "double stack[30101999];\n\n";
         content += "double S;\n";
         content += "double H;\n\n";
-        if (this.t+1 > 0) {
+        if (this.t > 0) {
             content += "double ";
-            for (let i = 0; i < this.t; i++) {
+            for (let i = 0; i < this.t+1; i++) {
                 content += "t" + i.toString();
-                if (i < this.t - 1) {
+                if (i < this.t) {
                     content += ", ";
                 }
             }
@@ -146,6 +146,7 @@ export class traduccion {
         this.etiquetaTexto += "goto L"+(traduccion.etiquetaCounter-1)+";\n";
         this.etiquetaTexto += "L"+(traduccion.etiquetaCounter)+":\n";
         this.etiquetaTexto += "printf(\"%c\", (char)62);\n";
+        this.etiquetaTexto += "printf(\"%c\", (char)10);\n";
         this.etiquetaTexto += "return;\n";
         this.etiquetaTexto += "}\n\n";
     }
