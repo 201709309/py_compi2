@@ -59,7 +59,7 @@ export class Path implements Expression {
             if (this.L_Accesos.length > 0 && ent.listaEntornos.length > 0) {
 
                 if (ent.identificador === this.L_Accesos[0].id && this.L_Accesos[0].tipoAcceso === "nodo") {//validamos que el id entActual sea igual al id de la poscion Actual de accesos
-                    //ent.SP_ID = this.L_Accesos[0].SP_id
+                    //TRADUCCION3D######################################################################################
                     if (traduccion.compararCadenas3d === "") {
                         traduccion.metodoCompararCadenas();
                     }
@@ -83,6 +83,7 @@ export class Path implements Expression {
                     traduccion.t++;
                     traduccion.setTranslate("printf(\"%d\", (int)t" + (traduccion.t - 1) + ");");
                     traduccion.setTranslate("S = S - " + traduccion.stackCounter + ";");
+                    //#####################################################################################################
 
                     if (this.validarPredicadosRaiz(ent, 0)) {
 
@@ -238,6 +239,7 @@ export class Path implements Expression {
 
                         if (entActual.identificador === this.L_Accesos[posActAcceso].id) {//validamos que el id del entorno sea igual al id de la poscion Actual de Accesos
 
+                            //TRADUCCION3D######################################################################################
                             if (traduccion.compararCadenas3d === "") {
                                 traduccion.metodoCompararCadenas();
                             }
@@ -261,6 +263,7 @@ export class Path implements Expression {
                             traduccion.t++;
                             traduccion.setTranslate("printf(\"%d\", (int)t" + (traduccion.t - 1) + ");");
                             traduccion.setTranslate("S = S - " + traduccion.stackCounter + ";");
+                            //####################################################################################################
 
                             if (this.validarPredicadosNodos(entPadre, entActual, posActAcceso)) {
 
@@ -347,6 +350,24 @@ export class Path implements Expression {
                 this.salida.push(tab + "</" + entPadre.identificador + ">\n");
 
             } else {
+                //TRADUCCION3D##########################################################################################
+                if (traduccion.etiquetaTexto === "") {
+                    traduccion.crearEtiquetaTexto();
+                }
+                traduccion.t++;
+                traduccion.setTranslate("t"+traduccion.t+" = stack[(int)"+entPadre.SP_ID+"];");
+                traduccion.t++;
+                traduccion.setTranslate("t"+traduccion.t+" = stack[(int)"+entPadre.SP_VAL+"];");
+                traduccion.t++;
+                traduccion.setTranslate("t"+traduccion.t+" = S + "+traduccion.stackCounter+";");
+                traduccion.setTranslate("t"+traduccion.t+" = t"+traduccion.t+" + 1;");
+                traduccion.setTranslate("stack[(int)t"+traduccion.t+"] = t" +(traduccion.t-2)+";");
+                traduccion.setTranslate("t"+traduccion.t+" = t"+traduccion.t+" + 1;");
+                traduccion.setTranslate("stack[(int)t"+traduccion.t+"] = t" +(traduccion.t-3)+";");
+                traduccion.setTranslate("S = S + "+traduccion.stackCounter+";");
+                traduccion.setTranslate("crearEtiquetaTexto();");
+                traduccion.setTranslate("S = S - "+traduccion.stackCounter+";");
+                //#######################################################################################################
                 this.salida.push(tab + "<" + entPadre.identificador + " " + atributos + ">" + entPadre.texto + "</" + entPadre.identificador + ">\n");
             }
 

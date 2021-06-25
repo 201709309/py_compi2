@@ -7,6 +7,7 @@ export class traduccion {
     static metodostring:string = "";
     static metodoConsultaXPATH:string = "";
     static compararCadenas3d:string="";
+    static etiquetaTexto:string="";
 
     public static getTranslate(): string {
         var content: string = "";
@@ -29,6 +30,7 @@ export class traduccion {
         content += this.metodostring;
         content += this.metodoConsultaXPATH;
         content += this.compararCadenas3d;
+        content += this.etiquetaTexto;
         content += "//Metodo Main\t--------------\n";
         content += "void main(){\n";
         content += "S = 0; H = 0;\n\n";
@@ -54,6 +56,7 @@ export class traduccion {
     public static metodoCompararCadenas() {
         this.compararCadenas3d += "//Metodo Comparar cadenas\t--------------\n";
         this.compararCadenas3d += "void compararCadenas() {\n";
+        traduccion.t++;
         this.compararCadenas3d += "t"+traduccion.t+" = S + 1;\n";
         traduccion.t++;
         this.compararCadenas3d += "t"+traduccion.t + " = stack[(int)t"+(traduccion.t-1)+"];\n";
@@ -87,6 +90,63 @@ export class traduccion {
         this.compararCadenas3d += "L"+(traduccion.etiquetaCounter-1)+":\n";
         this.compararCadenas3d += "return;\n";
         this.compararCadenas3d += "}\n\n";
+        //traduccion.t++;
+    }
+
+
+    //CREACION DEL METODO imprimir nodo Texto****************************
+    public static crearEtiquetaTexto() {
+        this.etiquetaTexto += "//Metodo Comparar cadenas\t--------------\n";
+        this.etiquetaTexto += "void crearEtiquetaTexto() {\n";
         traduccion.t++;
+        this.etiquetaTexto += "t"+traduccion.t+" = S + 1;\n";
+        traduccion.t++;
+        this.etiquetaTexto += "t"+traduccion.t + " = stack[(int)t"+(traduccion.t-1)+"];\n";
+        traduccion.t++;
+        this.etiquetaTexto += "t"+traduccion.t+" = t"+(traduccion.t-2)+" + 1;\n";
+        traduccion.t++;
+        this.etiquetaTexto += "t"+traduccion.t + " = stack[(int)t"+(traduccion.t-1)+"];\n";
+
+
+        this.etiquetaTexto += "printf(\"%c\", (char)60);\n";
+        traduccion.etiquetaCounter++;
+        this.etiquetaTexto += "L"+traduccion.etiquetaCounter+":\n";
+        traduccion.t++;
+        this.etiquetaTexto += "t"+traduccion.t + " = heap[(int)t"+(traduccion.t-3)+"];\n";
+
+        traduccion.etiquetaCounter++;
+        this.etiquetaTexto += "if(t"+(traduccion.t)+"==-1) goto L"+traduccion.etiquetaCounter+";\n";
+        this.etiquetaTexto += "printf(\"%c\", (char)t"+traduccion.t+");\n";
+        this.etiquetaTexto += "t"+(traduccion.t-3)+" = t"+(traduccion.t-3)+" + 1;\n";
+        this.etiquetaTexto += "goto L"+(traduccion.etiquetaCounter-1)+";\n";
+        this.etiquetaTexto += "L"+(traduccion.etiquetaCounter)+":\n";
+        this.etiquetaTexto += "printf(\"%c\", (char)62);\n";
+        traduccion.etiquetaCounter++;
+        this.etiquetaTexto += "goto L"+(traduccion.etiquetaCounter)+";\n";
+        this.etiquetaTexto += "L"+traduccion.etiquetaCounter+":\n";
+        traduccion.t++;
+        this.etiquetaTexto += "t"+traduccion.t + " = heap[(int)t"+(traduccion.t-2)+"];\n";
+        traduccion.etiquetaCounter++;
+        this.etiquetaTexto += "if(t"+(traduccion.t)+"==-1) goto L"+traduccion.etiquetaCounter+";\n";
+        this.etiquetaTexto += "printf(\"%c\", (char)t"+traduccion.t+");\n";
+        this.etiquetaTexto += "t"+(traduccion.t-2)+" = t"+(traduccion.t-2)+" + 1;\n";
+        this.etiquetaTexto += "goto L"+(traduccion.etiquetaCounter-1)+";\n";
+        this.etiquetaTexto += "L"+(traduccion.etiquetaCounter)+":\n";
+        this.etiquetaTexto += "printf(\"%c\", (char)60);\n";
+        this.etiquetaTexto += "printf(\"%c\", (char)47);\n";
+        this.etiquetaTexto += "t"+(traduccion.t-5)+" = S + 1;\n";
+        this.etiquetaTexto += "t"+(traduccion.t-4) + " = stack[(int)t"+(traduccion.t-5)+"];\n";
+        traduccion.etiquetaCounter++;
+        this.etiquetaTexto += "L"+(traduccion.etiquetaCounter)+":\n";
+        this.etiquetaTexto += "t"+(traduccion.t-1) + " = heap[(int)t"+(traduccion.t-4)+"];\n";
+        traduccion.etiquetaCounter++;
+        this.etiquetaTexto += "if(t"+(traduccion.t-1)+"==-1) goto L"+traduccion.etiquetaCounter+";\n";
+        this.etiquetaTexto += "printf(\"%c\", (char)t"+(traduccion.t-1)+");\n";
+        this.etiquetaTexto += "t"+(traduccion.t-4)+" = t"+(traduccion.t-4)+" + 1;\n";
+        this.etiquetaTexto += "goto L"+(traduccion.etiquetaCounter-1)+";\n";
+        this.etiquetaTexto += "L"+(traduccion.etiquetaCounter)+":\n";
+        this.etiquetaTexto += "printf(\"%c\", (char)62);\n";
+        this.etiquetaTexto += "return;\n";
+        this.etiquetaTexto += "}\n\n";
     }
 }

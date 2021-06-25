@@ -9,7 +9,7 @@ export function traducirXml(ast) {
 export function traducirXmlRecursive(raiz: Entorno) {
     traduccion.setTranslate("//Posicion en stack\t--------------");
     traduccion.stackCounter++;
-    traduccion.t++;
+    //traduccion.t++;
     raiz.SP_ID = traduccion.stackCounter;
     traduccion.setTranslate("stack[" + traduccion.stackCounter.toString() + "] = " + "H;");
     traduccion.setTranslate("");
@@ -113,12 +113,14 @@ export function printText(raiz: Entorno) {
         traduccion.setTranslate("t"+traduccion.t+" = t"+traduccion.t+" + 1;");
         traduccion.setTranslate("stack[(int)t"+traduccion.t+"] = t"+(traduccion.t-1)+";");
         traduccion.t++;
+        traduccion.t++;
         traduccion.setTranslate("S = S + "+traduccion.stackCounter+";");
         traduccion.setTranslate("printString();");
         traduccion.setTranslate("t"+traduccion.t +" = stack[(int)S];");
         traduccion.setTranslate("S = S - "+traduccion.stackCounter+";");
         traduccion.setTranslate("printf(\"%c\", (char)10);");
         traduccion.setTranslate("");
+        
     }
     /*for (const r of raiz.listaEntornos) {
         printText(r);

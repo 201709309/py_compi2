@@ -11,8 +11,9 @@ export interface  Expression {
 
     line: Number;
     column: Number;
+
     execute(environment: Entorno, simboloPadre?:Simbolo) : Retorno;
     GraficarAST(texto:string):string;
-
+    
 }
 
