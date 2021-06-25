@@ -6,6 +6,7 @@ export class traduccion {
     static printString: boolean = false;
     static metodostring:string = "";
     static metodoConsultaXPATH:string = "";
+    static compararCadenas3d:string="";
 
     public static getTranslate(): string {
         var content: string = "";
@@ -27,6 +28,7 @@ export class traduccion {
         }
         content += this.metodostring;
         content += this.metodoConsultaXPATH;
+        content += this.compararCadenas3d;
         content += "//Metodo Main\t--------------\n";
         content += "void main(){\n";
         content += "S = 0; H = 0;\n\n";
@@ -46,5 +48,45 @@ export class traduccion {
 
     public static setConsultaXPATH(content:string) {
         this.metodoConsultaXPATH += content + "\n";
+    }
+
+    //CREACION DEL METODO comparar cadenas****************************
+    public static metodoCompararCadenas() {
+        this.compararCadenas3d += "//Metodo Comparar cadenas\t--------------\n";
+        this.compararCadenas3d += "void compararCadenas() {\n";
+        this.compararCadenas3d += "t"+traduccion.t+" = S + 1;\n";
+        traduccion.t++;
+        this.compararCadenas3d += "t"+traduccion.t + " = stack[(int)t"+(traduccion.t-1)+"];\n";
+        traduccion.t++;
+        this.compararCadenas3d += "t"+traduccion.t+" = t"+(traduccion.t-2)+" + 1;\n";
+        traduccion.t++;
+        this.compararCadenas3d += "t"+traduccion.t + " = stack[(int)t"+(traduccion.t-1)+"];\n";
+        this.compararCadenas3d += "L"+traduccion.etiquetaCounter+":\n";
+        traduccion.etiquetaCounter++;
+        traduccion.t++;
+        this.compararCadenas3d += "t"+traduccion.t + " = heap[(int)t"+(traduccion.t-3)+"];\n";
+        traduccion.t++;
+        this.compararCadenas3d += "t"+traduccion.t + " = heap[(int)t"+(traduccion.t-2)+"];\n";
+        traduccion.t++;
+        this.compararCadenas3d += "if(t"+(traduccion.t-2)+"==-1) goto L"+traduccion.etiquetaCounter+";\n";
+        this.compararCadenas3d += "if(t"+(traduccion.t-1)+"==-1) goto L"+traduccion.etiquetaCounter+";\n";
+        this.compararCadenas3d += "if(t"+(traduccion.t-2)+"!=t"+(traduccion.t-1)+") goto L"+traduccion.etiquetaCounter+";\n";
+        this.compararCadenas3d += "t"+(traduccion.t-5)+" = t"+(traduccion.t-5)+" + 1;\n";
+        this.compararCadenas3d += "t"+(traduccion.t-3)+" = t"+(traduccion.t-3)+" + 1;\n";
+        this.compararCadenas3d += "goto L"+(traduccion.etiquetaCounter-1)+";\n";
+        this.compararCadenas3d += "L"+traduccion.etiquetaCounter+":\n";
+        traduccion.etiquetaCounter++;
+        this.compararCadenas3d += "if(t"+(traduccion.t-1)+"==t"+(traduccion.t-2)+") goto L"+traduccion.etiquetaCounter+";\n";
+        traduccion.etiquetaCounter++;
+        this.compararCadenas3d += "stack[(int)t"+(traduccion.t-6)+"] = 0;\n";
+        this.compararCadenas3d += "goto L"+(traduccion.etiquetaCounter)+";\n";
+        traduccion.etiquetaCounter++;
+        this.compararCadenas3d += "L"+(traduccion.etiquetaCounter-2)+":\n";
+        this.compararCadenas3d += "stack[(int)t"+(traduccion.t-6)+"] = 1;\n";
+        this.compararCadenas3d += "L"+(traduccion.etiquetaCounter-1)+":\n";
+        this.compararCadenas3d += "return;\n";
+        this.compararCadenas3d += "}\n\n";
+        traduccion.t++;
+
     }
 }

@@ -134,17 +134,18 @@ export default class Main extends Component {
         const querys = parseXPATH.parse(this.state.xpath);
         var querysXpath = querys.xpath; 
         var ast = result.ast;
+        var respuesta ="";
         traducirXml(ast);
         for (const query of querysXpath) {
             try {
-                query.execute(ast[0])
+                respuesta += query.execute(ast[0]).value;
                 //TraducirXPATH(query);
             } catch (error) {
                 console.log(error);
             }
         }
         this.setState({
-            consoleResult: traduccion.getTranslate(),
+            consoleResult: "CONSULTA-----------------\n\n"+ respuesta + "\n\nTRADUCCION-----------------\n\n"+traduccion.getTranslate(),
         });
     }
     handleFileChange = file => {

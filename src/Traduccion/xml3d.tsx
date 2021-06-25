@@ -130,7 +130,7 @@ export function TraducirXPATH(query) {
 export function createConsultaXPATH() {
     traduccion.setConsultaXPATH("//Metodo ConsultaXPATH\t--------------");
     traduccion.setConsultaXPATH("void ConsultaXPATH() {");
-
+    traduccion.setConsultaXPATH("void ConsultaXPATH() {");
     traduccion.setConsultaXPATH("}");
     traduccion.setConsultaXPATH("");
 }
