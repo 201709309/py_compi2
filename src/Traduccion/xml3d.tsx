@@ -8,6 +8,8 @@ export function traducirXml(ast) {
 //TRADUCCION DE XML********************************************
 export function traducirXmlRecursive(raiz: Entorno) {
     traduccion.setTranslate("//Posicion en stack\t--------------");
+    traduccion.stackCounter++;
+    traduccion.t++;
     raiz.SP_ID = traduccion.stackCounter;
     traduccion.setTranslate("stack[" + traduccion.stackCounter.toString() + "] = " + "H;");
     traduccion.setTranslate("");
@@ -80,12 +82,14 @@ export function traducirXmlRecursive(raiz: Entorno) {
 export function createPrintText() {
     traduccion.setPrintString("//Metodo printString\t--------------");
     traduccion.setPrintString("void printString() {");
+    traduccion.t++;
     traduccion.setPrintString("t"+traduccion.t+" = S+1; ");
     traduccion.t++;
     traduccion.setPrintString("t"+traduccion.t+" = stack[(int)t"+(traduccion.t-1).toString()+"];");
-    traduccion.t++;
+    
     traduccion.setPrintString("L"+traduccion.etiquetaCounter+":"); //L0
     traduccion.etiquetaCounter++;
+    traduccion.t++;
     traduccion.setPrintString("t"+traduccion.t+" = heap[(int)t"+(traduccion.t-1)+"];");
     traduccion.setPrintString("if(t"+traduccion.t+" == -1) goto L"+traduccion.etiquetaCounter+";"); //L1
     traduccion.setPrintString("printf(\"%c\", (char)t"+traduccion.t+");");
@@ -95,7 +99,6 @@ export function createPrintText() {
     traduccion.setPrintString("return;");
     traduccion.setPrintString("}");
     traduccion.setPrintString("");
-    traduccion.t++;
     traduccion.printString = true;
 }
 //LLAMADA AL METODO printString********************************
@@ -103,6 +106,7 @@ export function printText(raiz: Entorno) {
     if (traduccion.printString===false) {createPrintText();}
     if (raiz.texto!=="") {
         traduccion.setTranslate("//Imrpimir texto de: " + raiz.identificador + "\t--------------")
+        traduccion.t++;
         traduccion.setTranslate("t"+traduccion.t+" = stack[(int)"+raiz.SP_VAL+"];");
         traduccion.t++;
         traduccion.setTranslate("t"+traduccion.t+" = S + "+traduccion.stackCounter+";");
@@ -112,7 +116,6 @@ export function printText(raiz: Entorno) {
         traduccion.setTranslate("S = S + "+traduccion.stackCounter+";");
         traduccion.setTranslate("printString();");
         traduccion.setTranslate("t"+traduccion.t +" = stack[(int)S];");
-        traduccion.t++;
         traduccion.setTranslate("S = S - "+traduccion.stackCounter+";");
         traduccion.setTranslate("printf(\"%c\", (char)10);");
         traduccion.setTranslate("");

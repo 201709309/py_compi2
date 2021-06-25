@@ -1,7 +1,7 @@
 export class traduccion {
-    static t: number = 0;
-    static stackCounter: number = 0;
-    static etiquetaCounter: number = 0;
+    static t: number = -1;
+    static stackCounter: number = -1;
+    static etiquetaCounter: number = -1;
     static tranlate: string = "";
     static printString: boolean = false;
     static metodostring:string = "";
@@ -16,7 +16,7 @@ export class traduccion {
         content += "double stack[30101999];\n\n";
         content += "double S;\n";
         content += "double H;\n\n";
-        if (this.t > 0) {
+        if (this.t+1 > 0) {
             content += "double ";
             for (let i = 0; i < this.t; i++) {
                 content += "t" + i.toString();
@@ -61,13 +61,14 @@ export class traduccion {
         this.compararCadenas3d += "t"+traduccion.t+" = t"+(traduccion.t-2)+" + 1;\n";
         traduccion.t++;
         this.compararCadenas3d += "t"+traduccion.t + " = stack[(int)t"+(traduccion.t-1)+"];\n";
-        this.compararCadenas3d += "L"+traduccion.etiquetaCounter+":\n";
         traduccion.etiquetaCounter++;
+        this.compararCadenas3d += "L"+traduccion.etiquetaCounter+":\n";
         traduccion.t++;
         this.compararCadenas3d += "t"+traduccion.t + " = heap[(int)t"+(traduccion.t-3)+"];\n";
         traduccion.t++;
         this.compararCadenas3d += "t"+traduccion.t + " = heap[(int)t"+(traduccion.t-2)+"];\n";
         traduccion.t++;
+        traduccion.etiquetaCounter++;
         this.compararCadenas3d += "if(t"+(traduccion.t-2)+"==-1) goto L"+traduccion.etiquetaCounter+";\n";
         this.compararCadenas3d += "if(t"+(traduccion.t-1)+"==-1) goto L"+traduccion.etiquetaCounter+";\n";
         this.compararCadenas3d += "if(t"+(traduccion.t-2)+"!=t"+(traduccion.t-1)+") goto L"+traduccion.etiquetaCounter+";\n";
@@ -77,8 +78,8 @@ export class traduccion {
         this.compararCadenas3d += "L"+traduccion.etiquetaCounter+":\n";
         traduccion.etiquetaCounter++;
         this.compararCadenas3d += "if(t"+(traduccion.t-1)+"==t"+(traduccion.t-2)+") goto L"+traduccion.etiquetaCounter+";\n";
-        traduccion.etiquetaCounter++;
         this.compararCadenas3d += "stack[(int)t"+(traduccion.t-6)+"] = 0;\n";
+        traduccion.etiquetaCounter++;
         this.compararCadenas3d += "goto L"+(traduccion.etiquetaCounter)+";\n";
         traduccion.etiquetaCounter++;
         this.compararCadenas3d += "L"+(traduccion.etiquetaCounter-2)+":\n";
@@ -87,6 +88,5 @@ export class traduccion {
         this.compararCadenas3d += "return;\n";
         this.compararCadenas3d += "}\n\n";
         traduccion.t++;
-
     }
 }

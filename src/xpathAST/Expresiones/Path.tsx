@@ -64,6 +64,7 @@ export class Path implements Expression {
                         traduccion.metodoCompararCadenas();
                     }
                     traduccion.setTranslate("\n\n//Igualando los dos id	--------------\n\n");
+                    traduccion.t++;
                     traduccion.setTranslate("t" + traduccion.t + " = stack[(int)" + ent.SP_ID + "];");
                     traduccion.t++;
                     traduccion.setTranslate("t" + traduccion.t + " = stack[(int)" + this.L_Accesos[0].SP_id + "];");
@@ -73,10 +74,9 @@ export class Path implements Expression {
                     traduccion.setTranslate("stack[(int)t" + (traduccion.t) + "] = t" + (traduccion.t - 2) + ";");
                     traduccion.setTranslate("t" + traduccion.t + " = t" + traduccion.t + " + 1;");
                     traduccion.setTranslate("stack[(int)t" + (traduccion.t) + "] = t" + (traduccion.t - 1) + ";");
-                    traduccion.t++;
                     traduccion.setTranslate("S = S + " + traduccion.stackCounter + ";");
                     traduccion.setTranslate("compararCadenas();");
-                    
+                    traduccion.t++;
                     traduccion.setTranslate("t" + traduccion.t + " = S + 1;");
                     traduccion.t++;
                     traduccion.setTranslate("t" + traduccion.t + " = stack[(int)t" + (traduccion.t - 1) + "];\n");
@@ -237,6 +237,30 @@ export class Path implements Expression {
                     for (const entActual of entPadre.listaEntornos) {//recorremos los hijos del entorno padre que llamaremos entActual
 
                         if (entActual.identificador === this.L_Accesos[posActAcceso].id) {//validamos que el id del entorno sea igual al id de la poscion Actual de Accesos
+
+                            if (traduccion.compararCadenas3d === "") {
+                                traduccion.metodoCompararCadenas();
+                            }
+                            traduccion.setTranslate("\n\n//Igualando los dos id	--------------\n\n");
+                            traduccion.t++;
+                            traduccion.setTranslate("t" + traduccion.t + " = stack[(int)" + entActual.SP_ID + "];");
+                            traduccion.t++;
+                            traduccion.setTranslate("t" + traduccion.t + " = stack[(int)" + this.L_Accesos[posActAcceso].SP_id + "];");
+                            traduccion.t++;
+                            traduccion.setTranslate("t" + traduccion.t + " = S + " + traduccion.stackCounter + ";");
+                            traduccion.setTranslate("t" + traduccion.t + " = t" + traduccion.t + " + 1;");
+                            traduccion.setTranslate("stack[(int)t" + (traduccion.t) + "] = t" + (traduccion.t - 2) + ";");
+                            traduccion.setTranslate("t" + traduccion.t + " = t" + traduccion.t + " + 1;");
+                            traduccion.setTranslate("stack[(int)t" + (traduccion.t) + "] = t" + (traduccion.t - 1) + ";");
+                            traduccion.setTranslate("S = S + " + traduccion.stackCounter + ";");
+                            traduccion.setTranslate("compararCadenas();");
+                            traduccion.t++;
+                            traduccion.setTranslate("t" + traduccion.t + " = S + 1;");
+                            traduccion.t++;
+                            traduccion.setTranslate("t" + traduccion.t + " = stack[(int)t" + (traduccion.t - 1) + "];\n");
+                            traduccion.t++;
+                            traduccion.setTranslate("printf(\"%d\", (int)t" + (traduccion.t - 1) + ");");
+                            traduccion.setTranslate("S = S - " + traduccion.stackCounter + ";");
 
                             if (this.validarPredicadosNodos(entPadre, entActual, posActAcceso)) {
 
