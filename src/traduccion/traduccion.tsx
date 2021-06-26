@@ -11,7 +11,11 @@ export class traduccion {
     static etiquetaApertura:string="";
     static etiquetaCierre:string="";
     static etiquetaUnitaria:string="";
+<<<<<<< Updated upstream
     static etiquetaAtributo:string="";
+=======
+    static verificarAtributo:string="";
+>>>>>>> Stashed changes
 
     public static getTranslate(): string {
         var content: string = "";
@@ -38,7 +42,11 @@ export class traduccion {
         content += this.etiquetaApertura;
         content += this.etiquetaCierre;
         content += this.etiquetaUnitaria;
+<<<<<<< Updated upstream
         content += this.etiquetaAtributo;
+=======
+        content += this.verificarAtributo;
+>>>>>>> Stashed changes
         content += "//Metodo Main\t--------------\n";
         content += "void main(){\n";
         content += "S = 0; H = 0;\n\n";
@@ -62,7 +70,7 @@ export class traduccion {
 
     //CREACION DEL METODO comparar cadenas****************************
     public static metodoCompararCadenas() {
-        this.compararCadenas3d += "//Metodo Comparar cadenas\t--------------\n";
+        this.compararCadenas3d += "//Metodo Comparar cadenas\t--------------\n\n";
         this.compararCadenas3d += "void compararCadenas() {\n";
         traduccion.t++;
         this.compararCadenas3d += "t"+traduccion.t+" = S + 1;\n";
@@ -148,7 +156,7 @@ export class traduccion {
 
     //CREACION DEL METODO imprimir etiqueta apertura*********************
     public static crearEtiquetaApertura() {
-        this.etiquetaApertura += "//Metodo Etiqueta apertura\t--------------\n";
+        this.etiquetaApertura += "//Metodo Etiqueta apertura\t--------------\n\n";
         this.etiquetaApertura += "void crearEtiquetaApertura() {\n"
         traduccion.t++;
         this.etiquetaApertura += "t"+traduccion.t+" = S + 1;\n";
@@ -170,7 +178,7 @@ export class traduccion {
 
     //CREACION DEL METODO imprimir etiqueta cierre*********************
     public static crearEtiquetaCierre() {
-        this.etiquetaCierre += "//Metodo Etiqueta Cierre\t--------------\n";
+        this.etiquetaCierre += "//Metodo Etiqueta Cierre\t--------------\n\n";
         this.etiquetaCierre += "void crearEtiquetaCierre() {\n"
         traduccion.t++;
         this.etiquetaCierre += "t"+traduccion.t+" = S + 1;\n";
@@ -193,10 +201,17 @@ export class traduccion {
         this.etiquetaCierre += "return;\n}\n\n";
     }
 
+<<<<<<< Updated upstream
     public static crearAtributoEtiqueta() {
         this.etiquetaAtributo += "//Metodo Obtener Atributo\t--------------\n";
         this.etiquetaAtributo += "void crearAtributoEtiqueta() {\n";
         //Obetener posiciones----------
+=======
+    //CREACION DEL METODO imprimir etiqueta Unitaria*********************
+    public static crearEtiquetaUnitaria() {
+        this.etiquetaUnitaria += "//Metodo Etiqueta Unitaria\t--------------\n\n";
+        this.etiquetaUnitaria += "void crearEtiquetaUnitaria() {\n"
+>>>>>>> Stashed changes
         traduccion.t++;
         this.etiquetaAtributo += "t"+traduccion.t+" = S + 1;\n";
         traduccion.t++;
@@ -237,5 +252,28 @@ export class traduccion {
         this.etiquetaAtributo += "L"+(traduccion.etiquetaCounter)+":\n";
         this.etiquetaAtributo += "printf(\"%c\", (char)34);\t\t// \"\n";
         this.etiquetaAtributo += "return;\n}\n\n";
+    }
+
+    public static metodoVerificarAtributo() {
+        this.verificarAtributo += "//Metodo verificar atributo\t--------------\n\n";
+        this.verificarAtributo += "void verificarAtributo() {\n";
+        traduccion.t++;
+        this.verificarAtributo += "t"+traduccion.t+" = S + 1;\n";
+        traduccion.t++;
+        this.verificarAtributo += "t"+traduccion.t + " = stack[(int)t"+(traduccion.t-1)+"];\n";
+        traduccion.etiquetaCounter++;
+        this.verificarAtributo += "L"+traduccion.etiquetaCounter+":\n";
+        traduccion.t++;
+        this.verificarAtributo += "t"+traduccion.t + " = heap[(int)t"+(traduccion.t-1)+"];\n";        
+        traduccion.etiquetaCounter++;
+        this.verificarAtributo += "if(t"+(traduccion.t)+"==64) goto L"+traduccion.etiquetaCounter+";\n";
+        this.verificarAtributo += "stack[(int)t"+(traduccion.t-2)+"] = 0;\n";
+        traduccion.etiquetaCounter++;
+        this.verificarAtributo += "goto L"+(traduccion.etiquetaCounter)+";\n";
+        this.verificarAtributo += "L"+(traduccion.etiquetaCounter-1)+":\n";
+        this.verificarAtributo += "stack[(int)t"+(traduccion.t-2)+"] = 1;\n";
+        this.verificarAtributo += "L"+(traduccion.etiquetaCounter)+":\n";
+        this.verificarAtributo += "return;\n";
+        this.verificarAtributo += "}\n\n";
     }
 }

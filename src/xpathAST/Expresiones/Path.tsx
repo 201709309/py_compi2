@@ -63,7 +63,7 @@ export class Path implements Expression {
                     if (traduccion.compararCadenas3d === "") {
                         traduccion.metodoCompararCadenas();
                     }
-                    traduccion.setTranslate("\n\n//Igualando los dos id	--------------\n\n");
+                    traduccion.setTranslate("\n\n//Comparando accesos\t--------------\n");
                     traduccion.t++;
                     traduccion.setTranslate("t" + traduccion.t + " = stack[(int)" + ent.SP_ID + "];");
                     traduccion.t++;
@@ -134,7 +134,23 @@ export class Path implements Expression {
         } else { // si la consuta es una sub o una normal y el padre es un nodo  -----> /id/id || /id/@id || /id/. || /id/*               
 
             if (this.L_Accesos[posActAcceso].tipoAcceso === "atributo") {
+                
+                //TRADUCCION3D##########################################################################################
+                if (traduccion.verificarAtributo === "") {
+                    traduccion.metodoVerificarAtributo();
+                }
+                traduccion.setTranslate("\n\n//Validando que sea atributo\t--------------\n\n");
+                traduccion.t++;
+                traduccion.setTranslate("t"+traduccion.t+" = stack[(int)"+this.L_Accesos[posActAcceso].SP_id+"];");
+                traduccion.t++;
+                traduccion.setTranslate("t"+traduccion.t+" = S + "+traduccion.stackCounter+";");
+                traduccion.setTranslate("t"+traduccion.t+" = t"+traduccion.t+" + 1;");
+                traduccion.setTranslate("stack[(int)t"+traduccion.t+"] = t" +(traduccion.t-1)+";");
+                traduccion.setTranslate("S = S + "+traduccion.stackCounter+";");
+                traduccion.setTranslate("crearEtiquetaUnitaria();");
+                traduccion.setTranslate("S = S - "+traduccion.stackCounter+";");
 
+                //#######################################################################################################
                 const atri = entPadre.getAtributo(this.L_Accesos[posActAcceso].id)
                 if (atri != null) {
 
@@ -243,7 +259,7 @@ export class Path implements Expression {
                             if (traduccion.compararCadenas3d === "") {
                                 traduccion.metodoCompararCadenas();
                             }
-                            traduccion.setTranslate("\n\n//Igualando los dos id	--------------\n\n");
+                            traduccion.setTranslate("\n\n//Comparando accesos\t--------------\n");
                             traduccion.t++;
                             traduccion.setTranslate("t" + traduccion.t + " = stack[(int)" + entActual.SP_ID + "];");
                             traduccion.t++;
@@ -525,7 +541,10 @@ export class Path implements Expression {
             traduccion.stackCounter++;
             key.SP_id = traduccion.stackCounter;
             traduccion.setTranslate("stack[" + traduccion.stackCounter.toString() + "] = " + "H;");
-
+            if (key.tipoAcceso==="atributo") {
+                traduccion.setTranslate("heap[(int)H] = 64;\t\t//Caracter @");
+                traduccion.setTranslate("H = H + 1;");
+            }
             for (let i = 0; i < key.id.length; i++) {
                 traduccion.setTranslate("heap[(int)H] = " + key.id.charCodeAt(i) + ";" + "\t\t//Caracter " + key.id[i].toString());
                 traduccion.setTranslate("H = H + 1;");
