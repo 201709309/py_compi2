@@ -10,6 +10,7 @@ export class traduccion {
     static etiquetaTexto:string="";
     static etiquetaApertura:string="";
     static etiquetaCierre:string="";
+    static etiquetaUnitaria:string="";
 
     public static getTranslate(): string {
         var content: string = "";
@@ -35,6 +36,7 @@ export class traduccion {
         content += this.etiquetaTexto;
         content += this.etiquetaApertura;
         content += this.etiquetaCierre;
+        content += this.etiquetaUnitaria;
         content += "//Metodo Main\t--------------\n";
         content += "void main(){\n";
         content += "S = 0; H = 0;\n\n";
@@ -180,13 +182,14 @@ export class traduccion {
 
     //CREACION DEL METODO imprimir etiqueta cierre*********************
     public static crearEtiquetaCierre() {
-        this.etiquetaCierre += "//Metodo Etiqueta apertura\t--------------\n";
-        this.etiquetaCierre += "void crearEtiquetaApertura() {\n"
+        this.etiquetaCierre += "//Metodo Etiqueta Cierre\t--------------\n";
+        this.etiquetaCierre += "void crearEtiquetaCierre() {\n"
         traduccion.t++;
         this.etiquetaCierre += "t"+traduccion.t+" = S + 1;\n";
         traduccion.t++;
         this.etiquetaCierre += "t"+traduccion.t+" = stack[(int)t"+(traduccion.t-1)+"];\n"
         this.etiquetaCierre += "printf(\"%c\", (char)60);\t\t// <\n";
+        this.etiquetaCierre += "printf(\"%c\", (char)47);\t\t// /\n"; 
         this.etiquetaCounter++;
         this.etiquetaCierre += "L"+this.etiquetaCounter+":\n";
         traduccion.t++;
@@ -197,9 +200,33 @@ export class traduccion {
         this.etiquetaCierre += "t"+(traduccion.t-1)+" = t" + (traduccion.t-1) + " + 1;\n";
         this.etiquetaCierre += "goto L"+(this.etiquetaCounter-1)+";\n";
         this.etiquetaCierre += "L"+this.etiquetaCounter+":\n";
-        this.etiquetaCierre += "printf(\"%c\", (char)47);\t\t// /\n"; 
         this.etiquetaCierre += "printf(\"%c\", (char)62);\t\t// >\n";   
         this.etiquetaCierre += "printf(\"%c\", (char)10);\t\t// Salto de linea\n";  
         this.etiquetaCierre += "return;\n}\n\n";
+    }
+
+    //CREACION DEL METODO imprimir etiqueta Unitaria*********************
+    public static crearEtiquetaUnitaria() {
+        this.etiquetaUnitaria += "//Metodo Etiqueta Unitaria\t--------------\n";
+        this.etiquetaUnitaria += "void crearEtiquetaUnitaria() {\n"
+        traduccion.t++;
+        this.etiquetaUnitaria += "t"+traduccion.t+" = S + 1;\n";
+        traduccion.t++;
+        this.etiquetaUnitaria += "t"+traduccion.t+" = stack[(int)t"+(traduccion.t-1)+"];\n"
+        this.etiquetaUnitaria += "printf(\"%c\", (char)60);\t\t// <\n";
+        this.etiquetaCounter++;
+        this.etiquetaUnitaria += "L"+this.etiquetaCounter+":\n";
+        traduccion.t++;
+        this.etiquetaUnitaria += "t"+traduccion.t+" = heap[(int)t"+(traduccion.t-1)+"];\n";
+        this.etiquetaCounter++;
+        this.etiquetaUnitaria += "if(t"+traduccion.t+"==-1) goto L"+this.etiquetaCounter+";\n";
+        this.etiquetaUnitaria += "printf(\"%c\", (char)t"+(traduccion.t)+");\n";
+        this.etiquetaUnitaria += "t"+(traduccion.t-1)+" = t" + (traduccion.t-1) + " + 1;\n";
+        this.etiquetaUnitaria += "goto L"+(this.etiquetaCounter-1)+";\n";
+        this.etiquetaUnitaria += "L"+this.etiquetaCounter+":\n";
+        this.etiquetaUnitaria += "printf(\"%c\", (char)47);\t\t// /\n"; 
+        this.etiquetaUnitaria += "printf(\"%c\", (char)62);\t\t// >\n";   
+        this.etiquetaUnitaria += "printf(\"%c\", (char)10);\t\t// Salto de linea\n";  
+        this.etiquetaUnitaria += "return;\n}\n\n";
     }
 }

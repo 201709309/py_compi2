@@ -339,39 +339,66 @@ export class Path implements Expression {
 
             //construyo Nodos
             if (entPadre.listaEntornos.length === 0 && entPadre.texto === '') {
+                //TRADUCCION3D##########################################################################################
+                if (traduccion.etiquetaUnitaria === "") {
+                    traduccion.crearEtiquetaUnitaria();
+                }
+                traduccion.setTranslate("\n\n//Imprimiendo etiqueta Unitaria\t--------------\n\n");
+                traduccion.t++;
+                traduccion.setTranslate("t"+traduccion.t+" = stack[(int)"+entPadre.SP_ID+"];");
+                traduccion.t++;
+                traduccion.setTranslate("t"+traduccion.t+" = S + "+traduccion.stackCounter+";");
+                traduccion.setTranslate("t"+traduccion.t+" = t"+traduccion.t+" + 1;");
+                traduccion.setTranslate("stack[(int)t"+traduccion.t+"] = t" +(traduccion.t-1)+";");
+                traduccion.setTranslate("S = S + "+traduccion.stackCounter+";");
+                traduccion.setTranslate("crearEtiquetaUnitaria();");
+                traduccion.setTranslate("S = S - "+traduccion.stackCounter+";");
+
+                //#######################################################################################################
                 this.salida.push(tab + "<" + entPadre.identificador + " " + atributos + "/>\n");
             }
             else if (entPadre.listaEntornos.length > 0) {
 
                 //TRADUCCION3D##########################################################################################
-                if (traduccion.etiquetaTexto === "") {
-                    traduccion.crearEtiquetaTexto();
+                if (traduccion.etiquetaApertura === "") {
+                    traduccion.crearEtiquetaApertura();
                 }
-                traduccion.setTranslate("\n\n//Imprimiendo nodo Entorno	--------------\n\n");
+                traduccion.setTranslate("\n\n//Imprimiendo etiqueta apertura\t--------------\n\n");
                 traduccion.t++;
                 traduccion.setTranslate("t"+traduccion.t+" = stack[(int)"+entPadre.SP_ID+"];");
                 traduccion.t++;
-                traduccion.setTranslate("t"+traduccion.t+" = stack[(int)"+entPadre.SP_VAL+"];");
-                traduccion.t++;
                 traduccion.setTranslate("t"+traduccion.t+" = S + "+traduccion.stackCounter+";");
                 traduccion.setTranslate("t"+traduccion.t+" = t"+traduccion.t+" + 1;");
-                traduccion.setTranslate("stack[(int)t"+traduccion.t+"] = t" +(traduccion.t-3)+";");
-                traduccion.setTranslate("t"+traduccion.t+" = t"+traduccion.t+" + 1;");
-                traduccion.setTranslate("stack[(int)t"+traduccion.t+"] = t" +(traduccion.t-2)+";");
+                traduccion.setTranslate("stack[(int)t"+traduccion.t+"] = t" +(traduccion.t-1)+";");
                 traduccion.setTranslate("S = S + "+traduccion.stackCounter+";");
-                traduccion.setTranslate("crearEtiquetaTexto();");
+                traduccion.setTranslate("crearEtiquetaApertura();");
                 traduccion.setTranslate("S = S - "+traduccion.stackCounter+";");
+
                 //#######################################################################################################
 
                 this.salida.push(tab + "<" + entPadre.identificador + " " + atributos + ">\n");
                 for (const entActual of entPadre.listaEntornos) {
-                    if (traduccion.etiquetaApertura === "") {
-                        traduccion.crearEtiquetaApertura();
-                        traduccion.crearEtiquetaCierre();
-                    }
+                    
                     this.construirNodos(entActual, tab + "   ");    //         //nombre  /biblio/libro//nombre             
                 }
                 this.salida.push(tab + "</" + entPadre.identificador + ">\n");
+
+                //TRADUCCION3D##########################################################################################
+                if (traduccion.etiquetaCierre === "") {
+                    traduccion.crearEtiquetaCierre();
+                }
+                traduccion.setTranslate("\n\n//Imprimiendo etiqueta cierre\t--------------\n\n");
+                traduccion.t++;
+                traduccion.setTranslate("t"+traduccion.t+" = stack[(int)"+entPadre.SP_ID+"];");
+                traduccion.t++;
+                traduccion.setTranslate("t"+traduccion.t+" = S + "+traduccion.stackCounter+";");
+                traduccion.setTranslate("t"+traduccion.t+" = t"+traduccion.t+" + 1;");
+                traduccion.setTranslate("stack[(int)t"+traduccion.t+"] = t" +(traduccion.t-1)+";");
+                traduccion.setTranslate("S = S + "+traduccion.stackCounter+";");
+                traduccion.setTranslate("crearEtiquetaCierre();");
+                traduccion.setTranslate("S = S - "+traduccion.stackCounter+";");
+
+                //#######################################################################################################
 
             } else {
                 //TRADUCCION3D##########################################################################################
