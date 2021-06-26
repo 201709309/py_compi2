@@ -365,6 +365,10 @@ export class Path implements Expression {
 
                 this.salida.push(tab + "<" + entPadre.identificador + " " + atributos + ">\n");
                 for (const entActual of entPadre.listaEntornos) {
+                    if (traduccion.etiquetaApertura === "") {
+                        traduccion.crearEtiquetaApertura();
+                        traduccion.crearEtiquetaCierre();
+                    }
                     this.construirNodos(entActual, tab + "   ");    //         //nombre  /biblio/libro//nombre             
                 }
                 this.salida.push(tab + "</" + entPadre.identificador + ">\n");

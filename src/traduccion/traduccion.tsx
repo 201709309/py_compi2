@@ -8,6 +8,8 @@ export class traduccion {
     static metodoConsultaXPATH:string = "";
     static compararCadenas3d:string="";
     static etiquetaTexto:string="";
+    static etiquetaApertura:string="";
+    static etiquetaCierre:string="";
 
     public static getTranslate(): string {
         var content: string = "";
@@ -31,6 +33,8 @@ export class traduccion {
         content += this.metodoConsultaXPATH;
         content += this.compararCadenas3d;
         content += this.etiquetaTexto;
+        content += this.etiquetaApertura;
+        content += this.etiquetaCierre;
         content += "//Metodo Main\t--------------\n";
         content += "void main(){\n";
         content += "S = 0; H = 0;\n\n";
@@ -93,7 +97,6 @@ export class traduccion {
         //traduccion.t++;
     }
 
-
     //CREACION DEL METODO imprimir nodo Texto****************************
     public static crearEtiquetaTexto() {
         this.etiquetaTexto += "//Metodo Comparar cadenas\t--------------\n";
@@ -149,5 +152,54 @@ export class traduccion {
         this.etiquetaTexto += "printf(\"%c\", (char)10);\n";
         this.etiquetaTexto += "return;\n";
         this.etiquetaTexto += "}\n\n";
+    }
+
+    //CREACION DEL METODO imprimir etiqueta apertura*********************
+    public static crearEtiquetaApertura() {
+        this.etiquetaApertura += "//Metodo Etiqueta apertura\t--------------\n";
+        this.etiquetaApertura += "void crearEtiquetaApertura() {\n"
+        traduccion.t++;
+        this.etiquetaApertura += "t"+traduccion.t+" = S + 1;\n";
+        traduccion.t++;
+        this.etiquetaApertura += "t"+traduccion.t+" = stack[(int)t"+(traduccion.t-1)+"];\n"
+        this.etiquetaApertura += "printf(\"%c\", (char)60);\t\t// <\n";
+        this.etiquetaCounter++;
+        this.etiquetaApertura += "L"+this.etiquetaCounter+":\n";
+        traduccion.t++;
+        this.etiquetaApertura += "t"+traduccion.t+" = heap[(int)t"+(traduccion.t-1)+"];\n";
+        this.etiquetaCounter++;
+        this.etiquetaApertura += "if(t"+traduccion.t+"==-1) goto L"+this.etiquetaCounter+";\n";
+        this.etiquetaApertura += "printf(\"%c\", (char)t"+(traduccion.t)+");\n";
+        this.etiquetaApertura += "t"+(traduccion.t-1)+" = t" + (traduccion.t-1) + " + 1;\n";
+        this.etiquetaApertura += "goto L"+(this.etiquetaCounter-1)+";\n";
+        this.etiquetaApertura += "L"+this.etiquetaCounter+":\n";
+        this.etiquetaApertura += "printf(\"%c\", (char)62);\t\t// >\n";   
+        this.etiquetaApertura += "printf(\"%c\", (char)10);\t\t// Salto de linea\n";  
+        this.etiquetaApertura += "return;\n}\n\n";
+    }
+
+    //CREACION DEL METODO imprimir etiqueta cierre*********************
+    public static crearEtiquetaCierre() {
+        this.etiquetaCierre += "//Metodo Etiqueta apertura\t--------------\n";
+        this.etiquetaCierre += "void crearEtiquetaApertura() {\n"
+        traduccion.t++;
+        this.etiquetaCierre += "t"+traduccion.t+" = S + 1;\n";
+        traduccion.t++;
+        this.etiquetaCierre += "t"+traduccion.t+" = stack[(int)t"+(traduccion.t-1)+"];\n"
+        this.etiquetaCierre += "printf(\"%c\", (char)60);\t\t// <\n";
+        this.etiquetaCounter++;
+        this.etiquetaCierre += "L"+this.etiquetaCounter+":\n";
+        traduccion.t++;
+        this.etiquetaCierre += "t"+traduccion.t+" = heap[(int)t"+(traduccion.t-1)+"];\n";
+        this.etiquetaCounter++;
+        this.etiquetaCierre += "if(t"+traduccion.t+"==-1) goto L"+this.etiquetaCounter+";\n";
+        this.etiquetaCierre += "printf(\"%c\", (char)t"+(traduccion.t)+");\n";
+        this.etiquetaCierre += "t"+(traduccion.t-1)+" = t" + (traduccion.t-1) + " + 1;\n";
+        this.etiquetaCierre += "goto L"+(this.etiquetaCounter-1)+";\n";
+        this.etiquetaCierre += "L"+this.etiquetaCounter+":\n";
+        this.etiquetaCierre += "printf(\"%c\", (char)47);\t\t// /\n"; 
+        this.etiquetaCierre += "printf(\"%c\", (char)62);\t\t// >\n";   
+        this.etiquetaCierre += "printf(\"%c\", (char)10);\t\t// Salto de linea\n";  
+        this.etiquetaCierre += "return;\n}\n\n";
     }
 }
