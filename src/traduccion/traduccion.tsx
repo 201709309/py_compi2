@@ -1,7 +1,7 @@
 export class traduccion {
     static t: number = -1;
     static stackCounter: number = -1;
-    static etiquetaCounter: number = -1;
+    static etiquetaCounter: number = 0;
     static tranlate: string = "";
     static printString: boolean = false;
     static metodostring:string = "";
@@ -11,11 +11,8 @@ export class traduccion {
     static etiquetaApertura:string="";
     static etiquetaCierre:string="";
     static etiquetaUnitaria:string="";
-<<<<<<< Updated upstream
     static etiquetaAtributo:string="";
-=======
     static verificarAtributo:string="";
->>>>>>> Stashed changes
 
     public static getTranslate(): string {
         var content: string = "";
@@ -42,15 +39,13 @@ export class traduccion {
         content += this.etiquetaApertura;
         content += this.etiquetaCierre;
         content += this.etiquetaUnitaria;
-<<<<<<< Updated upstream
-        content += this.etiquetaAtributo;
-=======
         content += this.verificarAtributo;
->>>>>>> Stashed changes
+        content += this.etiquetaAtributo;
         content += "//Metodo Main\t--------------\n";
         content += "void main(){\n";
         content += "S = 0; H = 0;\n\n";
         content += this.tranlate;
+        content += "\nL0:\n";
         content += "\nreturn;\n";
         content += "}";
         return content;
@@ -201,17 +196,10 @@ export class traduccion {
         this.etiquetaCierre += "return;\n}\n\n";
     }
 
-<<<<<<< Updated upstream
     public static crearAtributoEtiqueta() {
         this.etiquetaAtributo += "//Metodo Obtener Atributo\t--------------\n";
         this.etiquetaAtributo += "void crearAtributoEtiqueta() {\n";
         //Obetener posiciones----------
-=======
-    //CREACION DEL METODO imprimir etiqueta Unitaria*********************
-    public static crearEtiquetaUnitaria() {
-        this.etiquetaUnitaria += "//Metodo Etiqueta Unitaria\t--------------\n\n";
-        this.etiquetaUnitaria += "void crearEtiquetaUnitaria() {\n"
->>>>>>> Stashed changes
         traduccion.t++;
         this.etiquetaAtributo += "t"+traduccion.t+" = S + 1;\n";
         traduccion.t++;

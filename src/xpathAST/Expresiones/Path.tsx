@@ -81,7 +81,8 @@ export class Path implements Expression {
                     traduccion.t++;
                     traduccion.setTranslate("t" + traduccion.t + " = stack[(int)t" + (traduccion.t - 1) + "];\n");
                     traduccion.t++;
-                    traduccion.setTranslate("printf(\"%d\", (int)t" + (traduccion.t - 1) + ");");
+                    //traduccion.setTranslate("printf(\"%d\", (int)t" + (traduccion.t - 1) + ");");
+                    traduccion.setTranslate("if(t"+ (traduccion.t - 1) +"!=1) goto L0;");
                     traduccion.setTranslate("S = S - " + traduccion.stackCounter + ";");
                     //#####################################################################################################
 
@@ -141,13 +142,13 @@ export class Path implements Expression {
                 }
                 traduccion.setTranslate("\n\n//Validando que sea atributo\t--------------\n\n");
                 traduccion.t++;
-                traduccion.setTranslate("t"+traduccion.t+" = stack[(int)"+this.L_Accesos[posActAcceso].SP_id+"];");
+                traduccion.setTranslate("t"+traduccion.t+" = stack[(int)t"+this.L_Accesos[posActAcceso].SP_id+"];");
                 traduccion.t++;
                 traduccion.setTranslate("t"+traduccion.t+" = S + "+traduccion.stackCounter+";");
                 traduccion.setTranslate("t"+traduccion.t+" = t"+traduccion.t+" + 1;");
                 traduccion.setTranslate("stack[(int)t"+traduccion.t+"] = t" +(traduccion.t-1)+";");
                 traduccion.setTranslate("S = S + "+traduccion.stackCounter+";");
-                traduccion.setTranslate("crearEtiquetaUnitaria();");
+                traduccion.setTranslate("verificarAtributo();");
                 traduccion.setTranslate("S = S - "+traduccion.stackCounter+";");
 
                 //#######################################################################################################
@@ -163,6 +164,24 @@ export class Path implements Expression {
                             if (this.tipoPath === "sub") {
                                 this.salida.push({ value: atri.valor.replaceAll("\"", ""), type: tipoPrimitivo.STRING });
                             } else {
+                                if (traduccion.etiquetaAtributo === "") {
+                                    traduccion.crearAtributoEtiqueta();
+                                }
+                                traduccion.setTranslate("\n\n//Atributo Etiqueta\t\t--------------\n\n");
+                                traduccion.t++;
+                                traduccion.setTranslate("t"+traduccion.t+" = stack[(int)"+atri.SP_ID+"];");
+                                traduccion.t++;
+                                traduccion.setTranslate("t"+traduccion.t+" = stack[(int)"+atri.SP_VAL+"];");
+                                traduccion.t++;
+                                traduccion.setTranslate("t"+traduccion.t+" = S + "+traduccion.stackCounter+";");
+                                traduccion.setTranslate("t"+traduccion.t+" = t"+traduccion.t+" + 1;");
+                                traduccion.setTranslate("stack[(int)t"+traduccion.t+"] = t" +(traduccion.t-2)+";");
+                                traduccion.setTranslate("t"+traduccion.t+" = t"+traduccion.t+" + 1;");
+                                traduccion.setTranslate("stack[(int)t"+traduccion.t+"] = t" +(traduccion.t-1)+";");
+                                traduccion.setTranslate("S = S + "+traduccion.stackCounter+";");
+                                traduccion.setTranslate("crearAtributoEtiqueta();");
+                                traduccion.setTranslate("S = S - "+traduccion.stackCounter+";");
+                                traduccion.setTranslate("printf(\"%c\", (char)10);");
                                 this.salida.push(atri.identificador + " = \"" + atri.valor.replaceAll("\"", "") + "\"\n");
                             }
                         }
@@ -277,7 +296,8 @@ export class Path implements Expression {
                             traduccion.t++;
                             traduccion.setTranslate("t" + traduccion.t + " = stack[(int)t" + (traduccion.t - 1) + "];\n");
                             traduccion.t++;
-                            traduccion.setTranslate("printf(\"%d\", (int)t" + (traduccion.t - 1) + ");");
+                            //traduccion.setTranslate("printf(\"%d\", (int)t" + (traduccion.t - 1) + ");");
+                            traduccion.setTranslate("if(t"+ (traduccion.t - 1) +"!=1) goto L0;");
                             traduccion.setTranslate("S = S - " + traduccion.stackCounter + ";");
                             //####################################################################################################
 
@@ -323,6 +343,7 @@ export class Path implements Expression {
             if (this.tipoPath === "sub") {
                 this.salida.push({ value: atri.valor.replaceAll("\"", ""), type: tipoPrimitivo.STRING });
             } else {
+                
                 this.salida.push(atri.identificador + " = \"" + atri.valor.replaceAll("\"", "") + "\"\n");
             }
         }
