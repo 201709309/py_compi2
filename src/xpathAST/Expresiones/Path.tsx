@@ -82,7 +82,7 @@ export class Path implements Expression {
                     traduccion.setTranslate("t" + traduccion.t + " = stack[(int)t" + (traduccion.t - 1) + "];\n");
                     traduccion.t++;
                     //traduccion.setTranslate("printf(\"%d\", (int)t" + (traduccion.t - 1) + ");");
-                    traduccion.setTranslate("if(t"+ (traduccion.t - 1) +"!=1) goto L0;");
+                    traduccion.setTranslate("if(t" + (traduccion.t - 1) + "!=1) goto L0;");
                     traduccion.setTranslate("S = S - " + traduccion.stackCounter + ";");
                     //#####################################################################################################
 
@@ -135,21 +135,21 @@ export class Path implements Expression {
         } else { // si la consuta es una sub o una normal y el padre es un nodo  -----> /id/id || /id/@id || /id/. || /id/*               
 
             if (this.L_Accesos[posActAcceso].tipoAcceso === "atributo") {
-                
+
                 //TRADUCCION3D##########################################################################################
                 if (traduccion.verificarAtributo === "") {
                     traduccion.metodoVerificarAtributo();
                 }
                 traduccion.setTranslate("\n\n//Validando que sea atributo\t--------------\n\n");
                 traduccion.t++;
-                traduccion.setTranslate("t"+traduccion.t+" = stack[(int)"+this.L_Accesos[posActAcceso].SP_id+"];");
+                traduccion.setTranslate("t" + traduccion.t + " = stack[(int)" + this.L_Accesos[posActAcceso].SP_id + "];");
                 traduccion.t++;
-                traduccion.setTranslate("t"+traduccion.t+" = S + "+traduccion.stackCounter+";");
-                traduccion.setTranslate("t"+traduccion.t+" = t"+traduccion.t+" + 1;");
-                traduccion.setTranslate("stack[(int)t"+traduccion.t+"] = t" +(traduccion.t-1)+";");
-                traduccion.setTranslate("S = S + "+traduccion.stackCounter+";");
+                traduccion.setTranslate("t" + traduccion.t + " = S + " + traduccion.stackCounter + ";");
+                traduccion.setTranslate("t" + traduccion.t + " = t" + traduccion.t + " + 1;");
+                traduccion.setTranslate("stack[(int)t" + traduccion.t + "] = t" + (traduccion.t - 1) + ";");
+                traduccion.setTranslate("S = S + " + traduccion.stackCounter + ";");
                 traduccion.setTranslate("verificarAtributo();");
-                traduccion.setTranslate("S = S - "+traduccion.stackCounter+";");
+                traduccion.setTranslate("S = S - " + traduccion.stackCounter + ";");
 
                 //#######################################################################################################
                 const atri = entPadre.getAtributo(this.L_Accesos[posActAcceso].id)
@@ -169,18 +169,18 @@ export class Path implements Expression {
                                 }
                                 traduccion.setTranslate("\n\n//Atributo Etiqueta\t\t--------------\n\n");
                                 traduccion.t++;
-                                traduccion.setTranslate("t"+traduccion.t+" = stack[(int)"+atri.SP_ID+"];");
+                                traduccion.setTranslate("t" + traduccion.t + " = stack[(int)" + atri.SP_ID + "];");
                                 traduccion.t++;
-                                traduccion.setTranslate("t"+traduccion.t+" = stack[(int)"+atri.SP_VAL+"];");
+                                traduccion.setTranslate("t" + traduccion.t + " = stack[(int)" + atri.SP_VAL + "];");
                                 traduccion.t++;
-                                traduccion.setTranslate("t"+traduccion.t+" = S + "+traduccion.stackCounter+";");
-                                traduccion.setTranslate("t"+traduccion.t+" = t"+traduccion.t+" + 1;");
-                                traduccion.setTranslate("stack[(int)t"+traduccion.t+"] = t" +(traduccion.t-2)+";");
-                                traduccion.setTranslate("t"+traduccion.t+" = t"+traduccion.t+" + 1;");
-                                traduccion.setTranslate("stack[(int)t"+traduccion.t+"] = t" +(traduccion.t-1)+";");
-                                traduccion.setTranslate("S = S + "+traduccion.stackCounter+";");
+                                traduccion.setTranslate("t" + traduccion.t + " = S + " + traduccion.stackCounter + ";");
+                                traduccion.setTranslate("t" + traduccion.t + " = t" + traduccion.t + " + 1;");
+                                traduccion.setTranslate("stack[(int)t" + traduccion.t + "] = t" + (traduccion.t - 2) + ";");
+                                traduccion.setTranslate("t" + traduccion.t + " = t" + traduccion.t + " + 1;");
+                                traduccion.setTranslate("stack[(int)t" + traduccion.t + "] = t" + (traduccion.t - 1) + ";");
+                                traduccion.setTranslate("S = S + " + traduccion.stackCounter + ";");
                                 traduccion.setTranslate("crearAtributoEtiqueta();");
-                                traduccion.setTranslate("S = S - "+traduccion.stackCounter+";");
+                                traduccion.setTranslate("S = S - " + traduccion.stackCounter + ";");
                                 traduccion.setTranslate("printf(\"%c\", (char)10);");
                                 this.salida.push(atri.identificador + " = \"" + atri.valor.replaceAll("\"", "") + "\"\n");
                             }
@@ -229,6 +229,23 @@ export class Path implements Expression {
                     if (this.L_Accesos[posActAcceso].tipoQuery === 'relativa') {
 
                         if (entPadre.texto !== '') {
+                            //TRADUCCION3D##########################################################################################
+                            if (traduccion.printString === "") {
+                                traduccion.crearPrintString();
+                            }
+                            traduccion.setTranslate("\n\n//Imprimiendo solo contenido de nodo\t--------------\n");
+                            traduccion.t++;
+                            traduccion.setTranslate("t" + traduccion.t + " = stack[(int)" + entPadre.SP_VAL + "];");
+
+                            traduccion.t++;
+                            traduccion.setTranslate("t" + traduccion.t + " = S + " + traduccion.stackCounter + ";");
+                            traduccion.setTranslate("t" + traduccion.t + " = t" + traduccion.t + " + 1;");
+                            traduccion.setTranslate("stack[(int)t" + (traduccion.t) + "] = t" + (traduccion.t - 1) + ";");
+                            traduccion.setTranslate("S = S + " + traduccion.stackCounter + ";");
+                            traduccion.setTranslate("printString();");
+                            traduccion.setTranslate("printf(\"%c\", (char)10);\t\t// Salto de linea\n");
+                            traduccion.setTranslate("S = S - " + traduccion.stackCounter + ";");
+                            //#######################################################################################################
                             this.salida.push(entPadre.texto + '\n');
                         }
 
@@ -297,7 +314,7 @@ export class Path implements Expression {
                             traduccion.setTranslate("t" + traduccion.t + " = stack[(int)t" + (traduccion.t - 1) + "];\n");
                             traduccion.t++;
                             //traduccion.setTranslate("printf(\"%d\", (int)t" + (traduccion.t - 1) + ");");
-                            traduccion.setTranslate("if(t"+ (traduccion.t - 1) +"!=1) goto L0;");
+                            traduccion.setTranslate("if(t" + (traduccion.t - 1) + "!=1) goto L0;");
                             traduccion.setTranslate("S = S - " + traduccion.stackCounter + ";");
                             //####################################################################################################
 
@@ -325,6 +342,23 @@ export class Path implements Expression {
     private construirTodosTextos(entPadre: Entorno) {
 
         if (entPadre.texto !== '') {
+            //TRADUCCION3D##########################################################################################
+            if (traduccion.printString === "") {
+                traduccion.crearPrintString();
+            }
+            traduccion.setTranslate("\n\n//Imprimiendo solo contenido de nodo\t--------------\n");
+            traduccion.t++;
+            traduccion.setTranslate("t" + traduccion.t + " = stack[(int)" + entPadre.SP_VAL + "];");
+
+            traduccion.t++;
+            traduccion.setTranslate("t" + traduccion.t + " = S + " + traduccion.stackCounter + ";");
+            traduccion.setTranslate("t" + traduccion.t + " = t" + traduccion.t + " + 1;");
+            traduccion.setTranslate("stack[(int)t" + (traduccion.t) + "] = t" + (traduccion.t - 1) + ";");
+            traduccion.setTranslate("S = S + " + traduccion.stackCounter + ";");
+            traduccion.setTranslate("printString();");
+            traduccion.setTranslate("printf(\"%c\", (char)10);\t\t// Salto de linea\n");
+            traduccion.setTranslate("S = S - " + traduccion.stackCounter + ";");
+            //#######################################################################################################
             this.salida.push(entPadre.texto + '\n');
         }
 
@@ -343,7 +377,26 @@ export class Path implements Expression {
             if (this.tipoPath === "sub") {
                 this.salida.push({ value: atri.valor.replaceAll("\"", ""), type: tipoPrimitivo.STRING });
             } else {
-                
+                //TRADUCCION3D##########################################################################################
+                if (traduccion.etiquetaAtributo === "") {
+                    traduccion.crearAtributoEtiqueta();
+                }
+                traduccion.setTranslate("\n\n//Atributo Etiqueta\t\t--------------\n\n");
+                traduccion.t++;
+                traduccion.setTranslate("t" + traduccion.t + " = stack[(int)" + atri.SP_ID + "];");
+                traduccion.t++;
+                traduccion.setTranslate("t" + traduccion.t + " = stack[(int)" + atri.SP_VAL + "];");
+                traduccion.t++;
+                traduccion.setTranslate("t" + traduccion.t + " = S + " + traduccion.stackCounter + ";");
+                traduccion.setTranslate("t" + traduccion.t + " = t" + traduccion.t + " + 1;");
+                traduccion.setTranslate("stack[(int)t" + traduccion.t + "] = t" + (traduccion.t - 2) + ";");
+                traduccion.setTranslate("t" + traduccion.t + " = t" + traduccion.t + " + 1;");
+                traduccion.setTranslate("stack[(int)t" + traduccion.t + "] = t" + (traduccion.t - 1) + ";");
+                traduccion.setTranslate("S = S + " + traduccion.stackCounter + ";");
+                traduccion.setTranslate("crearAtributoEtiqueta();");
+                traduccion.setTranslate("printf(\"%c\", (char)10);\t\t// Salto de linea\n");
+                traduccion.setTranslate("S = S - " + traduccion.stackCounter + ";");
+                //######################################################################################################
                 this.salida.push(atri.identificador + " = \"" + atri.valor.replaceAll("\"", "") + "\"\n");
             }
         }
@@ -375,14 +428,14 @@ export class Path implements Expression {
             }
             traduccion.setTranslate("\n//Inicia Etiqueta apertura\t--------------\n\n");
             traduccion.t++;
-            traduccion.setTranslate("t"+traduccion.t+" = stack[(int)"+entPadre.SP_ID+"];");
+            traduccion.setTranslate("t" + traduccion.t + " = stack[(int)" + entPadre.SP_ID + "];");
             traduccion.t++;
-            traduccion.setTranslate("t"+traduccion.t+" = S + "+traduccion.stackCounter+";");
-            traduccion.setTranslate("t"+traduccion.t+" = t"+traduccion.t+" + 1;");
-            traduccion.setTranslate("stack[(int)t"+traduccion.t+"] = t" +(traduccion.t-1)+";");
-            traduccion.setTranslate("S = S + "+traduccion.stackCounter+";");
+            traduccion.setTranslate("t" + traduccion.t + " = S + " + traduccion.stackCounter + ";");
+            traduccion.setTranslate("t" + traduccion.t + " = t" + traduccion.t + " + 1;");
+            traduccion.setTranslate("stack[(int)t" + traduccion.t + "] = t" + (traduccion.t - 1) + ";");
+            traduccion.setTranslate("S = S + " + traduccion.stackCounter + ";");
             traduccion.setTranslate("crearEtiquetaApertura();");
-            traduccion.setTranslate("S = S - "+traduccion.stackCounter+";");
+            traduccion.setTranslate("S = S - " + traduccion.stackCounter + ";");
 
             var atributos = "";
             for (const atri of entPadre.listaSimbolos) { // construyo atributos
@@ -392,18 +445,18 @@ export class Path implements Expression {
                 }
                 traduccion.setTranslate("\n\n//Atributo Etiqueta\t\t--------------\n\n");
                 traduccion.t++;
-                traduccion.setTranslate("t"+traduccion.t+" = stack[(int)"+atri.SP_ID+"];");
+                traduccion.setTranslate("t" + traduccion.t + " = stack[(int)" + atri.SP_ID + "];");
                 traduccion.t++;
-                traduccion.setTranslate("t"+traduccion.t+" = stack[(int)"+atri.SP_VAL+"];");
+                traduccion.setTranslate("t" + traduccion.t + " = stack[(int)" + atri.SP_VAL + "];");
                 traduccion.t++;
-                traduccion.setTranslate("t"+traduccion.t+" = S + "+traduccion.stackCounter+";");
-                traduccion.setTranslate("t"+traduccion.t+" = t"+traduccion.t+" + 1;");
-                traduccion.setTranslate("stack[(int)t"+traduccion.t+"] = t" +(traduccion.t-2)+";");
-                traduccion.setTranslate("t"+traduccion.t+" = t"+traduccion.t+" + 1;");
-                traduccion.setTranslate("stack[(int)t"+traduccion.t+"] = t" +(traduccion.t-1)+";");
-                traduccion.setTranslate("S = S + "+traduccion.stackCounter+";");
+                traduccion.setTranslate("t" + traduccion.t + " = S + " + traduccion.stackCounter + ";");
+                traduccion.setTranslate("t" + traduccion.t + " = t" + traduccion.t + " + 1;");
+                traduccion.setTranslate("stack[(int)t" + traduccion.t + "] = t" + (traduccion.t - 2) + ";");
+                traduccion.setTranslate("t" + traduccion.t + " = t" + traduccion.t + " + 1;");
+                traduccion.setTranslate("stack[(int)t" + traduccion.t + "] = t" + (traduccion.t - 1) + ";");
+                traduccion.setTranslate("S = S + " + traduccion.stackCounter + ";");
                 traduccion.setTranslate("crearAtributoEtiqueta();");
-                traduccion.setTranslate("S = S - "+traduccion.stackCounter+";");
+                traduccion.setTranslate("S = S - " + traduccion.stackCounter + ";");
 
             }
 
@@ -432,14 +485,14 @@ export class Path implements Expression {
                 }
                 traduccion.setTranslate("\n\n//Imprimiendo etiqueta cierre\t--------------\n\n");
                 traduccion.t++;
-                traduccion.setTranslate("t"+traduccion.t+" = stack[(int)"+entPadre.SP_ID+"];");
+                traduccion.setTranslate("t" + traduccion.t + " = stack[(int)" + entPadre.SP_ID + "];");
                 traduccion.t++;
-                traduccion.setTranslate("t"+traduccion.t+" = S + "+traduccion.stackCounter+";");
-                traduccion.setTranslate("t"+traduccion.t+" = t"+traduccion.t+" + 1;");
-                traduccion.setTranslate("stack[(int)t"+traduccion.t+"] = t" +(traduccion.t-1)+";");
-                traduccion.setTranslate("S = S + "+traduccion.stackCounter+";");
+                traduccion.setTranslate("t" + traduccion.t + " = S + " + traduccion.stackCounter + ";");
+                traduccion.setTranslate("t" + traduccion.t + " = t" + traduccion.t + " + 1;");
+                traduccion.setTranslate("stack[(int)t" + traduccion.t + "] = t" + (traduccion.t - 1) + ";");
+                traduccion.setTranslate("S = S + " + traduccion.stackCounter + ";");
                 traduccion.setTranslate("crearEtiquetaCierre();");
-                traduccion.setTranslate("S = S - "+traduccion.stackCounter+";");
+                traduccion.setTranslate("S = S - " + traduccion.stackCounter + ";");
                 //#######################################################################################################
             } else {
                 traduccion.setTranslate("printf(\"%c\", (char)62);\t\t// >\n");
@@ -449,19 +502,19 @@ export class Path implements Expression {
                 }
                 traduccion.setTranslate("\n\n//Imprimiendo nodo Texto	--------------\n\n");
                 traduccion.t++;
-                traduccion.setTranslate("t"+traduccion.t+" = stack[(int)"+entPadre.SP_ID+"];");
+                traduccion.setTranslate("t" + traduccion.t + " = stack[(int)" + entPadre.SP_ID + "];");
                 traduccion.t++;
-                traduccion.setTranslate("t"+traduccion.t+" = stack[(int)"+entPadre.SP_VAL+"];");
+                traduccion.setTranslate("t" + traduccion.t + " = stack[(int)" + entPadre.SP_VAL + "];");
                 traduccion.t++;
                 //traduccion.t++;
-                traduccion.setTranslate("t"+traduccion.t+" = S + "+traduccion.stackCounter+";");
-                traduccion.setTranslate("t"+traduccion.t+" = t"+traduccion.t+" + 1;");
-                traduccion.setTranslate("stack[(int)t"+traduccion.t+"] = t" +(traduccion.t-2)+";");
-                traduccion.setTranslate("t"+traduccion.t+" = t"+traduccion.t+" + 1;");
-                traduccion.setTranslate("stack[(int)t"+traduccion.t+"] = t" +(traduccion.t-1)+";");
-                traduccion.setTranslate("S = S + "+traduccion.stackCounter+";");
+                traduccion.setTranslate("t" + traduccion.t + " = S + " + traduccion.stackCounter + ";");
+                traduccion.setTranslate("t" + traduccion.t + " = t" + traduccion.t + " + 1;");
+                traduccion.setTranslate("stack[(int)t" + traduccion.t + "] = t" + (traduccion.t - 2) + ";");
+                traduccion.setTranslate("t" + traduccion.t + " = t" + traduccion.t + " + 1;");
+                traduccion.setTranslate("stack[(int)t" + traduccion.t + "] = t" + (traduccion.t - 1) + ";");
+                traduccion.setTranslate("S = S + " + traduccion.stackCounter + ";");
                 traduccion.setTranslate("crearEtiquetaTexto();");
-                traduccion.setTranslate("S = S - "+traduccion.stackCounter+";");
+                traduccion.setTranslate("S = S - " + traduccion.stackCounter + ";");
                 //#######################################################################################################
                 this.salida.push(tab + "<" + entPadre.identificador + " " + atributos + ">" + entPadre.texto + "</" + entPadre.identificador + ">\n");
             }
@@ -469,72 +522,72 @@ export class Path implements Expression {
         }
     }
 
-    private validarPredicadosAtri(entPadre: Entorno, simboloPadre:Simbolo, posActAcceso:number) : boolean{
+    private validarPredicadosAtri(entPadre: Entorno, simboloPadre: Simbolo, posActAcceso: number): boolean {
 
         for (let i = 0; i < this.L_Accesos[posActAcceso].predicados.length; i++) {
-            
-            var result : Retorno = this.L_Accesos[posActAcceso].predicados[i].execute(entPadre, simboloPadre);
-            if (result.value === tipoPrimitivo.NUMBER){
-                
-                if (result.value - 1 >= 0 && result.value - 1 < entPadre.listaEntornos.length){
-                    if (entPadre.listaSimbolos[result.value - 1] !== simboloPadre){
-                        return false; 
+
+            var result: Retorno = this.L_Accesos[posActAcceso].predicados[i].execute(entPadre, simboloPadre);
+            if (result.value === tipoPrimitivo.NUMBER) {
+
+                if (result.value - 1 >= 0 && result.value - 1 < entPadre.listaEntornos.length) {
+                    if (entPadre.listaSimbolos[result.value - 1] !== simboloPadre) {
+                        return false;
                     }
                 }
-            }else if (result.type === tipoPrimitivo.RESP){
-                
-                if (result.value.length === 0){
+            } else if (result.type === tipoPrimitivo.RESP) {
+
+                if (result.value.length === 0) {
                     return false;
-                } 
-            }else if (result.value === false) {
-                return false ;
+                }
+            } else if (result.value === false) {
+                return false;
             }
-            
+
         }
         return true;
     }
 
-    private validarPredicadosNodos(entPadre: Entorno, entActual : Entorno, posActAcceso:number) : boolean{
+    private validarPredicadosNodos(entPadre: Entorno, entActual: Entorno, posActAcceso: number): boolean {
 
         for (let i = 0; i < this.L_Accesos[posActAcceso].predicados.length; i++) {
-            
-            var result : Retorno = this.L_Accesos[posActAcceso].predicados[i].execute(entActual);
-            if (result.type === tipoPrimitivo.NUMBER){
-                
-                if (result.value - 1 >= 0 && result.value - 1 < entPadre.listaEntornos.length){
-                    if (entPadre.listaEntornos[result.value - 1] !== entActual){
-                        return false; 
+
+            var result: Retorno = this.L_Accesos[posActAcceso].predicados[i].execute(entActual);
+            if (result.type === tipoPrimitivo.NUMBER) {
+
+                if (result.value - 1 >= 0 && result.value - 1 < entPadre.listaEntornos.length) {
+                    if (entPadre.listaEntornos[result.value - 1] !== entActual) {
+                        return false;
                     }
                 }
-            }else if (result.type === tipoPrimitivo.RESP){
-                
-                if (result.value.length === 0){
+            } else if (result.type === tipoPrimitivo.RESP) {
+
+                if (result.value.length === 0) {
                     return false;
-                } 
-            }else if (result.value === false) {
-                return false ;
+                }
+            } else if (result.value === false) {
+                return false;
             }
         }
         return true;
     }
 
-    private validarPredicadosRaiz(entActual : Entorno, posActAcceso:number) : boolean{
+    private validarPredicadosRaiz(entActual: Entorno, posActAcceso: number): boolean {
 
         for (let i = 0; i < this.L_Accesos[posActAcceso].predicados.length; i++) {
-            
-            var result : Retorno = this.L_Accesos[posActAcceso].predicados[i].execute(entActual);
-            if (result.type === tipoPrimitivo.NUMBER){
-                
-                if ( result.value !== 1){
+
+            var result: Retorno = this.L_Accesos[posActAcceso].predicados[i].execute(entActual);
+            if (result.type === tipoPrimitivo.NUMBER) {
+
+                if (result.value !== 1) {
                     return false;
                 }
-            }else if (result.type === tipoPrimitivo.RESP){
-                
-                if (result.value.length === 0){
+            } else if (result.type === tipoPrimitivo.RESP) {
+
+                if (result.value.length === 0) {
                     return false;
-                } 
-            }else if (result.value === false) {
-                return false ;
+                }
+            } else if (result.value === false) {
+                return false;
             }
         }
         return true;
@@ -565,7 +618,7 @@ export class Path implements Expression {
             key.SP_id = traduccion.stackCounter;
             traduccion.setTranslate("stack[" + traduccion.stackCounter.toString() + "] = " + "H;");
             traduccion.setTranslate("\n//Ingresando acceso\t--------------");
-            if (key.tipoAcceso==="atributo") {
+            if (key.tipoAcceso === "atributo") {
                 traduccion.setTranslate("heap[(int)H] = 64;\t\t//Caracter @");
                 traduccion.setTranslate("H = H + 1;");
             }
