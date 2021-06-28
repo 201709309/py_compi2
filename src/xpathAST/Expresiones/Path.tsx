@@ -142,7 +142,7 @@ export class Path implements Expression {
                 }
                 traduccion.setTranslate("\n\n//Validando que sea atributo\t--------------\n\n");
                 traduccion.t++;
-                traduccion.setTranslate("t"+traduccion.t+" = stack[(int)t"+this.L_Accesos[posActAcceso].SP_id+"];");
+                traduccion.setTranslate("t"+traduccion.t+" = stack[(int)"+this.L_Accesos[posActAcceso].SP_id+"];");
                 traduccion.t++;
                 traduccion.setTranslate("t"+traduccion.t+" = S + "+traduccion.stackCounter+";");
                 traduccion.setTranslate("t"+traduccion.t+" = t"+traduccion.t+" + 1;");
@@ -361,11 +361,12 @@ export class Path implements Expression {
 
         if (this.tipoPath === "sub") {
 
-            if (entPadre.listaEntornos.length > 0 || (entPadre.listaEntornos.length === 0 && entPadre.texto === '')) {
+            /*if (entPadre.listaEntornos.length > 0 || (entPadre.listaEntornos.length === 0 && entPadre.texto === '')) {
                 this.salida.push({ value: entPadre.identificador, type: tipoPrimitivo.NODO })
             } else {
                 this.salida.push({ value: entPadre.texto, type: tipoPrimitivo.STRING });
-            }
+            }*/
+            this.salida.push({ value: entPadre, type: tipoPrimitivo.NODO })
 
         } else {
 
@@ -468,71 +469,72 @@ export class Path implements Expression {
         }
     }
 
-    private validarPredicadosAtri(entPadre: Entorno, simboloPadre: Simbolo, posActAcceso: number): boolean {
+    private validarPredicadosAtri(entPadre: Entorno, simboloPadre:Simbolo, posActAcceso:number) : boolean{
 
         for (let i = 0; i < this.L_Accesos[posActAcceso].predicados.length; i++) {
-
-            var result: Retorno = this.L_Accesos[posActAcceso].predicados[i].execute(entPadre, simboloPadre);
-            if (result.value === tipoPrimitivo.NUMBER) {
-
-                if (result.value - 1 >= 0 && result.value - 1 < entPadre.listaEntornos.length) {
-                    if (entPadre.listaSimbolos[result.value - 1] !== simboloPadre) {
-                        return false;
+            
+            var result : Retorno = this.L_Accesos[posActAcceso].predicados[i].execute(entPadre, simboloPadre);
+            if (result.value === tipoPrimitivo.NUMBER){
+                
+                if (result.value - 1 >= 0 && result.value - 1 < entPadre.listaEntornos.length){
+                    if (entPadre.listaSimbolos[result.value - 1] !== simboloPadre){
+                        return false; 
                     }
                 }
-            } else if (result.value.length > 0 && result.type === tipoPrimitivo.RESP) {
-
-                if (result.value.type === tipoPrimitivo.NODO) {
+            }else if (result.type === tipoPrimitivo.RESP){
+                
+                if (result.value.length === 0){
                     return false;
-                }
-            } else if (result.value === false) {
-                return false;
+                } 
+            }else if (result.value === false) {
+                return false ;
             }
-
+            
         }
         return true;
     }
 
-    private validarPredicadosNodos(entPadre: Entorno, entActual: Entorno, posActAcceso: number): boolean {
+    private validarPredicadosNodos(entPadre: Entorno, entActual : Entorno, posActAcceso:number) : boolean{
 
         for (let i = 0; i < this.L_Accesos[posActAcceso].predicados.length; i++) {
-
-            var result: Retorno = this.L_Accesos[posActAcceso].predicados[i].execute(entActual);
-            if (result.type === tipoPrimitivo.NUMBER) {
-
-                if (result.value - 1 >= 0 && result.value - 1 < entPadre.listaEntornos.length) {
-                    if (entPadre.listaEntornos[result.value - 1] !== entActual) {
-                        return false;
+            
+            var result : Retorno = this.L_Accesos[posActAcceso].predicados[i].execute(entActual);
+            if (result.type === tipoPrimitivo.NUMBER){
+                
+                if (result.value - 1 >= 0 && result.value - 1 < entPadre.listaEntornos.length){
+                    if (entPadre.listaEntornos[result.value - 1] !== entActual){
+                        return false; 
                     }
                 }
-            } else if (result.value.length > 0 && result.type === tipoPrimitivo.RESP) {
-
-                if (result.value.type === tipoPrimitivo.NODO) {
-                    if (result.value === entActual.identificador) {
-                        return true;
-                    }
-                }
-            } else if (result.value === false) {
-                return false;
+            }else if (result.type === tipoPrimitivo.RESP){
+                
+                if (result.value.length === 0){
+                    return false;
+                } 
+            }else if (result.value === false) {
+                return false ;
             }
         }
         return true;
     }
 
-    private validarPredicadosRaiz(entActual: Entorno, posActAcceso: number): boolean {
+    private validarPredicadosRaiz(entActual : Entorno, posActAcceso:number) : boolean{
 
         for (let i = 0; i < this.L_Accesos[posActAcceso].predicados.length; i++) {
-
-            var result: Retorno = this.L_Accesos[posActAcceso].predicados[i].execute(entActual);
-            if (result.type === tipoPrimitivo.NUMBER) {
-
-                if (result.value !== 1) {
+            
+            var result : Retorno = this.L_Accesos[posActAcceso].predicados[i].execute(entActual);
+            if (result.type === tipoPrimitivo.NUMBER){
+                
+                if ( result.value !== 1){
                     return false;
                 }
-            } else if (result.value === "" && result.type === tipoPrimitivo.error) {
-                return false;
-            } else if (result.value === false) {
-                return false;
+            }else if (result.type === tipoPrimitivo.RESP){
+                
+                if (result.value.length === 0){
+                    return false;
+                } 
+            }else if (result.value === false) {
+                return false ;
             }
         }
         return true;
@@ -562,6 +564,7 @@ export class Path implements Expression {
             traduccion.stackCounter++;
             key.SP_id = traduccion.stackCounter;
             traduccion.setTranslate("stack[" + traduccion.stackCounter.toString() + "] = " + "H;");
+            traduccion.setTranslate("\n//Ingresando acceso\t--------------");
             if (key.tipoAcceso==="atributo") {
                 traduccion.setTranslate("heap[(int)H] = 64;\t\t//Caracter @");
                 traduccion.setTranslate("H = H + 1;");
@@ -570,6 +573,18 @@ export class Path implements Expression {
                 traduccion.setTranslate("heap[(int)H] = " + key.id.charCodeAt(i) + ";" + "\t\t//Caracter " + key.id[i].toString());
                 traduccion.setTranslate("H = H + 1;");
                 if (i + 1 === key.id.length) {
+                    traduccion.setTranslate("heap[(int)H] = -1;" + "\t\t//FIN DE CADENA");
+                    traduccion.setTranslate("H = H + 1;");
+                }
+            }
+            traduccion.setTranslate("\n//Ingresando tipo de acceso\t--------------");
+            traduccion.stackCounter++;
+            key.SP_tipoAcceso = traduccion.stackCounter;
+            traduccion.setTranslate("stack[" + traduccion.stackCounter.toString() + "] = " + "H;");
+            for (let i = 0; i < key.tipoAcceso.length; i++) {
+                traduccion.setTranslate("heap[(int)H] = " + key.tipoAcceso.charCodeAt(i) + ";" + "\t\t//Caracter " + key.tipoAcceso[i].toString());
+                traduccion.setTranslate("H = H + 1;");
+                if (i + 1 === key.tipoAcceso.length) {
                     traduccion.setTranslate("heap[(int)H] = -1;" + "\t\t//FIN DE CADENA");
                     traduccion.setTranslate("H = H + 1;");
                 }
