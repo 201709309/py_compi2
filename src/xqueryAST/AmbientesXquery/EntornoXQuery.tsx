@@ -1,16 +1,17 @@
+import { Retorno } from "../../Interfaces/Expresion";
 import { Simbolo } from "../../xmlAST/Simbolo";
 
 export class EntornoXQuery {
 
-    private variables: Map<string, Simbolo>;
+    private variables: Map<string, Retorno>;
     //public funciones: Map<string, InsFuncion>;
 
-    constructor (public anterior: EntornoXQuery){
+    constructor (public anterior: EntornoXQuery | null){
         this.variables = new Map();
     }
 
-    public guaradarVar(id: string, valor: any, linea: number, col: number){
-        this.variables.set(id, new Simbolo(id, valor, linea, col));
+    public guaradarVar(id: string, valor: Retorno){
+        this.variables.set(id, valor);
     }
 
     public existeLocalVar (id : string): boolean{
@@ -19,6 +20,7 @@ export class EntornoXQuery {
 
 //para asignacion-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+    
     public existeVar(id : string){
 
         let envXqery: EntornoXQuery | null = this;
@@ -39,7 +41,7 @@ export class EntornoXQuery {
         }
     }
 
-    public actualizarVar(id : string, nvoValor : any){
+    public actualizarVar(id : string, nvoValor : Retorno){
 
         let envXqery: EntornoXQuery | null = this;
 
@@ -47,7 +49,37 @@ export class EntornoXQuery {
             for (let entry of Array.from(envXqery.variables.entries())) {
                 let key = entry[0];
                 if (key === id) {
-                    entry[1].valor = nvoValor;
+                    entry[1] = nvoValor;
+                }
+            }
+
+        }else {
+ 
+            while(envXqery.anterior != null){
+                envXqery = envXqery.anterior;
+            }
+
+            if (envXqery.variables.has(id)){
+
+                for (let entry of Array.from(envXqery.variables.entries())) {
+                    let key = entry[0];
+                    if (key === id) {
+                        entry[1] = nvoValor;
+                    }
+                }
+            }
+        }
+    }
+
+    public getVar(id : string) : Retorno | null{
+
+        let envXqery: EntornoXQuery = this;
+
+        if (envXqery.variables.has(id)) {
+            for (let entry of Array.from(envXqery.variables.entries())) {
+                let key = entry[0];
+                if (key === id) {
+                    return entry[1];
                 }
             }
 
@@ -62,11 +94,13 @@ export class EntornoXQuery {
                 for (let entry of Array.from(envXqery.variables.entries())) {
                     let key = entry[0];
                     if (key === id) {
-                        entry[1].valor = nvoValor;
+                        return entry[1] ;
                     }
                 }
             }
         }
+        return null;
     }
+
 
 }

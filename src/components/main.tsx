@@ -12,7 +12,7 @@ import { traduccion } from '../Traduccion/traduccion';
 const parser = require('../Grammar/xmlGrammar');
 const parserReport = require('../Reportes/xmlReport');
 const parseXPATH = require('../Grammar/XPATHparser');
-const parseQuery = require('../Grammar/xQueryGrammar');
+const parseXQuery = require('../Grammar/xQueryGrammar');
 //const parseC3D = require('../Grammar/C3DGrammar');
 
 

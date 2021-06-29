@@ -116,17 +116,10 @@ export class Relacional implements Expression{
     private validar(valorIzq : String, valorDer: String): boolean{
         
         if (this.tipoOperacion === operacionRelacional.IGUAL) {
-<<<<<<< Updated upstream
-            const result = valorIzq === valorDer;
-            return result
-        } else if (this.tipoOperacion === operacionRelacional.DIFERENCIACION) {
-            const result = valorIzq !== valorDer;
-=======
             const result = valorIzq == valorDer;
             return result
         } else if (this.tipoOperacion === operacionRelacional.DIFERENCIACION) {
             const result = valorIzq != valorDer;
->>>>>>> Stashed changes
             return result
         }else if (this.tipoOperacion === operacionRelacional.MENOR) { 
             const result = valorIzq < valorDer;

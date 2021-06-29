@@ -1,19 +1,22 @@
 
 
 %{
-    const {Acceso} = require("../xpathAST/Expresiones/Acceso");
-    const {Aritmetico, operacionAritmetica} = require("../xpathAST/Expresiones/Aritmetico");
-    const {Logica, operacionLogica} = require("../xpathAST/Expresiones/Logica");
-    const {Path} = require("../xpathAST/Expresiones/Path");
-    const {Primitivo, tipoPrimitivo} = require("../xpathAST/Expresiones/Primitivo");
-    const {Relacional, operacionRelacional} = require("../xpathAST/Expresiones/Relacional")
+    const {Acceso} = require("../xqueryAST/ExpresionesXpath/Acceso");
+    const {Aritmetico, operacionAritmetica} = require("../xqueryAST/ExpresionesXpath/Aritmetico");
+    const {Logica, operacionLogica} = require("../xqueryAST/ExpresionesXpath/Logica");
+    const {Path} = require("../xqueryAST/ExpresionesXpath/Path");
+    const {Primitivo, tipoPrimitivo} = require("../xqueryAST/ExpresionesXpath/Primitivo");
+    const {Relacional, operacionRelacional} = require("../xqueryAST/ExpresionesXpath/Relacional");
     const {ClaseError} = require("../xmlAST/ClaseError");
+
+    const {Let} = require("../xqueryAST/ExpresionesXquery/Let");
+    const {MultiXpaths} = require("../xqueryAST/ExpresionesXquery/MultiXpaths");
+    const {Return} = require("../xqueryAST/ExpresionesXquery/Return");
+    const {XqueryPath} = require("../xqueryAST/ExpresionesXquery/XqueryPath");
+    
+    
     var listaErrores = [];
     var tmp="";
-
-    const {EtiquetasXML} = require("../xqueryAST/ExpresonesXquery/EtiquetasXML");
-    const {Return} = require("../xqueryAST/ExpresonesXquery/Return.tsx");
-
 %}
 
 /* lexical grammar */
@@ -76,9 +79,8 @@
 "mod"                 return 'mod'
 
 
+
 "::"                  return '::'
-":="                  return ':='
-":"                   return ':'
 "child"               return 'child'
 "attribute"           return 'attribute'
 "descendant"          return 'descendant'
@@ -86,7 +88,11 @@
 "last"                return 'last' 
 "position"            return 'position'
 
+
 "return"              return 'return';
+"$"                   return '$';
+"let"                 return 'let';
+":="                  return ':=';
 
         
 [0-9]+                                      return 'number'
@@ -110,44 +116,62 @@
 %% 
 
 INIT
-    : LXQUERYS 'EOF'                                        {return $1;}
+    : LQUERYS 'EOF'                                         {return $1;}
     | 'EOF'                                                 {return $1;}
     ;
-
-LXQUERYS
-    : LXQUERYS ',' XQUERY                                   {$1.push($3); $$ = $1;}
-    | XQUERY                                                {$$ = [$1];}
+LQUERYS
+    : LQUERYS ',' QUERY                                     {$1.push($3); $$ = $1;}
+    | QUERY                                                 {$$ = [$1];}
     ;    
 
-XQUERY
-    : RETURN                                                {$$ = $1;}
-    | cadena                                                {$$ = new Primitivo(@1.first_line, @1.first_column, $1, tipoPrimitivo.STRING);}
-    | PATH                                                  {$$ = $1;}
+QUERY                                                     
+    : MULTIPATH                                             {$$ = new MultiXpaths(0, 0, $1);}
+    | XQUERY                                                {$$ = $1;}
+    ;
+
+XQUERY 
+    : cadena                                                {$$ = new Primitivo(@1.first_line, @1.first_column, $1, tipoPrimitivo.STRING);}
+    | scadena                                               {$$ = new Primitivo(@1.first_line, @1.first_column, $1, tipoPrimitivo.STRING);}
+    | RETURN                                                {$$ = $1}
+    | LET                                                   {$$ = $1}
     ;
 
 RETURN  
-    : return XQUERY                                         {$$ = new Return (@1.first_line, @1.first_column, $2);}
-    | return ETIQUETAXML                                    {$$ = new Return (@1.first_line, @1.first_column, $2);}
+    : return '(' LXQUERYS ')'                               {$$ = new Return (@1.first_line, @1.first_column, $3);}
+    | return  XQUERY                                        {$$ = new Return (@1.first_line, @1.first_column, [$2]);}
     ;
 
-ETIQUETAXML
-    : '<' id LATRIBUTOSXML '>' LRETEXP '<' '/' id '>'       {$$ = new EtiquetasXML(@1.first_line, @1.first_column, $1+$2+$3+$4, $6+$7+$8+$9, $5);}
-    | '<' id '>' LRETEXP '<' '/' id '>'                     {$$ = new EtiquetasXML(@1.first_line, @1.first_column, $1+$2+$3, $5+$6+$7+$8, $4);}
+LXQUERYS 
+    : LXQUERYS ',' XQUERY                                   {$1.push($3); $$ = $1;}
+    | XQUERY                                                {$$ = [$1];}
+    ; 
+
+LET 
+    : let '$' id ':=' PATHXQUERY                            {$5.accesos.tipoPath = 'sub'; $$ = new Let(@1.first_line, @1.first_column, $5);}
+    | let '$' id ':=' PATH                                  {$$ = new Let(@1.first_line, @1.first_column, $5);}
+    ; 
+
+PATHXQUERY
+    : '$' id '/' LACCESOSXQUERY                             {$4[0].tipoQuery = 'relativa';
+                                                             $$ = new XqueryPath(@2.first_line, @2.first_column, $2, new Path(@2.first_line, @2.first_column, $4));}
+    | '$' id '//' LACCESOSXQUERY                            {$4[0].tipoQuery = 'absoluta';
+                                                             $$ = new XqueryPath(@2.first_line, @2.first_column, $2, new Path(@2.first_line, @2.first_column, $4));}
+    | '$' id                                                {$$ = new XqueryPath(@2.first_line, @2.first_column, $2, new Path(@2.first_line, @2.first_column, []));}
     ;
 
-LATRIBUTOSXML
-    : LATRIBUTOSXML ATRIBUTOXML                             {$$ = $1 + " " + $2 + " ";}
-    | ATRIBUTOXML                                           {$$ = " " + $1 + " ";}
-    ;
- 
-ATRIBUTOXML
-    : id '=' cadena                                         {$$ = $1 + $2 + $3;}
+LACCESOSXQUERY
+    : LACCESOSXQUERY '/' ACCESOXQUERY                       {$3.tipoQuery = 'relativa'; $1.push($3); $$ = $1;}
+    | LACCESOSXQUERY '//' ACCESOXQUERY                      {$3.tipoQuery = 'relativa'; $1.push($3); $$ = $1;}
+    | ACCESOXQUERY                                          {$$ = [$1];}
     ;
 
- LRETEXP
-    : LRETEXP '{' XQUERY '}'                                {$1.push($3); $$ = $1;}
-    | '{' XQUERY '}'                                        {$$ = [$2];}
+ACCESOXQUERY 
+    : id                                                    {$$ = new Acceso(@1.first_line, @1.first_column, $1, 'nodo', []);}
+    | '*'                                                   {$$ = new Acceso(@1.first_line, @1.first_column, $1, 'todosNodos', []);}
+    | '@' id                                                {$$ = new Acceso(@2.first_line, @2.first_column, $2, 'atributo', []);}
+    | '@' '*'                                               {$$ = new Acceso(@2.first_line, @2.first_column, $2, 'todosAtributos', []);}
     ;
+
 
 // ---------------------------------------------------------xpath------------------------------------------------------------------------------------------
 
