@@ -56,7 +56,6 @@ export class Path implements Expression {
 
         if (this.tipoPath !== "sub") {
 
-<<<<<<< Updated upstream
             if (this.L_Accesos.length > 0 && ent.listaEntornos.length > 0) {
 
                 if (ent.identificador === this.L_Accesos[0].id && this.L_Accesos[0].tipoAcceso === "nodo") {//validamos que el id entActual sea igual al id de la poscion Actual de accesos
@@ -96,31 +95,6 @@ export class Path implements Expression {
                         }
                     }
                 } else if (this.L_Accesos[0].tipoQuery === 'absoluta') {
-=======
-            if (this.L_Accesos.length > 0 && ent.listaEntornos.length > 0){
-  
-                if (ent.identificador === this.L_Accesos[0].id && this.L_Accesos[0].tipoAcceso === "nodo") {//validamos que el id entActual sea igual al id de la poscion Actual de accesos
-                    //ent.SP_ID = this.L_Accesos[0].SP_id
-                    traduccion.setTranslate("t"+traduccion.t + "= stack[(int)"+ent.SP_ID+"])");
-                    traduccion.t++;
-                    traduccion.setTranslate("t"+traduccion.t + "= stack[(int)"+this.L_Accesos[0].SP_id+"])");
-                    traduccion.t++;
-                    traduccion.setTranslate("t"+traduccion.t + "= S +" +traduccion.stackCounter);
-                    traduccion.t++;
-                    traduccion.setTranslate("stack[(int)"+(traduccion.t-1).toString+"] = "+(traduccion.t-3).toString+";");
-                    traduccion.t++;
-                    traduccion.setTranslate("t"+traduccion.t + "= stack[(int)"+this.L_Accesos[0].SP_id+"])");
-
-                    if (this.validarPredicadosRaiz(ent, 0)) {
-
-                        if(this.L_Accesos.length >  1){ //verificamos si la consutla nos dice que accediendo a descendientes
-                            this.getQuery(ent, 1); 
-                        }else{
-                            this.construirNodos(ent, "")
-                        }
-                    }
-                }else if (this.L_Accesos[0].tipoQuery === 'absoluta'){
->>>>>>> Stashed changes
                     this.getQuery(ent, 0);
                 }
             }
@@ -440,21 +414,12 @@ export class Path implements Expression {
 
         if (this.tipoPath === "sub") {
 
-<<<<<<< Updated upstream
             /*if (entPadre.listaEntornos.length > 0 || (entPadre.listaEntornos.length === 0 && entPadre.texto === '')) {
                 this.salida.push({ value: entPadre.identificador, type: tipoPrimitivo.NODO })
             } else {
                 this.salida.push({ value: entPadre.texto, type: tipoPrimitivo.STRING });
             }*/
             this.salida.push({ value: entPadre, type: tipoPrimitivo.NODO })
-=======
-            /*if (entPadre.listaEntornos.length > 0 || (entPadre.listaEntornos.length === 0 && entPadre.texto === '')){
-                this.salida.push({value : entPadre , type: tipoPrimitivo.NODO})
-            }else {
-                this.salida.push({value : entPadre.texto, type: tipoPrimitivo.STRING});
-            }*/
-            this.salida.push({value : entPadre , type: tipoPrimitivo.NODO})
->>>>>>> Stashed changes
 
         } else {
 
