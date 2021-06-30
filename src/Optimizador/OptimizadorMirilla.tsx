@@ -88,7 +88,7 @@ export class OptimizadorMirilla{
     }
     
     Regla10_11_12_13()    {
-        if (asigact.operador2 === "1") {
+        if (asigact.operador2 === "0" && asigact.operador1 !== asigact.indice) {
             if (asigact.signo === "+") {
                 this.ReporteCodigo.push(new Optimizado("10",asigact.indice + "=" + asigact.operador1 + asigact.signo + asigact.operador2,asigact.indice + "=" + asigact.operador1 + ";"));
                 this.NuevoVal = asigact.indice + " = " + asigact.operador1 + ";\n";
@@ -97,7 +97,17 @@ export class OptimizadorMirilla{
                 this.ReporteCodigo.push(new Optimizado("11",asigact.indice + "=" + asigact.operador1 + asigact.signo + asigact.operador2,asigact.indice + "=" + asigact.operador1 + ";"));
                 this.NuevoVal = asigact.indice + " = " + asigact.operador1 + ";\n";
                 return true;
-            } else if (asigact.signo === "*" ) {
+            } 
+            return false;
+        } else if (asigact.operador1 === "0" && asigact.operador2 !== asigact.indice) {
+            if (asigact.signo === "+") {
+                this.ReporteCodigo.push(new Optimizado("10",asigact.indice + "=" + asigact.operador1 + asigact.signo + asigact.operador2,asigact.indice + "=" + asigact.operador2 + ";"));
+                this.NuevoVal = asigact.indice + " = " + asigact.operador2 + ";\n";
+                return true;
+            } 
+            return false;
+        } else if (asigact.operador2 === "1" && asigact.operador1 !== asigact.indice) {
+            if (asigact.signo === "*" ) {
                 this.ReporteCodigo.push(new Optimizado("12",asigact.indice + "=" + asigact.operador1 + asigact.signo + asigact.operador2,asigact.indice + "=" + asigact.operador1 + ";"));
                 this.NuevoVal = asigact.indice + " = " + asigact.operador1 + ";\n";
                 return true;
@@ -106,13 +116,8 @@ export class OptimizadorMirilla{
                 this.NuevoVal = asigact.indice + " = " + asigact.operador1 + ";\n";
                 return true;
             }
-            return false;
-        } else if (asigact.operador1 === "1") {
-            if (asigact.signo === "+") {
-                this.ReporteCodigo.push(new Optimizado("10",asigact.indice + "=" + asigact.operador1 + asigact.signo + asigact.operador2,asigact.indice + "=" + asigact.operador2 + ";"));
-                this.NuevoVal = asigact.indice + " = " + asigact.operador2 + ";\n";
-                return true;
-            } else if (asigact.signo === "*" ) {
+        } else if (asigact.operador1 === "1" && asigact.operador2 !== asigact.indice) {
+            if (asigact.signo === "*" ) {
                 this.ReporteCodigo.push(new Optimizado("12",asigact.indice + "=" + asigact.operador1 + asigact.signo + asigact.operador2,asigact.indice + "=" + asigact.operador2 + ";"));
                 this.NuevoVal = asigact.indice + " = " + asigact.operador2 + ";\n";
                 return true;
@@ -158,6 +163,7 @@ export class OptimizadorMirilla{
     }
 
     GenerarGraphviz() {
+        console.log(this.ReporteCodigo);
         this.textGraphviz = "";
         this.textGraphviz += "node0[shape=record label=\"{Numero";
         for (const key in this.ReporteCodigo) {

@@ -159,6 +159,7 @@ export default class Main extends Component {
     //######################################################################################################
 
     optimizar = () => {
+        //const optimizado = parseC3D.parse(this.state.xml);
         const optimizado = parseC3D.parse(this.state.consoleResult);
         this.setState({
             consoleResult: "//OPTIMIZACION-----------------\n"+optimizado.Optimizado,

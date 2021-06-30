@@ -16,8 +16,8 @@
 
 %%
 [/][/][^\n]*                                 /*skip single line comments*/
-\s+                                         /* skip whitespace */
 [/][*][^*/]*[*][/]                          /*skip multi line comments*/
+\s+                                         /* skip whitespace */
 
 ":"                                         return ':';
 "="                                         return '=';
@@ -172,18 +172,20 @@ FUNCION
     ;
 
 CONTFUNC
-    :   CONTFUNC ETIQUETA           {$1.push($2);$$=$1;}
-    |   CONTFUNC TEMPORAL           {$1.push($2);$$=$1;}
-    |   CONTFUNC IF                 {$1.push($2);$$=$1;}
-    |   CONTFUNC return ';'         {$1.push($2+$3+"\n");$$=$1;}
-    |   CONTFUNC PRINTF             {$1.push($2);$$=$1;}
-    |   CONTFUNC id '(' ')' ';'     {$1.push($2+"();\n");$$=$1;}
-    |   ETIQUETA                    {}
-    |   TEMPORAL                    {}
-    |   IF                          {}
-    |   return ';'                  {$$=[$1+$2+"\n"];}
-    |   PRINTF                      {}
-    |   id '(' ')' ';'              {$$=[$1+"();\n"];}
+    :   CONTFUNC ETIQUETA               {$1.push($2);$$=$1;}
+    |   CONTFUNC ETIQUETA2              {$1.push($2);$$=$1;}
+    |   CONTFUNC TEMPORAL               {$1.push($2);$$=$1;}
+    |   CONTFUNC IF                     {$1.push($2);$$=$1;}
+    |   CONTFUNC return ';'             {$1.push($2+$3+"\n");$$=$1;}
+    |   CONTFUNC PRINTF                 {$1.push($2);$$=$1;}
+    |   CONTFUNC id '(' ')' ';'         {$1.push($2+"();\n");$$=$1;}
+    |   ETIQUETA                        {$$ = $1;}
+    |   TEMPORAL                        {$$ = $1;}
+    |   IF                              {$$ = $1;}
+    |   return ';'                      {$$=[$1+$2+"\n"];}
+    |   PRINTF                          {$$ = $1;}
+    |   id '(' ')' ';'                  {$$=[$1+"();\n"];}
+    |   ETIQUETA2                       {$$ = $1;}
     ;
 
 TEMPORAL
@@ -195,8 +197,11 @@ TEMPORAL
     ;
 
 ETIQUETA
-    :   id ':'      {$$=[$1+$2+"\n"];}
-    |   goto id ';' {$$=[$1+" "+$2+$3+"\n"];}
+    :   id ':'               {$$=[$1+$2+"\n"];}
+    ;
+
+ETIQUETA2
+    :   goto id ';'   {$$=[$1+" "+$2+$3+"\n"];}
     ;
 
 IF
