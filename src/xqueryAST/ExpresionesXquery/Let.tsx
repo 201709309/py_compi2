@@ -10,14 +10,14 @@ export class Let implements ExpressionXquery{
         public line: Number,
         public column: Number,
         public idVar: string,
-        public path : ExpressionXquery){
+        public exp : ExpressionXquery){
     }
     
     public executeXquery(entAct: EntornoXQuery, RaizXML: Entorno): Retorno {
 
         if (!entAct.existeVar(this.idVar)){
             
-            var content : Retorno = content = this.path.executeXquery(entAct, RaizXML); 
+            var content : Retorno = content = this.exp.executeXquery(entAct, RaizXML); 
             entAct.guaradarVar(this.idVar, content);
             
         }else {

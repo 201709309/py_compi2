@@ -156,9 +156,9 @@ export default class Main extends Component {
         });
     }
 
-    //METODO PARA QUE DEIVID EJECUTE XQUERY################################################################
-    executeXquery = () => {
-
+//EJECUCION XQUERY-------------------------------------------------------------------------------------------------------------------------------------------------
+    executeXquery = () =>{
+        
         const result = parser.parse(this.state.xml)
         var ast = result.ast;
 
@@ -179,8 +179,8 @@ export default class Main extends Component {
         });
 
     }
-    //######################################################################################################
 
+//EJECUCION XPATH-------------------------------------------------------------------------------------------------------------------------------------------------
     optimizar = () => {
         //const optimizado = parseC3D.parse(this.state.xml);
         const optimizado = parseC3D.parse(this.state.consoleResult);

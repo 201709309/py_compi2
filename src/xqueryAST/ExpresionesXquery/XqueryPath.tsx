@@ -28,19 +28,20 @@ export class XqueryPath implements ExpressionXquery{
                     if (element.type === tipoPrimitivo.NODO){
                         ManejadorXquery.concatenar(content, this.accesos.executeXquery(entAct, element.value).value) ;
                     }else {
-                        content.push(element)
+                        content.push(element);
                     }
                 }
+                return {value : content, type: tipoPrimitivo.RESP}
+
             }else {
 
                 if (varFind.type === tipoPrimitivo.NODO){
-                    ManejadorXquery.concatenar(content, this.accesos.executeXquery(entAct, varFind.value).value) ;
+                    ManejadorXquery.concatenar(content, this.accesos.executeXquery(entAct, varFind.value).value);
+                    return {value : content, type: tipoPrimitivo.RESP};
                 }else {
-                    content.push(varFind)
+                    return varFind;
                 }
             }
-
-            return {value : content, type: tipoPrimitivo.RESP}
 
         }else {
             throw new Error("Error Semantico: No se encuentra el id: "+this.idVar+", Linea: "+this.line +" Columna: "+this.column );

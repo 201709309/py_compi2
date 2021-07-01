@@ -26,7 +26,7 @@
 %s string
 
 %%
-\s+
+
 [0-9]+            return 'number'
 
 <INITIAL>["]      {this.begin('string'); tmp=""; }           
