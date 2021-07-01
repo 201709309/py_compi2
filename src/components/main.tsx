@@ -136,6 +136,7 @@ export default class Main extends Component {
         if (this.state.xml==="") {
             return;
         }
+        
         const result = parser.parse(this.state.xml);
         const querys = parseXPATH.parse(this.state.xpath);
         var querysXpath = querys.xpath;
