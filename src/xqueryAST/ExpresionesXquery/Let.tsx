@@ -3,7 +3,6 @@ import { ExpressionXquery } from "../../Interfaces/ExpressionXquery";
 import { Entorno } from "../../xmlAST/Entorno";
 import { EntornoXQuery } from "../AmbientesXquery/EntornoXQuery";
 import { tipoPrimitivo } from "../ExpresionesXpath/Primitivo";
-import { Path } from "../ExpresionesXpath/Path";
 
 export class Let implements ExpressionXquery{
 
