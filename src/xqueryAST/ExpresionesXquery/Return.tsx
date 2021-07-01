@@ -2,7 +2,6 @@ import { ExpressionXquery, Retorno } from "../../Interfaces/ExpressionXquery";
 import { Entorno } from "../../xmlAST/Entorno";
 import { EntornoXQuery } from "../AmbientesXquery/EntornoXQuery";
 import { tipoPrimitivo } from "../ExpresionesXpath/Primitivo";
-import { Path } from "../ExpresionesXpath/Path";
 import { ManejadorXquery } from "../manejadores/ManejadorXquery";
 
 export class Return implements ExpressionXquery{

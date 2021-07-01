@@ -186,8 +186,10 @@ ORDERBY
     ;
 
 LET 
-    : let '$' id ':=' EXPXQUERY                             {$$ = new Let(@1.first_line, @1.first_column, $3, $5);}
-    | let '$' id ':=' PATH                                  {$$ = new Let(@1.first_line, @1.first_column, $3, $5);}
+    : let '$' id ':=' EXPXQUERY                             {$$ = new Let(@1.first_line, @1.first_column, $3, $5, new Return (@1.first_line, @1.first_column, []));}
+    | let '$' id ':=' PATH                                  {$$ = new Let(@1.first_line, @1.first_column, $3, $5, new Return (@1.first_line, @1.first_column, []));}
+    | let '$' id ':=' EXPXQUERY RETURN                      {$$ = new Let(@1.first_line, @1.first_column, $3, $5, $6);}
+    | let '$' id ':=' PATH RETURN                           {$$ = new Let(@1.first_line, @1.first_column, $3, $5, $6);}
     ;
 
 RETURN  

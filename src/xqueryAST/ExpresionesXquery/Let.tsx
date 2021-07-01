@@ -3,6 +3,7 @@ import { ExpressionXquery } from "../../Interfaces/ExpressionXquery";
 import { Entorno } from "../../xmlAST/Entorno";
 import { EntornoXQuery } from "../AmbientesXquery/EntornoXQuery";
 import { tipoPrimitivo } from "../ExpresionesXpath/Primitivo";
+import { Return } from "./Return";
 
 export class Let implements ExpressionXquery{
 
@@ -10,7 +11,8 @@ export class Let implements ExpressionXquery{
         public line: Number,
         public column: Number,
         public idVar: string,
-        public exp : ExpressionXquery){
+        public exp : ExpressionXquery, 
+        public ret : Return){
     }
     
     public executeXquery(entAct: EntornoXQuery, RaizXML: Entorno): Retorno {
@@ -23,7 +25,7 @@ export class Let implements ExpressionXquery{
         }else {
             throw new Error("Error Semantico: Se encuentra en uso el id: "+this.idVar+", Linea: "+this.line +" Columna: "+this.column );
         }
-        return {value : "", type: tipoPrimitivo.STRING}
+        return {value : this.ret.executeXquery(entAct, RaizXML).value, type: tipoPrimitivo.STRING}
     }
 
     GraficarAST(texto: string): string {
