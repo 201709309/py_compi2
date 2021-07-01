@@ -1,7 +1,8 @@
 import { Entorno } from '../../xmlAST/Entorno';
-import { Expression, Retorno } from "../../Interfaces/Expresion";
+import { ExpressionXquery, Retorno } from "../../Interfaces/ExpressionXquery";
 import { tipoPrimitivo } from './Primitivo';
 import { Simbolo } from '../../xmlAST/Simbolo';
+import { EntornoXQuery } from '../AmbientesXquery/EntornoXQuery';
 
 
 export enum operacionRelacional {
@@ -14,20 +15,20 @@ export enum operacionRelacional {
 }
 ////fechaPublicacion[@año>/biblioteca[1]/libro[3]/fechaPublicacion[1]/@año]     
 
-export class Relacional implements Expression{
+export class Relacional implements ExpressionXquery{
 
     constructor (
     public line : Number,
     public column: Number,
-    public hijoIzq: Expression,
-    public hijoDer: Expression,
+    public hijoIzq: ExpressionXquery,
+    public hijoDer: ExpressionXquery,
     public tipoOperacion: operacionRelacional,
     public sym: string){}
 
-    public execute(ent : Entorno, simboloPadre?:Simbolo): Retorno {
+    public executeXquery(entXquery: EntornoXQuery, ent: Entorno, simboloPadre?:Simbolo): Retorno {
 
-        let valorIzq = this.hijoIzq.execute(ent, simboloPadre);
-        let valorDer = this.hijoDer.execute(ent, simboloPadre);
+        let valorIzq = this.hijoIzq.executeXquery(entXquery, ent, simboloPadre);
+        let valorDer = this.hijoDer.executeXquery(entXquery, ent, simboloPadre);
 
         if (valorIzq.type === tipoPrimitivo.RESP && valorDer.type === tipoPrimitivo.RESP) {
 
@@ -37,14 +38,14 @@ export class Relacional implements Expression{
                     if (valIzq.type === tipoPrimitivo.NODO && valDer.type === tipoPrimitivo.NODO){
 
                         if (this.validar(valIzq.value.identificador, valDer.value.identificador)){
-                            return {value: true, type: tipoPrimitivo.BOOL, SP: -1}
+                            return {value: true, type: tipoPrimitivo.BOOL}
                         }
                     }else if (valIzq.type === tipoPrimitivo.NODO){
                         
                         if (valIzq.value.listaEntornos.length === 0 && valIzq.value.texto !== ''){
                             
                             if (this.validar(valIzq.value.texto, valDer.value)){
-                                return {value: true, type: tipoPrimitivo.BOOL, SP: -1}    
+                                return {value: true, type: tipoPrimitivo.BOOL}    
                             }
                         }
                     }
@@ -53,19 +54,19 @@ export class Relacional implements Expression{
                         if (valDer.value.listaEntornos.length === 0 && valDer.value.texto !== ''){
                             
                             if (this.validar(valDer.value.texto, valIzq.value)){
-                                return {value: true, type: tipoPrimitivo.BOOL, SP: -1}    
+                                return {value: true, type: tipoPrimitivo.BOOL}    
                             }
                         }
 
                     } else {
 
                         if (this.validar(valIzq.value, valDer.value)){
-                            return {value: true, type: tipoPrimitivo.BOOL, SP: -1}
+                            return {value: true, type: tipoPrimitivo.BOOL}
                         }
                     }
                 }
             }
-            return {value: false , type : tipoPrimitivo.BOOL, SP: -1}; 
+            return {value: false , type : tipoPrimitivo.BOOL}; 
             
         }else if (valorIzq.type === tipoPrimitivo.RESP){
 
@@ -75,17 +76,17 @@ export class Relacional implements Expression{
                     if (valIzq.value.listaEntornos.length === 0 && valIzq.value.texto !== ''){
                         
                         if (this.validar(valIzq.value.texto, valorDer.value)){
-                            return {value: true, type: tipoPrimitivo.BOOL, SP: -1}    
+                            return {value: true, type: tipoPrimitivo.BOOL}    
                         }
                     }
                 }else {
                    
                     if (this.validar(valIzq.value, valorDer.value)){
-                        return {value: true, type: tipoPrimitivo.BOOL, SP: -1}
+                        return {value: true, type: tipoPrimitivo.BOOL}
                     }
                 }
             }
-            return {value: false , type : tipoPrimitivo.BOOL, SP: -1};
+            return {value: false , type : tipoPrimitivo.BOOL};
 
         }else if (valorDer.type === tipoPrimitivo.RESP){
 
@@ -95,20 +96,20 @@ export class Relacional implements Expression{
                     if (valDer.value.listaEntornos.length === 0 && valDer.value.texto !== ''){
                         
                         if (this.validar(valDer.value.texto, valorIzq.value)){
-                            return {value: true, type: tipoPrimitivo.BOOL, SP: -1}    
+                            return {value: true, type: tipoPrimitivo.BOOL}    
                         }
                     }
                 }else {
                     
                     if (this.validar(valorIzq.value, valDer.value)){
-                        return {value: true, type: tipoPrimitivo.BOOL, SP: -1}
+                        return {value: true, type: tipoPrimitivo.BOOL}
                     }
                 }
             }
-            return {value: false , type : tipoPrimitivo.BOOL, SP: -1};
+            return {value: false , type : tipoPrimitivo.BOOL};
             
         } else {
-            return { value: this.validar(valorIzq.value, valorDer.value), type: tipoPrimitivo.BOOL, SP: -1}
+            return { value: this.validar(valorIzq.value, valorDer.value), type: tipoPrimitivo.BOOL}
         }
 
     }

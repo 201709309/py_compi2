@@ -1,7 +1,6 @@
 import { Entorno } from '../../xmlAST/Entorno';
-import { Expression, Retorno } from "../../Interfaces/Expresion";
+import { ExpressionXquery, Retorno } from "../../Interfaces/ExpressionXquery";
 import { Simbolo } from '../../xmlAST/Simbolo';
-import { ExpressionXquery } from '../../Interfaces/ExpressionXquery';
 import { EntornoXQuery } from '../AmbientesXquery/EntornoXQuery';
 
 
@@ -14,43 +13,35 @@ export enum tipoPrimitivo {
     error
 }
 
-export class Primitivo implements Expression, ExpressionXquery{
+export class Primitivo implements ExpressionXquery{
     
     constructor (
     public line : Number, 
     public column : Number, 
     public valor : any, 
     public tipoPrimitivo? : tipoPrimitivo) {}
-    executeXquery(entAct: EntornoXQuery, RaizXML: Entorno): Retorno {
-        if (this.tipoPrimitivo === tipoPrimitivo.NUMBER) {
-            return { value: Number(this.valor), type: tipoPrimitivo.NUMBER, SP: -1 };
-        }else if (this.tipoPrimitivo === tipoPrimitivo.STRING) {
-            return { value: String(this.valor), type: tipoPrimitivo.STRING, SP: -1 };
-        }else {
-            throw new Error("Error Semantico: no se reconoce el valor, Linea: "+this.line+"Column: "+this.column);
-        }
-    }
-
-    public execute(ent: Entorno, simboloPadre?:Simbolo) : Retorno {
+    
+    
+    public executeXquery(entXquery: EntornoXQuery, ent: Entorno, simboloPadre?:Simbolo) : Retorno {
         
         if (this.tipoPrimitivo === tipoPrimitivo.NUMBER) {
-            return { value: Number(this.valor), type: tipoPrimitivo.NUMBER, SP: -1 };
+            return { value: Number(this.valor), type: tipoPrimitivo.NUMBER };
         }else if (this.tipoPrimitivo === tipoPrimitivo.STRING) {
-            return { value: String(this.valor), type: tipoPrimitivo.STRING, SP: -1 };
+            return { value: String(this.valor), type: tipoPrimitivo.STRING };
         }else if (this.valor === "position"){
 
             if (simboloPadre !== undefined){
-                return {value: simboloPadre.pos, type: tipoPrimitivo.NUMBER, SP: -1}
+                return {value: simboloPadre.pos, type: tipoPrimitivo.NUMBER}
             }else {
-                return {value: ent.pos, type: tipoPrimitivo.NUMBER, SP: -1}
+                return {value: ent.pos, type: tipoPrimitivo.NUMBER}
             }
 
         }else if (this.valor === "last"){
 
             if (simboloPadre !== undefined){
-                return {value: simboloPadre.last, type: tipoPrimitivo.NUMBER, SP: -1}
+                return {value: simboloPadre.last, type: tipoPrimitivo.NUMBER}
             }else {
-                return {value: ent.last, type: tipoPrimitivo.NUMBER, SP: -1}
+                return {value: ent.last, type: tipoPrimitivo.NUMBER}
             }
             
         }else {

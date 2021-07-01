@@ -1,8 +1,8 @@
-import { Retorno } from "../../Interfaces/Expresion";
+import { Retorno } from "../../Interfaces/ExpressionXquery";
 import { Entorno } from "../../xmlAST/Entorno";
-import { tipoPrimitivo } from "../../xpathAST/Expresiones/Primitivo";
+import { tipoPrimitivo } from "../ExpresionesXpath/Primitivo";
 
-export class showXquery {
+export class ManejadorXquery {
 
     static unirSalida (salida : string[]) : string{
 
@@ -15,17 +15,16 @@ export class showXquery {
 
     static buildXquery (listNodes: Retorno[]) : string{
 
-        let conten : string [] = []
+        var content : string [] = []
         for (const element of listNodes) {
             
             if (element.type === tipoPrimitivo.NODO){
-                conten.concat(this.construirNodos(element.value, "")); 
+                ManejadorXquery.concatenar(content, this.construirNodos(element.value, ""));
             }else {
-                conten.push(element.value+ "\n");
+                content.push(element.value+ "\n");
             }
         }
-        return this.unirSalida(conten);
-
+        return this.unirSalida(content);
     }
 
     static construirNodos(entPadre: Entorno, tab : string): string [] {
@@ -45,7 +44,7 @@ export class showXquery {
 
             content.push(tab +"<" + entPadre.identificador + " " + atributos + ">\n");
             for (const entActual of entPadre.listaEntornos) {
-                content.concat(this.construirNodos(entActual, tab + "   "));    //         //nombre  /biblio/libro//nombre             
+                ManejadorXquery.concatenar(content, this.construirNodos(entActual, tab + "   "));              
             }
             content.push(tab +"</" + entPadre.identificador + ">\n");
         
@@ -53,6 +52,13 @@ export class showXquery {
             content.push(tab +"<"+ entPadre.identificador +" "+ atributos+">"+entPadre.texto+"</"+entPadre.identificador+">\n");
         }
         return content;
+    }
+
+    static concatenar (content : any[], resp: any[]) {
+
+        for (const element of resp) {
+            content.push(element);
+        }
     }
 
 }
