@@ -2,6 +2,7 @@
 
 %{
     const {Asignacion} = require("../Optimizador/Asignacion");
+    const {Condicional} = require("../Optimizador/Condicional");
     const {OptimizadorMirilla} = require("../Optimizador/OptimizadorMirilla");
     var texto = "";
     var textoaux = "";
@@ -95,6 +96,8 @@ COMPARACION
     |   '!' '=' {$$ = $1+$2}
     |   '>' '=' {$$ = $1+$2}
     |   '<' '=' {$$ = $1+$2}
+    |   '<'     {$$ = $1}
+    |   '>'     {$$ = $1}
     ;
 
 ASIGNACION
@@ -179,36 +182,70 @@ CONTFUNC
     |   CONTFUNC return ';'             {$1.push($2+$3+"\n");$$=$1;}
     |   CONTFUNC PRINTF                 {$1.push($2);$$=$1;}
     |   CONTFUNC id '(' ')' ';'         {$1.push($2+"();\n");$$=$1;}
-    |   ETIQUETA                        {$$ = $1;}
-    |   TEMPORAL                        {$$ = $1;}
-    |   IF                              {$$ = $1;}
+    |   ETIQUETA                        {$$ = [$1];}
+    |   TEMPORAL                        {$$ = [$1];}
+    |   IF                              {$$ = [$1];}
     |   return ';'                      {$$=[$1+$2+"\n"];}
-    |   PRINTF                          {$$ = $1;}
+    |   PRINTF                          {$$ = [$1];}
     |   id '(' ')' ';'                  {$$=[$1+"();\n"];}
-    |   ETIQUETA2                       {$$ = $1;}
+    |   ETIQUETA2                       {$$ = [$1];}
     ;
 
 TEMPORAL
     :   ASIGNACION '=' VALOR SIGNO VALOR ';'                
     {
-        $$ = [Optim.Optimizar(new Asignacion($1,$3,$4,$5))];
+        $$ = Optim.Optimizar(new Asignacion($1,$3,$4,$5));
     }
-    |   ASIGNACION '=' VALOR ';'                            {$$=[$1+" "+$2+" "+$3+$4+"\n"];}
+    |   ASIGNACION '=' VALOR ';'                            {$$=$1+" "+$2+" "+$3+$4+"\n";}
     ;
 
 ETIQUETA
-    :   id ':'               {$$=[$1+$2+"\n"];}
+    :   id ':'               {$$=$1+$2+"\n";}
     ;
 
 ETIQUETA2
-    :   goto id ';'   {$$=[$1+" "+$2+$3+"\n"];}
+    :   goto id ';' CODMUERTO id ':'   
+    {
+        $$=$1+" "+$2+$3+"\n"+$5+$6+"\n";
+        for (const key in $4) {
+            texto += Optim.Optimizar($4[key]);
+        }
+    }
+    |   goto id ';' id ':'    {$$=$1+" "+$2+$3+"\n"+$4+$5+"\n";}
+    ;
+
+CODMUERTO
+    :   CODMUERTO ETIQUETA3                 {$1.push($2);$$=$1;}
+    |   CODMUERTO TEMPORAL2                 {$1.push($2);$$=$1;}
+    |   CODMUERTO IF                        {$1.push($2);$$=$1;}
+    |   CODMUERTO return ';'                {$1.push($2+$3+"\n");$$=$1;}
+    |   CODMUERTO PRINTF                    {$1.push($2);$$=$1;}
+    |   CODMUERTO id '(' ')' ';'            {$1.push($2+"();\n");$$=$1;}
+    |   TEMPORAL2                           {$$ = [$1];}
+    |   IF                                  {$$ = [$1];}
+    |   return ';'                          {$$=[$1+$2+"\n"];}
+    |   PRINTF                              {$$ = [$1];}
+    |   id '(' ')' ';'                      {$$=[$1+"();\n"];}
+    |   ETIQUETA3                           {$$ = [$1];}
+    ;
+
+ETIQUETA3
+    :   goto id ';'    {$$=$1+" "+$2+$3+"\n";}
+    ;
+
+TEMPORAL2
+    :   ASIGNACION '=' VALOR SIGNO VALOR ';'                {$$=$1+" "+$2+" "+$3+" "+$4+" "+$5+$6+"\n";}
+    |   ASIGNACION '=' VALOR ';'                            {$$=$1+" "+$2+" "+$3+$4+"\n";}
     ;
 
 IF
-    :   if '(' VALOR COMPARACION VALOR ')' goto id ';'  {$$=[$1+$2+$3+$4+$5+$6+" "+$7+" "+$8+$9+"\n"];}
+    :   if '(' VALOR COMPARACION VALOR ')' goto id ';'              
+    {
+        $$= Optim.Optimizar(new Condicional($3,$4,$5)) +$7+" "+$8+$9+"\n";
+    }
     ;
 
 PRINTF
-    :   printf '(' dstring ',' '(' char ')' VALOR ')' ';'  {$$=[$1+$2+$3+$4+" "+$5+$6+$7+$8+$9+$10+"\n"];}
-    |   printf '(' sstring ',' '(' char ')' VALOR ')' ';'  {$$=[$1+$2+$3+$4+" "+$5+$6+$7+$8+$9+$10+"\n"];}
+    :   printf '(' dstring ',' '(' char ')' VALOR ')' ';'  {$$=$1+$2+$3+$4+" "+$5+$6+$7+$8+$9+$10+"\n";}
+    |   printf '(' sstring ',' '(' char ')' VALOR ')' ';'  {$$=$1+$2+$3+$4+" "+$5+$6+$7+$8+$9+$10+"\n";}
     ;

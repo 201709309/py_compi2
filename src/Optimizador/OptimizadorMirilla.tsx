@@ -1,7 +1,10 @@
 import {Asignacion} from "../Optimizador/Asignacion";
+import {Condicional} from "../Optimizador/Condicional";
 import {Optimizado} from "../Optimizador/Optimizado";
 
 var asigact;
+var val1 = 0;
+var val2 = 0;
 
 export class OptimizadorMirilla{
     textGraphviz:string;
@@ -16,10 +19,19 @@ export class OptimizadorMirilla{
     }
 
     Optimizar(Objeto:any) {
+        asigact = Objeto;
         if(Objeto instanceof Asignacion) {
-            asigact = Objeto;
             if (!this.Regla6_7_8_9() && !this.Regla10_11_12_13() && !this.Regla14() && !this.Regla15() && !this.Regla16()) {
                 return Objeto.indice + " = " + Objeto.operador1 + " " + Objeto.signo + " " + Objeto.operador2 + ";\n";
+            } else {
+                return this.NuevoVal;
+            }
+        } else if (typeof Objeto === 'string') {
+            this.Regla1();
+            return this.NuevoVal;
+        } else if (Objeto instanceof Condicional)   {
+            if (!this.Regla3()) {
+                return "if("+asigact.operando1+asigact.comparacion+asigact.operando2+") ";
             } else {
                 return this.NuevoVal;
             }
@@ -33,6 +45,8 @@ export class OptimizadorMirilla{
     }
 
     Regla1()    {
+        this.ReporteCodigo.push(new Optimizado("1",asigact,"Se elimina la instruccion"));
+        this.NuevoVal = "";
         return false;
     }
 
@@ -41,7 +55,56 @@ export class OptimizadorMirilla{
     }
     
     Regla3()    {
-        return false;
+        try {
+            val1 = parseInt(asigact.operando1);
+            val2 = parseInt(asigact.operando2);
+            if(asigact.comparacion === "==") {
+                if (asigact.operando1 === asigact.operando2) {
+                    this.ReporteCodigo.push(new Optimizado("3","if("+asigact.operando1+asigact.comparacion+asigact.operando2+")","Se elimina la instruccion"));
+                    this.NuevoVal = "";
+                    return true;
+                }
+                return false;
+            } else if (asigact.comparacion === "!=") {
+                if (asigact.operando1 !== asigact.operando2) {
+                    this.ReporteCodigo.push(new Optimizado("3","if("+asigact.operando1+asigact.comparacion+asigact.operando2+")","Se elimina la instruccion"));
+                    this.NuevoVal = "";
+                    return true;
+                }
+                return false;
+            } else if (asigact.comparacion === ">=") {
+                if (asigact.operando1 >= asigact.operando2) {
+                    this.ReporteCodigo.push(new Optimizado("3","if("+asigact.operando1+asigact.comparacion+asigact.operando2+")","Se elimina la instruccion"));
+                    this.NuevoVal = "";
+                    return true;
+                }
+                return false;
+            } else if (asigact.comparacion === "<=") {
+                if (asigact.operando1 <= asigact.operando2) {
+                    this.ReporteCodigo.push(new Optimizado("3","if("+asigact.operando1+asigact.comparacion+asigact.operando2+")","Se elimina la instruccion"));
+                    this.NuevoVal = "";
+                    return true;
+                }
+                return false;
+            } else if (asigact.comparacion === "<") {
+                if (asigact.operando1 < asigact.operando2) {
+                    this.ReporteCodigo.push(new Optimizado("3","if("+asigact.operando1+asigact.comparacion+asigact.operando2+")","Se elimina la instruccion"));
+                    this.NuevoVal = "";
+                    return true;
+                }
+                return false;
+            } else if (asigact.comparacion === ">") {
+                if (asigact.operando1 > asigact.operando2) {
+                    this.ReporteCodigo.push(new Optimizado("3","if("+asigact.operando1+asigact.comparacion+asigact.operando2+")","Se elimina la instruccion"));
+                    this.NuevoVal = "";
+                    return true;
+                }
+                return false;
+            }
+            return false;
+        } catch (error) {
+            return false;
+        }
     }
 
     Regla4()    {
