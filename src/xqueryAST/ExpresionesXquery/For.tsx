@@ -22,7 +22,7 @@ export class For implements ExpressionXquery{
         var result : string= "";
 
         var content: Retorno = this.select.executeXquery(entAct, RaizXML);
-        if (content.type === tipoPrimitivo.RESP ){
+        if (content.type === tipoPrimitivo.RESP){
   
             var nvoEnt: EntornoXQuery = new EntornoXQuery(entAct, "sentencia for");
             for (const element of content.value) {

@@ -33,14 +33,11 @@ export class XqueryPath implements ExpressionXquery{
                 }
                 return {value : content, type: tipoPrimitivo.RESP}
 
+            }else if (varFind.type === tipoPrimitivo.NODO){
+                ManejadorXquery.concatenar(content, this.accesos.executeXquery(entAct, varFind.value).value);
+                return {value : content, type: tipoPrimitivo.RESP};
             }else {
-
-                if (varFind.type === tipoPrimitivo.NODO){
-                    ManejadorXquery.concatenar(content, this.accesos.executeXquery(entAct, varFind.value).value);
-                    return {value : content, type: tipoPrimitivo.RESP};
-                }else {
-                    return varFind;
-                }
+                return varFind;
             }
 
         }else {
