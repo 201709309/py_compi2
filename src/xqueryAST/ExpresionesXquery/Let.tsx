@@ -19,7 +19,7 @@ export class Let implements ExpressionXquery{
 
         if (!entAct.existeVar(this.idVar)){
             
-            var content : Retorno = content = this.exp.executeXquery(entAct, RaizXML); 
+            var content : Retorno =  this.exp.executeXquery(entAct, RaizXML); 
             entAct.guaradarVar(this.idVar, content);
             
         }else {

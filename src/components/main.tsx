@@ -162,7 +162,7 @@ export default class Main extends Component {
         const astXquery = parseXQuery.parse(this.state.xquery);
         var salida = "";
 
-        var nvoEntorno = new EntornoXQuery(null);
+        var nvoEntorno = new EntornoXQuery(null, "global");
 
         for (const xquery of astXquery) {
             try {

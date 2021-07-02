@@ -24,11 +24,11 @@ export class For implements ExpressionXquery{
         var content: Retorno = this.select.executeXquery(entAct, RaizXML);
         if (content.type === tipoPrimitivo.RESP ){
   
-            var nvoEnt: EntornoXQuery = new EntornoXQuery(entAct);
+            var nvoEnt: EntornoXQuery = new EntornoXQuery(entAct, "sentencia for");
             for (const element of content.value) {
                 
+                nvoEnt.guaradarVar(this.idIn , element);
                 if (this.validarWhere(nvoEnt, RaizXML)){
-                    nvoEnt.guaradarVar(this.idIn , element);
                     result += this.ret.executeXquery(nvoEnt, RaizXML).value;
                 }
             }
