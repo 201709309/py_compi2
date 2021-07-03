@@ -199,6 +199,25 @@ export default class Main extends Component {
 
         const result = parser.parse(this.state.xml)
         var ast = result.ast;
+
+        result.encoding =  result.encoding.replaceAll("\"","");
+
+        //TRADUCCION3D##########################################################################################
+        traduccion.stackCounter++;
+        traduccion.setTranslate("stack[" + traduccion.stackCounter.toString() + "] = " + "H;");
+        traduccion.setTranslate("\n//INTRODUCIENDO ENCODING\t--------------");
+
+        for (let i = 0; i < result.encoding.length; i++) {
+            traduccion.setTranslate("heap[(int)H] = " + result.encoding.charCodeAt(i) + ";" + "\t\t//Caracter " + result.encoding[i].toString());
+            traduccion.setTranslate("H = H + 1;");
+            if (i + 1 === result.encoding.length) {
+                traduccion.setTranslate("heap[(int)H] = -1;" + "\t\t//FIN DE CADENA");
+                traduccion.setTranslate("H = H + 1;");
+            }
+        }
+        //#######################################################################################################
+
+
         traducirXml(ast);
 
         const astXquery = parseXQueryTraduccion.parse(this.state.xquery);

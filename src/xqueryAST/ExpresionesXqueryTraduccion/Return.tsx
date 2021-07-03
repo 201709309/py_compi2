@@ -15,7 +15,9 @@ export class Return implements ExpressionXquery{
     
 
     executeXquery(entAct: EntornoXQuery, RaizXML: Entorno): Retorno {
-       
+
+        traduccion.setTranslate("\n//RETURN\t--------------");
+
         var content : Retorno[] = [];
         
         for (const Xquery of this.L_Exps) {
@@ -28,7 +30,6 @@ export class Return implements ExpressionXquery{
                 content.push(resultExp);
             }
         }
-        //console.log(content);
 
         var temp = ManejadorXquery.buildXquery(content);
 
