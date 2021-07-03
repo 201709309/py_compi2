@@ -9,12 +9,12 @@
     const {Relacional, operacionRelacional} = require("../xqueryAST/ExpresionesXpath/Relacional");
     const {ClaseError} = require("../xmlAST/ClaseError");
 
-    const {For} = require("../xqueryAST/ExpresionesXquery/For");
-    const {If} = require("../xqueryAST/ExpresionesXquery/If");
-    const {Let} = require("../xqueryAST/ExpresionesXquery/Let");
-    const {MultiXpaths} = require("../xqueryAST/ExpresionesXquery/MultiXpaths");
-    const {Return} = require("../xqueryAST/ExpresionesXquery/Return");
-    const {XqueryPath} = require("../xqueryAST/ExpresionesXquery/XqueryPath");
+    const {For} = require("../xqueryAST/ExpresionesXqueryTraduccion/For");
+    const {If} = require("../xqueryAST/ExpresionesXqueryTraduccion/If");
+    const {Let} = require("../xqueryAST/ExpresionesXqueryTraduccion/Let");
+    const {MultiXpaths} = require("../xqueryAST/ExpresionesXqueryTraduccion/MultiXpaths");
+    const {Return} = require("../xqueryAST/ExpresionesXqueryTraduccion/Return");
+    const {XqueryPath} = require("../xqueryAST/ExpresionesXqueryTraduccion/XqueryPath");
     
     
     var listaErrores = [];
