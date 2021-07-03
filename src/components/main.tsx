@@ -192,7 +192,7 @@ export default class Main extends Component {
         const astXquery = parseXQueryTraduccion.parse(this.state.xquery);
         var salida = "";
 
-        console.log(astXquery);
+        //console.log(astXquery);
 
         var nvoEntorno = new EntornoXQuery(null, "global");
 

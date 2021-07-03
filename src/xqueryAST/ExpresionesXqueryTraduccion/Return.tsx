@@ -28,7 +28,7 @@ export class Return implements ExpressionXquery{
                 content.push(resultExp);
             }
         }
-        console.log(content);
+        //console.log(content);
 
         var temp = ManejadorXquery.buildXquery(content);
 
