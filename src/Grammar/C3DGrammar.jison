@@ -90,6 +90,8 @@ VALOR
     |   '-' number                      {$$ = $1+$2}
     |   id '[' '(' int ')' VALOR ']'    {$$ = $1+$2+$3+$4+$5+$6+$7}
     |   id'[' VALOR ']'                 {$$ = $1+$2+$3+$4}
+    |   dstring                         {$$ = $1}
+    |   sstring                         {$$ = $1}
     ;
 
 COMPARACION
