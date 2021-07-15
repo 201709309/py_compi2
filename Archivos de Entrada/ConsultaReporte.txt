@@ -1,0 +1,13 @@
+CONSULTA XPATH PARA GENERAR TABLA Y ARBOLES
+    
+    /DOMO/BARCELONA/EJEMPLAR/JUGADOR/DELANTERO/NOMBRE
+
+
+CONSULTA DE ERRORES
+
+    <?xml version="1.0" encoding="UTF-8"?>
+    <NODOS>
+    <A>115</B>
+    <A#$%#>5</A>
+    </>
+    </NODOS>

@@ -41,6 +41,8 @@
 "}"                                         return '}';
 "!"                                         return '!';
 "%"                                         return '%';
+"&"                                         return '&';
+"|"                                         return '|';
 
 "double"                                    return 'double';
 "void"                                      return 'void';
@@ -88,6 +90,8 @@ SIGNO
     |   '<''='  {$$ = $1+$2}
     |   '>'     {$$ = $1}
     |   '>''='  {$$ = $1+$2}
+    |   '|''|'  {$$ = $1+$2}
+    |   '&''&'  {$$ = $1+$2}
     ;
 
 VALOR  

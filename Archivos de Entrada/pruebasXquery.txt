@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<biblioteca>
+  <libro>
+    <titulo>La vida está en otra parte</titulo>
+    <autor>Milan Kundera</autor>
+    <fechaPublicacion año="1973"/>
+  </libro>
+  <libro>
+    <titulo test="atributs">Pantaleón y las visitadoras</titulo>
+    <autor fechaNacimiento="28/03/1936">Mario Vargas Llosa</autor>
+    <fechaPublicacion año="1973"/>
+    <davi> xDDDDDDDDDDD </davi>
+  </libro>
+  <libro>
+    <titulo>Conversación en la catedral</titulo>
+    <autor fechaNacimiento="28/03/1936">Mario Vargas Llosa</autor>
+    <fechaPublicacion año="1969"/>
+  </libro>
+</biblioteca>
+
+
+
+
+"-------esta es una declaracion de xquery---------",
+let $d := /biblioteca/libro
+return $d/titulo,
+
+for $p in /biblioteca/libro 
+return if ($p/fechaPublicacion/@año = 1973 and $p/autor = "Mario Vargas Llosa") 
+then $p/titulo
+
+"---------este es el for simple---------------------",
+for $p in $d
+return $p/fechaPublicacion/@año
+
+
+
+-------------------------------xquery------------------------------
+"-----esta es un query xpath-------",  
+//fechaPublicacion,  
+
+"----esta es un Multiquery xpath-------",
+/biblioteca/libro/autor | /biblioteca/libro/titulo,
+
+"-------esta es una declaracion de xquery---------",
+let $d := /biblioteca/libro
+return $d/titulo,
+
+"-------este es el return de xquery---------------",
+return $d/davi, 
+
+"---------este es el for simple---------------------",
+for $p in $d
+return $p/fechaPublicacion/@año,
+
+"---------este es el for con where---------------------",
+for $p in /biblioteca/libro
+where $p/fechaPublicacion/@año = 1969 
+return $p/titulo, 
+
+"---------IF de xquery--------------------------------",
+for $p in /biblioteca/libro
+return if ($p/fechaPublicacion/@año = 1973) 
+then $p/titulo 

@@ -1,0 +1,73 @@
+<!-- Archivo para validar arboles -->
+<?xml version="1.0" encoding="UTF-8"?>
+<DOMO>
+    <MADRID>
+        <EJEMPLAR><!-- Archivo para validar arboles -->
+            <JUGADOR><!-- Archivo para validar arboles -->
+                <DELANTERO>
+                    <NOMBRE numero="11">Gareth Bale</NOMBRE>
+                    <EDAD>31</EDAD>
+                </DELANTERO>
+                <DELANTERO>
+                    <NOMBRE numero="10">Lionel Messi</NOMBRE>
+                    <EDAD>33</EDAD>
+                </DELANTERO><!-- Archivo para validar arboles -->
+                <MEDIOCENTRO>
+                    <NOM&^BRE numero="8">Toni kroos</NOMBRE>
+                    <EDAD>29</EDAD>
+                </MEDIOCENTRO>
+                <MEDIOCENTRO><!-- Archivo para validar arboles -->
+                    <NOMBRE numero="7">Cristiano Ronaldo</NOMBRE>
+                    <EDAD>34</EDAD>
+                </MEDIOCENTRO>
+                <DEFENSA><!-- Archivo para validar arboles -->
+                    <NOMBRE numero="6">Xavi Hernandez</NOMBRE>
+                    <EDAD>41</EDAD>
+                </DEFENSA>
+                <DEFENSA><!-- Archivo para validar arboles -->
+                    <NOMBRE numero="4">Sergio Ramos</NOMBRE>
+                    <EDAD>35</EDAD>
+                </DEFENSA>
+                <PORTERO>
+                    <NOMBRE numero="1">Manuel Nuer</NOMBRE>
+                    <EDAD>34</EDAD>
+                </PORTERO>
+            </JUGADOR><!-- Archivo para validar arboles -->
+        </EJEMPLAR>
+    </BARCELONA>
+    <BARCELONA>
+        <EJEMPLAR>
+            <JUGADOR>
+                <DELANTERO>
+                    <NOMBRE numero="2">Zlatan Ibra</NOMBRE>
+                    <EDAD>31</EDAD>
+                </DELANTERO>
+                <DELANTERO>
+                    <NOMBRE numero="3">Leonel Espino</NOMBRE>
+                    <EDAD>33</EDAD>
+                </DELANTERO>
+                <MEDIOCENTRO>
+                    <NOMBRE numero="18">Bastian Verner</NOMBRE>
+                    <EDAD>29</EDAD>
+                </MEDIOCENTRO>
+                <MEDIOCENTRO><!-- Archivo para validar arboles -->
+                    <NOMB@RE numero="17">Timo Wernes</NOMBRE>
+                    <EDAD>34</EDAD>
+                </MEDI^OCENTRO>
+                <DEFENSA>
+                    <NO%MBRE %&numero="16">Ngolo Kante</NOMBRE>
+                    <EDAD>41</EDAD>
+                </DEFENSA>
+                <DEFENSA>
+                    <NOMBRE& &numero="40">Gerard Pique</NOMBRE>
+                    <EDAD>35</EDAD>
+                </DEFENSA>
+                <PORTERO>
+                    <NOMBRE 'numero="21">Ter Stegen</NOMBRE>
+                    <EDAD>34</EDAD>
+                </PORTERO>
+            </JUGADOR>
+			<!-- Archivo para validar arboles -->
+        </EJEMPLAR>
+    </MADRID>
+</DOMO>
